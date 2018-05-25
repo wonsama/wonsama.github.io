@@ -89,6 +89,13 @@ let readAccountHistory = async() => {
                             if(loc==-1){
                               loc = body.indexOf('https://ipfs.io/ipfs/');
                             }
+                            if(loc==-1){
+                              loc = body.indexOf('https://cdn.steemitimages.com/');
+                            }
+                            if(loc==-1){
+                              loc = body.indexOf('https://steemitimages.com/');
+                            }
+                            
                             if(loc>=0){
                               let locSp = Math.min(body.indexOf(')', loc+1), body.indexOf(' ', loc+1));
                               image = body.substr(loc, locSp-loc);
@@ -274,7 +281,7 @@ let makeDiv = (item) => {
     template.push(`   <div class="card-body ">`);
     template.push(`     <span class=" d-inline-block text-truncate move" data-link='${link}' style="max-width: 300px;">${item.title}</span><br>`);
     if (item.image == '') {
-        template.push(`     <div class="border border-success logo move" data-link='${link}'  style="height:100px;width:100%;text-align:center;line-height:100px;">이미지 없음</div>`);
+        template.push(`     <div class="border border-success logo move" data-link='${link}'  style="height:100px;width:100%;text-align:left;padding:10px;">${item.body.substr(0,80)}</div>`);
     } else {
         template.push(`     <img class='logo move' src='${item.image}' data-link='${link}'>`);
     }
