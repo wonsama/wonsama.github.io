@@ -2,6 +2,7 @@
 const FIXED_FROM = 999999999; // 999999999 from 부터 limit 만큼 아래로 seek 함. ( 그래서 from 을 max 수치로 두는 것이 좋음 )
 const LIST_ALL_BUFFER_SIZE = 1000; // 중복방지를 위한 버퍼 (permlink와 author 정보를 담고 있음)
 const FIXED_LIMIT = 1000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
+const LOCAL_STORAGE_KEY = 'steem_ids';
 
 let accounts = [];
 
@@ -227,7 +228,8 @@ let readAccountHistory = async() => {
           // 더이상 조회할 내용이 없는 경우임
           $("#btnMore").hide();
         } else {
-          console.log(e);
+          // console.log(e);
+          alert('알 수 없는 오류가 발생했습니다.\n@wonsama 에게 문의 바랍니다.\n\n'+JSON.stringify(e));
         }
 
     });
@@ -312,6 +314,7 @@ $("#btnSearch").click(e => {
     $("#dispAct").empty();
     $("#dispAct").removeClass('text-danger text-info');
 
+    // 아이디 존재여부 검사
     steem.api.getAccounts(accounts, function(err, response){
 
       accounts = [];
@@ -327,6 +330,9 @@ $("#btnSearch").click(e => {
       }else{
         $("#dispAct").addClass('text-info');
         $("#dispAct").text( accounts.join(', ') + "님의 정보를 조회 합니다." );
+
+        // 조회 정보를 기록한다
+        localStorage.setItem(LOCAL_STORAGE_KEY,accounts.join(','));
       }
       
       if (Array.isArray(accounts) && accounts.length > 0 && accounts[0] != '') {
@@ -383,3 +389,7 @@ let getLocalTime = (timestamp, addHours = 9) => {
     t.setTime(t.getTime() + (addHours * 60 * 60 * 1000));
     return t;
 }
+
+// 이전 조회정보 초기화
+let prevSavedValues = localStorage.getItem(LOCAL_STORAGE_KEY);
+$("#search_ids").val(prevSavedValues?prevSavedValues:'');
