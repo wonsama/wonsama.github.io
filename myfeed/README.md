@@ -1,4 +1,13 @@
+# myfeed 란 ?
+
+steemjs 를 활용하여 내가 원하는 계정의 최신 글 목록 정보를 확인할 수 있는 프로그램 입니다.
+[created by wonsama](https://steemit.com/@wonsama)
+
 # myfeed 사용방법 ( with steemit )
+
+### TEST LINK
+
+https://wonsama.github.io/myfeed
 
 ### 조회 
 1. 아이디 입력
