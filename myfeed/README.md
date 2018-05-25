@@ -1,9 +1,18 @@
 # myfeed 란 ?
 
-![screenshot](https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/screenshot.png?raw=true | width=48)
+<table>
+ <tr>
+  <td>
+   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/screenshot.png?raw=true' height=200>
+  </td>
+  <td>
+   steemjs 를 활용하여 steemit에서 작성된 글 중, 내가 원하는 계정의 최신 글 목록 정보를 확인할 수 있는 프로그램 입니다. [created by wonsama](https://steemit.com/@wonsama)
+  </td>
+ </tr>
+</table>
+ 
 
-steemjs 를 활용하여 steemit에서 작성된 글 중, 내가 원하는 계정의 최신 글 목록 정보를 확인할 수 있는 프로그램 입니다.
-[created by wonsama](https://steemit.com/@wonsama)
+
 
 # myfeed 사용방법 ( with steemit )
 
@@ -48,4 +57,4 @@ https://wonsama.github.io/myfeed
 
 # 피드백
 
-* 버그 또는 건의사항이 있는 경우 댓글 또는 [github-issue](https://github.com/wonsama/wonsama.github.io/issues) 남겨주시면 감사하겠습니다.
+* 버그 또는 건의사항이 있는 경우 [스팀잇 댓글](https://steemit.com/@wonsama) 또는 [github-issue](https://github.com/wonsama/wonsama.github.io/issues) 남겨주시면 감사하겠습니다.
