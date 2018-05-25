@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="steemit 내가 원하는 계정의 글만 골라보자 !" />
+    <link rel="icon" type="image/x-icon" href="https://steemit.com/favicon.ico?v=2" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./myfeed.css" />
+    <title data-reactid="36">Steemit</title>
+</head>
+</head>
+
+<body>
+    <div class="container">
+        <!--상단 NAV 영역-->
+        <div class="input-group mb-3">
+            <div style="text-align: middle;">
+                <img src='https://steemitimages.com/DQmUGojp38u9sSMvPhXTqHGC1TqbG9ixDAb6gAKSdRhMuaR/DQmUGojp38u9sSMvPhXTqHGC1TqbG9ixDAb6gAKSdRhMuaR.png' height="50">
+                <span class="font-weight-bold">내가 원하는 계정의 최신글을 보자 !</span>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">아이디 (@제외 ,로 구분)</span>
+                </div>
+                <textarea class="form-control" aria-label="With textarea" id="search_ids"></textarea>
+            </div>
+        </div>
+
+        <!-- 조회한 아이디 정보 -->
+        <div class="text-center text-danger" id='dispAct'>
+        </div>
+
+        <!-- 주의사항 -->
+        <!-- <div class="text-center text-secondary">
+          ( 최근 1,000 블럭 사이에 글을 작성 이력이 있어야 됨 )
+        </div> -->
+
+        <!-- 조회 버튼 -->
+        <button type="button" class="btn btn-outline-success btn-sm btn-block" id="btnSearch">조회하기</button>
+        <br>
+        
+        <!-- 이미지 보이기, 가리기 -->
+        <div class="text-center">
+        <span>CREATED BY <a href='https://steemit.com/@wonsama' target="_blank">@wonsama</a></span><br>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active btn-img" id='img_show'>
+                <input type="radio" name="imgOption" id="option2" autocomplete="off" value='show' checked="checked"> SHOW IMAGE
+            </label>
+            <label class="btn btn-secondary btn-img" id='img_hide'>
+                <input type="radio" name="imgOption" id="option3" autocomplete="off" value='hide'> HIDE IMAGE
+            </label>
+        </div>
+      </div>
+        <br>
+        <div class="row disp" id='div_disp'>
+            <!-- 조회 버튼 -->
+        </div>
+        <br>
+    </div>
+    <!-- 
+		스크립팅 
+			jquery
+			popper.js
+			bootstrap
+		순서대로 배치 바랍니다.
+	-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script src="./myfeed.js"></script>
+</body>
+
+</html>
