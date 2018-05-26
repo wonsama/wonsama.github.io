@@ -96,6 +96,10 @@ let readAccountHistory = async() => {
                             if(loc==-1){
                               loc = body.indexOf('https://steemitimages.com/');
                             }
+                               if(loc==-1){
+           
+                              loc= body.indexOf('https://ipfs.busy.org');
+                                   }
                             
                             if(loc>=0){
                               let locSp = Math.min(body.indexOf(')', loc+1), body.indexOf(' ', loc+1));
