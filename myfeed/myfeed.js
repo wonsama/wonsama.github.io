@@ -1,7 +1,7 @@
 // 설정정보
 const FIXED_FROM = 999999999; // 999999999 from 부터 limit 만큼 아래로 seek 함. ( 그래서 from 을 max 수치로 두는 것이 좋음 )
 const LIST_ALL_BUFFER_SIZE = 1000; // 중복방지를 위한 버퍼 (permlink와 author 정보를 담고 있음)
-const FIXED_LIMIT = 1000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
+const FIXED_LIMIT = 2000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
 const LOCAL_STORAGE_KEY = 'steem_ids';
 
 let accounts = [];
@@ -96,10 +96,7 @@ let readAccountHistory = async() => {
                             if(loc==-1){
                               loc = body.indexOf('https://steemitimages.com/');
                             }
-                               if(loc==-1){
-           
-                              loc= body.indexOf('https://ipfs.busy.org');
-                                   }
+                              
                             
                             if(loc>=0){
                               let locSp = Math.min(body.indexOf(')', loc+1), body.indexOf(' ', loc+1));
