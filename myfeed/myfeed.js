@@ -1,10 +1,19 @@
 // 설정정보
 const FIXED_FROM = 999999999; // 999999999 from 부터 limit 만큼 아래로 seek 함. ( 그래서 from 을 max 수치로 두는 것이 좋음 )
 const LIST_ALL_BUFFER_SIZE = 1000; // 중복방지를 위한 버퍼 (permlink와 author 정보를 담고 있음)
-const FIXED_LIMIT = 2000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
-const LOCAL_STORAGE_KEY = 'steem_ids';
+const FIXED_LIMIT = 1000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
+const LOCAL_STORAGE_KEY = 'steem_ids_11';
+const DEFAULT_GROUP_NAME = '기본그룹';
+const LOCAL_STORAGE_DEFAULTS = {last:DEFAULT_GROUP_NAME, groups:[
+    {name:DEFAULT_GROUP_NAME, accounts:['wonsama']},
+    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics']},
+    {name:'kr-art', accounts:['leesol, ryh0505, woolgom, wony, twohs, mmcartoon-kr, tata1, carrotcake, cagecorn, kr-marketing, meitaya, dianamun, leesongyi, webtooner, solnamu']}
+
+    ]};
+    
 
 let accounts = [];
+let acc_images = [];
 
 // 계정마다 읽기 시작하는 지점이 다르기 때문
 let _ACC_FROM = (accounts, val = FIXED_FROM) => {
@@ -77,32 +86,26 @@ let readAccountHistory = async() => {
                         let x = list_all.filter(x => x.permlink == permlink && x.author == author);
                         if (x.length == 0 && ct.parent_author == '') {
 
-                           let image = (json_metadata && json_metadata.image && json_metadata.image.length > 0) ? json_metadata.image[0] : '';
-                           
-                           // 비지 이미지 추출 추가됨
-                           if(image==''){
-                            // busy 같은 경우 ipfs로 이미지를 올려버림
-                            // 구버전 : gateway.ipfs.io, 신버전 : ipfs.busy.org
-                            let loc = body.indexOf('https://ipfs.busy.org/ipfs/');  
-                            if(loc==-1){
-                              loc = body.indexOf('https://gateway.ipfs.io/ipfs/');
+                            let image = (json_metadata && json_metadata.image && json_metadata.image.length > 0) ? json_metadata.image[0] : '';
+
+                            // 이미지 추출 변경됨
+                            if (image == '') {
+                                const START_WORDS = [
+                                    'https://ipfs.busy.org/ipfs/',
+                                    'https://gateway.ipfs.io/ipfs/',
+                                    'https://ipfs.io/ipfs/',
+                                    'https://cdn.steemitimages.com/',
+                                    'https://steemitimages.com/',
+                                    'http://ipfs.io/ipfs/'
+                                ];
+                                let images = getLinks(body, START_WORDS);
+                                if(images.length>=1){
+                                    image = images[0];
+                                    // if(image.indexOf('http://')){
+                                    //     console.log(image);
+                                    // }
+                                }
                             }
-                            if(loc==-1){
-                              loc = body.indexOf('https://ipfs.io/ipfs/');
-                            }
-                            if(loc==-1){
-                              loc = body.indexOf('https://cdn.steemitimages.com/');
-                            }
-                            if(loc==-1){
-                              loc = body.indexOf('https://steemitimages.com/');
-                            }
-                              
-                            
-                            if(loc>=0){
-                              let locSp = Math.min(body.indexOf(')', loc+1), body.indexOf(' ', loc+1));
-                              image = body.substr(loc, locSp-loc);
-                            }
-                           }
 
                             // 결과 리턴용
                             lists.push({
@@ -112,7 +115,7 @@ let readAccountHistory = async() => {
                                 permlink: permlink,
                                 body: body,
                                 timestamp: timestamp,
-                                image:image,
+                                image: image,
                                 json_metadata: json_metadata,
                             });
 
@@ -207,30 +210,29 @@ let readAccountHistory = async() => {
         // 더보기 버튼 
         makeMore();
 
+        // 조회하기 버튼 활성화 
         $("#btnSearch").prop('disabled', false);
         console.log('last read history idx : ', ACC_FROM);
 
         if (results.length == 0) {
             readAccountHistory();
+        } else {
+            // 로딩하기 숨기기 
+            $("#loading").hide();
         }
-
-
-        // 결과 값이 없는 경우 자동으로 더보기 수행 ( 증인같이 글 가끔 쓰는 사람들 때문에 ...)
-        // if(results.length==0 ){
-        //   readAccountHistory();
-        // }
 
     }).catch(e => {
 
         // 조회버튼 활성화
         $("#btnSearch").prop('disabled', false);
-        
+
         if (e == 'end') {
-          // 더이상 조회할 내용이 없는 경우임
-          $("#btnMore").hide();
+            // 더이상 조회할 내용이 없는 경우임
+            $("#btnMore").hide();
         } else {
-          // console.log(e);
-          alert('알 수 없는 오류가 발생했습니다.\n@wonsama 에게 문의 바랍니다.\n\n'+JSON.stringify(e));
+            // console.log(e);
+            alert('알 수 없는 오류가 발생했습니다.\n@wonsama 에게 문의 바랍니다.\n\n' + JSON.stringify(e));
+            console.log(e);
         }
 
     });
@@ -270,6 +272,14 @@ let makeMore = () => {
     })
 }
 
+let getAccImage = (author) =>{
+    for(let acc of acc_images){
+        if(acc.name==author){
+            return acc.img;
+        }
+    }
+    return '';
+}
 
 let makeDiv = (item) => {
 
@@ -282,13 +292,25 @@ let makeDiv = (item) => {
     template.push(`<div class="col-sm-6" >`);
     template.push(` <div class="card cardboard" >`);
     template.push(`   <div class="card-body ">`);
-    template.push(`     <span class=" d-inline-block text-truncate move" data-link='${link}' style="max-width: 300px;">${item.title}</span><br>`);
+    // template.push(`   <span class="badge badge-dark">@${item.author}</span>`);
+    // template.push(`     <span class=" d-inline-block text-truncate move" data-link='${link}' style="max-width: 300px;">${item.title}</span><br>`);
+    template.push(`   <img src='${getAccImage(item.author)}' class='img-circle' width=30 height=30>`);
+    template.push(`   <span class="badge badge-dark text-truncate move" data-link='${link}' style="max-width: 250px;vertical-align:middle;">${item.title}</span><br>`);
     if (item.image == '') {
+
+        // 수정된 댓글
+        if(item.body.indexOf('@@')>=0){
+            // console.log()
+            item.body = decodeURIComponent(item.body);
+        }
+
         template.push(`     <div class="border border-success logo move" data-link='${link}'  style="height:100px;width:100%;text-align:left;padding:10px;">${item.body.substr(0,80)}</div>`);
     } else {
         template.push(`     <img class='logo move' src='${item.image}' data-link='${link}'>`);
     }
-    template.push(`     <p class="card-text text-right">${getFormadate(getLocalTime(item.timestamp))} @${item.author}</p>`);
+    // template.push(`     <p class="card-text text-right">${getFormadate(getLocalTime(item.timestamp))} @${item.author}</p>`);
+    template.push(`   <span class="badge badge-light">${getFormadate(getLocalTime(item.timestamp))}</span>`);
+    template.push(`   <span class="badge badge-warning">@${item.author}</span>`);
     template.push(`   </div>`);
     template.push(` </div>`);
     template.push(`</div>`);
@@ -305,7 +327,7 @@ $("#btnSearch").click(e => {
     $("#img_show").trigger('click');
 
     // 계정 @제거 
-    $("#search_ids").val( $("#search_ids").val().replace(/\@/gi, '') );
+    $("#search_ids").val($("#search_ids").val().replace(/\@/gi, ''));
 
     // ,로 나눠주기 + trim 처리 후 배열 화
     accounts = $.map($("#search_ids").val().split(','), $.trim);
@@ -316,41 +338,68 @@ $("#btnSearch").click(e => {
     $("#dispAct").removeClass('text-danger text-info');
 
     // 아이디 존재여부 검사
-    steem.api.getAccounts(accounts, function(err, response){
+    steem.api.getAccounts(accounts, function(err, response) {
 
-      accounts = [];
-      for(let acc of response){
-        accounts.push(acc.name);  
-      }
-      
-      if(response.length==0){
-        // 조회 결과가 없는 경우임
-        $("#dispAct").addClass('text-danger');
-        $("#dispAct").text("검색 할 아이디 정보를 확인 바랍니다.");
-        $("#btnSearch").prop('disabled', false);
-      }else{
-        $("#dispAct").addClass('text-info');
-        $("#dispAct").text( accounts.join(', ') + "님의 정보를 조회 합니다." );
+        accounts = [];
+        acc_images = [];
+        for (let acc of response) {
+            accounts.push(acc.name);
 
-        // 조회 정보를 기록한다
-        localStorage.setItem(LOCAL_STORAGE_KEY,accounts.join(','));
-      }
-      
-      if (Array.isArray(accounts) && accounts.length > 0 && accounts[0] != '') {
-          // 읽어들일 정보를 계정 정보 기반으로 초기화 한다
-          ACC_FROM = _ACC_FROM(accounts);
-          list_all = [];
-          
-          // 계정 목록 정보 읽어들이기 
-          readAccountHistory();
-      } else {
-          alert('계정 목록 정보를 올바르게 입력 바랍니다.');
-          $("#btnSearch").prop('disabled', false);
-      }
+            let json_metadata = acc.json_metadata ? JSON.parse(acc.json_metadata) : '';
+            let img = (json_metadata != '' && json_metadata.profile && json_metadata.profile.profile_image) ? json_metadata.profile.profile_image : '';
+            let DEFAULT_IMG = 'https://i2.wp.com/marcabees.com/wp-content/uploads/2017/08/human-icon-png-1901.png?fit=64%2C64';
+
+            if (img == '') {
+                // `<img src='${DEFAULT_IMG}' class='img-circle' width=30 height=30>`} 
+                acc_images.push( {name:acc.name, img:DEFAULT_IMG});
+            } else {
+                acc_images.push( {name:acc.name, img:img});
+                // acc_images.push(`<img src='${img}' class='img-circle' width=30 height=30>`);
+            }
+        }
+
+        if (response.length == 0) {
+            // 조회 결과가 없는 경우임
+            $("#dispAct").addClass('text-danger');
+            $("#dispAct").text("검색 할 아이디 정보를 확인 바랍니다.");
+            $("#btnSearch").prop('disabled', false);
+        } else {
+            $("#dispAct").addClass('text-info');
+
+            let acc_image = [];
+            for(let ai of acc_images){
+                acc_image.push(`<img src='${ai.img}' class='img-circle' width=30 height=30>`);
+            }
+            $("#dispAct").html(`<div id='loading'>${acc_image.join('')}<br>정보를 조회 중 입니다.</div>`);
+            $("#loading").show();
+
+            // 로컬저장소 정보 업데이트
+            let localst = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+            let last = $("#groupsNow").text();  // 현재 선택한 그룹정보
+            for(let i=0;i<localst.groups.length;i++){
+                if(localst.groups[i].name==last){
+                    localst.groups[i].accounts = accounts;    // 조회한 계정 정보
+                }
+            }
+            localst.last = last;
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localst));   // 저장할 땐 문자열로 저장
+        }
+
+        if (Array.isArray(accounts) && accounts.length > 0 && accounts[0] != '') {
+            // 읽어들일 정보를 계정 정보 기반으로 초기화 한다
+            ACC_FROM = _ACC_FROM(accounts);
+            list_all = [];
+
+            // 계정 목록 정보 읽어들이기 
+            readAccountHistory();
+        } else {
+            alert('계정 목록 정보를 올바르게 입력 바랍니다.');
+            $("#btnSearch").prop('disabled', false);
+        }
 
     });
 
-    
+
 });
 
 
@@ -391,6 +440,226 @@ let getLocalTime = (timestamp, addHours = 9) => {
     return t;
 }
 
-// 이전 조회정보 초기화
-let prevSavedValues = localStorage.getItem(LOCAL_STORAGE_KEY);
-$("#search_ids").val(prevSavedValues?prevSavedValues:'');
+// 찾으려는 단어들 중 가장 근접한 정보를 반환한다
+let indexOfMin = (contents, words=[], startIdx=0)=>{
+    let loc = -1;
+    let m = {w:undefined, l:undefined}; // w : word, l : location
+    for(let w of words){
+        let l = contents.indexOf(w, startIdx);
+        if(l!=-1){
+            m = {w:w, l:m.l?Math.min(m.l, l):l};
+        }
+    }
+    return m;
+}
+
+// 컨텐츠에서 링크 정보를 추출한다
+let getLinks = (contents, START_WORDS=['http://','https://'], END_WORDS=[' ', ')', '\n', '\'', '\t'], links=[])=>{
+
+    let m1 = indexOfMin(contents, START_WORDS);
+    if(m1.w){
+        let m2 = indexOfMin(contents, END_WORDS, m1.l);
+        if(m2.w){
+            let cut = contents.substr(m1.l, m2.l-m1.l);
+            let remain = contents.substr(m2.l);
+            links.push(cut);
+            return getLinks(remain, START_WORDS, END_WORDS, links);
+        }
+    }
+
+    return links;
+}
+
+// 로컬 스토리지에 저장된 그룹명기준 계정목록 정보를 반환한다 
+let getLocalAccounts = (name)=>{
+    let prevSavedValues = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    // console.log( prevSavedValues );
+    for(let i=0;i<prevSavedValues.groups.length;i++){
+        if(prevSavedValues.groups[i].name==name){
+            return prevSavedValues.groups[i].accounts;
+        }
+    }
+    return null;
+}
+
+// 그룹명 중복을 점검한다
+let groupDupCheck = ()=>{
+
+    let name = $("#modalGroupName").val();
+
+    if(getLocalAccounts(name)){
+        alert(`${name}은(는) 이미 존재하는 그룹명 입니다.`);
+        return false;
+    }
+    return true;
+}
+
+// 그룹 추가 
+$("#btnAdd").click(e=>{
+    
+    let groupsNow = $("#groupsNow").text();
+
+    $("#modalOk").attr('data-flag', 'add');
+    $("#modalTitle").text('그룹 추가');
+    $("#modalOk").text('추가');
+    $("#modalGroupNameLb").text('그룹명: ');
+    $("#modalGroupName").prop('disabled', false);
+    $("#modalGroupName").val('');
+
+    $("#modalGroup").modal('show');
+});
+
+// 그룹 수정 
+$("#btnMod").click(e=>{
+
+    let groupsNow = $("#groupsNow").text();
+
+    if(groupsNow==DEFAULT_GROUP_NAME){
+        alert('기본그룹은 변경이 불가 합니다.');
+        return;
+    }
+
+
+    $("#modalOk").attr('data-flag', 'mod');
+    $("#modalTitle").text('그룹명 변경');
+    $("#modalOk").text('변경');
+    $("#modalGroupNameLb").text(`변경할 그룹명: (이전 ${groupsNow})`);
+    $("#modalGroupName").prop('disabled', false);
+    $("#modalGroupName").val('');
+
+    $("#modalGroup").modal('show');
+});
+
+// 그룹 삭제 
+$("#btnDel").click(e=>{
+
+    let groupsNow = $("#groupsNow").text();
+
+    if(groupsNow==DEFAULT_GROUP_NAME){
+        alert('기본그룹은 삭제가 불가 합니다.');
+        return;
+    }
+
+    $("#modalOk").attr('data-flag', 'del');
+    $("#modalTitle").text('그룹 삭제');
+    $("#modalOk").text('삭제');
+    $("#modalGroupNameLb").text('그룹명:');
+    $("#modalGroupName").prop('disabled', true);
+    $("#modalGroupName").val($("#groupsNow").text());
+
+    $("#modalGroup").modal('show');
+});
+
+
+// modal에서 확인 버튼 누르는 경우
+$("#modalOk").click(e=>{
+    let flag = $("#modalOk").attr('data-flag'); // 액션 
+    let name = $("#modalGroupName").val();      // 그룹명 
+    let prevSavedValues = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    
+    if(flag=='add' && groupDupCheck()){
+
+        // 변경 정보 로컬 스토리지 기록
+        prevSavedValues.groups.push({name:name, accounts:getLocalAccounts(prevSavedValues.last) });  // 기본적으로 선택 정보를 넣어준다
+        prevSavedValues.last = name;    // 최종 조회 정보 변경
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(prevSavedValues));
+
+        // 화면정보 변경 
+        $("#groupsNow").text(name);      // 그룹 선택 정보 변경
+        
+        // 그룹 목록을 다시 그리고 이벤트를 재 등록한다
+        redrawGroups(prevSavedValues);
+
+        // 모달 감추기
+        $("#modalGroup").modal('hide');
+
+    }else if(flag=='del'){
+
+        // 변경 정보 로컬 스토리지 기록
+        let temp = [];
+        for(let grp of prevSavedValues.groups){
+            if(grp.name !=name){
+                temp.push(grp);
+            }
+        }
+        prevSavedValues.groups = temp;  // 기본적으로 선택 정보를 넣어준다
+        prevSavedValues.last = DEFAULT_GROUP_NAME;    // 최종 조회 정보 변경
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(prevSavedValues));
+
+        // 화면정보 변경 
+        $("#groupsNow").text(DEFAULT_GROUP_NAME);      // 그룹 선택 정보 변경
+
+        // 그룹 목록을 다시 그리고 이벤트를 재 등록한다
+        redrawGroups(prevSavedValues);
+
+        // 모달 감추기
+        $("#modalGroup").modal('hide');
+
+    }else if(flag=='mod' && groupDupCheck()){
+
+        // 변경 정보 로컬 스토리지 기록
+        let temp = [];
+        for(let grp of prevSavedValues.groups){
+            if(grp.name == $("#groupsNow").text()){
+                grp.name = name;
+            }
+        }
+        prevSavedValues.last = name;    // 최종 조회 정보 변경
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(prevSavedValues));
+
+        // 화면정보 변경 
+        $("#groupsNow").text(name);      // 그룹 선택 정보 변경
+
+        // 그룹 목록을 다시 그리고 이벤트를 재 등록한다
+        redrawGroups(prevSavedValues);
+
+        // 모달 감추기
+        $("#modalGroup").modal('hide');
+    }
+});
+
+// 그룹 목록을 다시 그리고 이벤트를 재 등록한다
+let redrawGroups = (prevSavedValues) =>{
+
+    $("#groups").empty();
+
+    // 그룹선택 콤보를 드로잉 한다
+    for(let prev of prevSavedValues.groups){
+        $("#groups").append(`<a class="dropdown-item mygroup" href="#">${prev.name}</a>`);    
+    }
+
+    // 이벤트 등록 - 버튼 : 그룹 변경
+    $(".mygroup").unbind('click');
+    $(".mygroup").click(e=>{
+        let nowItemText = $(e.target).text();
+        if($("#groupsNow").text()!=nowItemText){
+            // 선택 정보가 변경된 경우 목록 정보를 재 로드 한다 
+            $("#groupsNow").text(nowItemText);
+            $("#search_ids").val( getLocalAccounts(nowItemText).join(', ') );    
+        }
+    });
+}
+
+// 즉시 실행함수 - 초기화 영역
+(()=>{
+    // 이전 조회정보 초기화
+    let prevSavedValues = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if(!prevSavedValues){
+        // 기본값 설정 : 저장시 string , 꺼내 쓸 땐 json
+        prevSavedValues = JSON.stringify(LOCAL_STORAGE_DEFAULTS);
+        localStorage.setItem(LOCAL_STORAGE_KEY, prevSavedValues);
+    }
+    prevSavedValues = JSON.parse(prevSavedValues);
+    $("#search_ids").val(getLocalAccounts(prevSavedValues.last).join(', '));
+    
+    // 그룹 목록을 다시 그리고 이벤트를 재 등록한다
+    redrawGroups(prevSavedValues);
+
+    // 그룹선택 버튼을 초기화
+    $("#groupsNow").text(prevSavedValues.last);
+    
+    
+})();
+
+
+
