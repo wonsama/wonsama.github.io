@@ -3,15 +3,24 @@
 <table>
  <tr>
   <td>
-   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/screenshot.png?raw=true' height=200>
+   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/1.png?raw=true'>
+  </td>
+    <td>
+   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/2.png?raw=true'>
+  </td>
+    <td>
+   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/3.png?raw=true'>
+  </td>  <td>
+   <img src='https://github.com/wonsama/wonsama.github.io/blob/master/myfeed/4.png?raw=true'>
   </td>
   <td>
-   steemjs 를 활용하여 steemit에서 작성된 글 중, 내가 원하는 계정의 최신 글 목록 정보를 확인할 수 있는 프로그램 입니다. [created by wonsama](https://steemit.com/@wonsama)
+   
   </td>
  </tr>
 </table>
  
 
+steemjs 를 활용하여 steemit에서 작성된 글 중, 내가 원하는 계정의 최신 글 목록 정보를 확인할 수 있는 프로그램 입니다. [created by wonsama](https://steemit.com/@wonsama)
 
 
 # myfeed 사용방법 ( with steemit )
@@ -32,6 +41,10 @@ https://wonsama.github.io/myfeed
 ### 3. 이미지 감추기
 1. SHOW IMAGE / HIDE IMAGE 를 누르면 됨
 1. 선택 정보에 따라 이미지를 보여주거나 감춰줌
+
+### 4. 그룹 생성/삭제, 그룹명 변경
+1. 각각 버튼을 눌러 동작 가능
+1. '기본그룹'은 삭제/변경 불가
 
 # 참조
 
@@ -58,3 +71,18 @@ https://wonsama.github.io/myfeed
 # 피드백
 
 * 버그 또는 건의사항이 있는 경우 [스팀잇 댓글](https://steemit.com/@wonsama) 또는 [github-issue](https://github.com/wonsama/wonsama.github.io/issues) 남겨주시면 감사하겠습니다.
+
+# 변경이력 
+
+## 2018.05.28 ver 1.1
+
+* '제목,시간,작가' 벳지 스타일로 변경
+* 하단 그룹을 하나로 합쳐줌. ( 조회결과 내용을 더 많이 보기 위함. )
+* 그룹 기능 추가됨
+  * 그룹 조회 : 조회 시 해당 그룹에 자동으로 유저 정보가 추가됨
+  * 그룹 추가 : 빈 그룹 정보가 추가됨
+  * 그룹 삭제 : 현재 선택된 그룹 정보가 삭제됨 ( 기본그룹은 삭제불가 )
+
+## 2018.05.24 ver 1.0
+
+* 최초 작성
