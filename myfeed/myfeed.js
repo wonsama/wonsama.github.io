@@ -8,7 +8,7 @@ const DEFAULT_GROUP_NAME = '기본그룹';
 // shiningpil, 
 const LOCAL_STORAGE_DEFAULTS = {last:DEFAULT_GROUP_NAME, groups:[
     {name:DEFAULT_GROUP_NAME, accounts:['wonsama']},
-    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, raindays, tradingideas, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics, project7']},
+    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, raindays, tradingideas, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics, project7, shiningpil']},
     {name:'kr-art', accounts:['leesol, ryh0505, woolgom, wony, twohs, mmcartoon-kr, tata1, carrotcake, cagecorn, kr-marketing, meitaya, dianamun, leesongyi, webtooner, solnamu']}
     ]};
 
@@ -170,8 +170,11 @@ let readAccountHistory = async() => {
         // 알맞게 화면에 출력한다
         let tempHtml = [];
         for (let item of results) {
+
+            let tags = (item.json_metadata&& item.json_metadata.tags && item.json_metadata.tags.length>0)?item.json_metadata.tags[0]:'';
             let template = `[created] ${getFormadate(getLocalTime(item.timestamp),'yy-mm-dd HH:MM:ss')} / @${item.author} / [title] ${item.title}`;
-            let link = `https://steemit.com/${item.json_metadata.tags[0]}/@${item.author}/${item.permlink}`;
+            let link = `https://steemit.com/${tags}/@${item.author}/${item.permlink}`;
+
             // console.log(template);
             // console.log(link);
 
@@ -285,8 +288,8 @@ let makeDiv = (item) => {
 
     let template = [];
     // let img = (item.json_metadata && item.json_metadata.image && item.json_metadata.image.length > 0) ? item.json_metadata.image[0] : '';
-
-    let link = `https://steemit.com/${item.json_metadata.tags[0]}/@${item.author}/${item.permlink}`;
+    let tags = (item.json_metadata&& item.json_metadata.tags && item.json_metadata.tags.length>0)?item.json_metadata.tags[0]:'';
+    let link = `https://steemit.com/${tags}/@${item.author}/${item.permlink}`;
 
     // template.push(`<a href="#" class="card-block">`);
     template.push(`<div class="col-sm-6" >`);
