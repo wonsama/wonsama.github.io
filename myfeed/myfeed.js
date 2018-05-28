@@ -4,13 +4,13 @@ const LIST_ALL_BUFFER_SIZE = 1000; // 중복방지를 위한 버퍼 (permlink와
 const FIXED_LIMIT = 1000; // max 10000, 최소 1000 정도로 잡아주도록 한다, 높을 수록 속도 저하 발생
 const LOCAL_STORAGE_KEY = 'steem_ids_11';
 const DEFAULT_GROUP_NAME = '기본그룹';
+
+// shiningpil, 
 const LOCAL_STORAGE_DEFAULTS = {last:DEFAULT_GROUP_NAME, groups:[
     {name:DEFAULT_GROUP_NAME, accounts:['wonsama']},
-    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, raindays, tradingideas, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics, shiningpil, project7']},
+    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, raindays, tradingideas, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics, project7']},
     {name:'kr-art', accounts:['leesol, ryh0505, woolgom, wony, twohs, mmcartoon-kr, tata1, carrotcake, cagecorn, kr-marketing, meitaya, dianamun, leesongyi, webtooner, solnamu']}
-
     ]};
-    
 
 let accounts = [];
 let acc_images = [];
