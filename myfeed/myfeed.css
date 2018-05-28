@@ -7,8 +7,9 @@ body{
 }
 
 div.disp{
-	height: 400px;
-	overflow: scroll;
+	/* 스크롤 버튼을 활성화 시키고 싶은 경우 아래 주석 해제*/
+	/*height: 400px;*/
+	/*overflow: scroll;*/
 }
 
 img.logo{

@@ -6,7 +6,7 @@ const LOCAL_STORAGE_KEY = 'steem_ids_11';
 const DEFAULT_GROUP_NAME = '기본그룹';
 const LOCAL_STORAGE_DEFAULTS = {last:DEFAULT_GROUP_NAME, groups:[
     {name:DEFAULT_GROUP_NAME, accounts:['wonsama']},
-    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics']},
+    {name:'kr-dev', accounts:['wonsama, asbear, asinayo, nhj12311, raindays, tradingideas, code91, jeaimetu, segyepark, dorian-lee, codingman, codingart, urobotics, shiningpil, project7']},
     {name:'kr-art', accounts:['leesol, ryh0505, woolgom, wony, twohs, mmcartoon-kr, tata1, carrotcake, cagecorn, kr-marketing, meitaya, dianamun, leesongyi, webtooner, solnamu']}
 
     ]};
@@ -588,6 +588,7 @@ $("#modalOk").click(e=>{
 
         // 화면정보 변경 
         $("#groupsNow").text(DEFAULT_GROUP_NAME);      // 그룹 선택 정보 변경
+        $("#search_ids").val(getLocalAccounts(DEFAULT_GROUP_NAME).join(', '));
 
         // 그룹 목록을 다시 그리고 이벤트를 재 등록한다
         redrawGroups(prevSavedValues);
