@@ -1,6 +1,10 @@
 # k-means 란 ?
 
+![k](https://wonsama.github.com/kmeans/kmeans.png)
+
 steemjs 를 활용하여 나의 팔로워 정보중 명성과 스파 사이의 상관관계를 k-means를 통해 볼 수 있습니다.
+
+관련 영상 링크 : https://vimeo.com/272891822
 
 # k-means 사용방법 ( with steemit )
 
