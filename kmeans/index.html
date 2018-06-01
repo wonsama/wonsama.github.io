@@ -1,0 +1,46 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <!-- 드로잉 전체 영역 설정-->
+    <div id='kmeans'>
+        <div>
+            <svg/>
+        </div>
+        <!-- 버튼 영역 -->
+        <!-- <div>
+            <button id='step'>STEP</button>
+            <button id='restart'>RESTART</button>
+        </div> -->
+        <!-- 노드 설정 -->
+        <!-- <fieldset> -->
+            <!-- <div>
+                <label for="N">N (the number of node):</label>
+                <input type="number" id="N" min="2" max="1000" value="100">
+            </div> -->
+            <div>
+                
+            </div>
+            <div>
+            		<span>제외 아이디 : </span>
+            		<input id="bans" min="2" value="" style="width: 550px" placeholder=",로 구분 바랍니다.">
+            		<br>
+            		<span>클러스터 수 : </span>
+                <input type="number" id="counts" min="2" max="50" value="3">
+                <span>아이디 : </span>
+            		<input id="author" value="wonsama">
+            		<span>최소스파 : </span>
+            		<input id="sp" value="15">
+            		<button id="start">그리기</button>
+                <button id="reset">다시그리기</button>
+            </div>
+        <!-- </fieldset> -->
+    </div>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="steem.min.js" charset="utf-8"></script>
+    <script src="kmeans.js" charset="utf-8"></script>
+</body>
+
+</html>
