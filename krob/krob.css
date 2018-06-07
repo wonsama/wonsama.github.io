@@ -1,0 +1,41 @@
+body{
+	padding: 20px 0px 20px 0px;
+}
+
+.col-sm-6{
+	padding: 10px;
+}
+
+div.disp{
+	/* 스크롤 버튼을 활성화 시키고 싶은 경우 아래 주석 해제*/
+	/*height: 400px;*/
+	/*overflow: scroll;*/
+}
+
+td.header{
+	background-color: rgb(37,213,170);
+}
+td.header_15{
+	background-color: silver;
+}
+
+img.logo{
+	width:200px;
+	height:150px;
+	border-radius: 10%;
+	border: black solid 1px;
+}
+
+img.circle {
+	width: 30px;
+	height: 30px;
+   border-radius: 50%;
+}
+
+table.mytb{
+	width: 100%;
+}
+
+span.query{
+	color: silver;
+}
