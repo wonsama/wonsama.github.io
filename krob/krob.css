@@ -1,3 +1,4 @@
+
 body{
 	padding: 20px 0px 20px 0px;
 }
@@ -38,4 +39,11 @@ table.mytb{
 
 span.query{
 	color: silver;
+}
+
+@media only screen and (max-width: 420px) {
+    td.logo{
+			display: none;
+    	visibility: hidden;
+    }
 }

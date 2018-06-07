@@ -110,9 +110,9 @@ let loadCreatedContents = () => {
             htmlTemplate.push(`<table class='mytb'>`);
             htmlTemplate.push(`<tr >`);
             if(image){
-                htmlTemplate.push(`    <td rowspan='2' width=200><img src='${image}' class='logo'/></td>`);
+                htmlTemplate.push(`    <td rowspan='2' width=200 class='logo'><img src='${image}' class='logo'/></td>`);
             }else{
-                htmlTemplate.push(`    <td rowspan='2' width=200><img src='${DEFAULT_TITLE_IMAGE}' class='logo'/></td>`);
+                htmlTemplate.push(`    <td rowspan='2' width=200 class='logo'><img src='${DEFAULT_TITLE_IMAGE}' class='logo'/></td>`);
             }
             htmlTemplate.push(`    <td class='space' rowspan='2' width=10></td>`);
             

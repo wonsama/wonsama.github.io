@@ -1,5 +1,4 @@
 // krop_black.js
-
 $("#memo_send").click(e=>{
 
   // 후원
