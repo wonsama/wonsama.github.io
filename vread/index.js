@@ -38,8 +38,12 @@ function getJsonFromUrl() {
 function checkParams(){
 	// 주소정보를 가져온다 - 파라미터 파싱을 위함
 	let params = getJsonFromUrl();
+	if(params.author && params.permlink){
+		localStorage.setItem('author', params.author);
+		localStorage.setItem('permlink', params.permlink);
+	}
 	if(params.access_token){
-		// 로그인을 하여 콜백이 넘어온 상태임 - 로컬 스토리지에 해당 토큰 정보를 저장 
+		// 로그인을 하여 콜백이 넘어온 상태임 - 로컬 스토리지에 해당 정보를 저장 
 		localStorage.setItem('access_token', params.access_token);
 		location.href = '/vread';	// 주소창에서 토큰 정보를 지워주기 위함
 	}
@@ -77,7 +81,7 @@ function drawLogout() {
 	$("#loaderBg").show();
 	api.me(function (err, res) {
 
-		$("#loaderBg").hide();
+		
 	  if(!err){
 
 	  	let logo = `<img width=30 height=30 src='https://steemitimages.com/u/${res.name}/avatar' />`;
@@ -91,14 +95,17 @@ function drawLogout() {
 
 				$("#loaderBg").show();
 				// 로그아웃 수행
+				// TODO : 로그아웃 됨 현재 페이지에서 할것이 없음
+				// STEEMIT 페이지로 이동처리 해줘야 되나 ? 일단은 동일 페이지로 ...
 				api.revokeToken(function (err, res) {
 
 					$("#loaderBg").hide();
 
 					if(!err){
-						localStorage.removeItem('access_token');
 						// 이후 화면 갱신
 						localStorage.removeItem('access_token');
+						localStorage.removeItem('author');
+						localStorage.removeItem('permlink');
 						location.href = '/vread';
 					}else{
 						alert(err);
@@ -106,66 +113,120 @@ function drawLogout() {
 				});
 			});
 
-			// 글쓰기 공간 삽입
-			template = [];
-			template.push(`<label for='txtTitle'>글 주소 : </label>`);
-			template.push(`<input type='text' id='txtLink' class='title'></input><br/><br/>`);
-			template.push(`<span>ex)<br>https://steemit.com/voteview/@wonsama/voteview-wonsama-1530261005453</span><br/><br/>`);
-			template.push(`<div id="btnRead">조회</div>`);
-			$("#divWrite").html(template.join(''));
-
-			// 조회 버튼 이벤트 등록
-			$("#btnRead").click(evt=>{
-
-				let myLink = getInfoFromLink( $("#txtLink").val() );
-				if(!myLink.ok){
-					alert('위 예시를 참조하여 올바른 주소를 입력바랍니다.');
-					return;
-				}
-
-				$("#loaderBg").show();
-				let author = myLink.data.author;
-				let permlink = myLink.data.permlink;
-				steem.api.getContent(author, permlink, function(err, result) {
+			// 글 정보 읽기
+			let author = localStorage.getItem('author');
+			let permlink = localStorage.getItem('permlink');
+			if(!author || !permlink){
+				// 로그아웃 해서 작가, 펌링크 정보가 없는 경우임
+				$("#loaderBg").hide();
+				return;
+			}
+			steem.api.getContent(author, permlink, function(err, result) {
 				  
-					$("#loaderBg").hide();
-				  if(!err){
+				$("#loaderBg").hide();
+			  if(!err){
 
-				  	console.log(result)
+			  	// 보팅여부 검색
+			  	// percent / reputation / rshares / time / voter / weight
+			  	let active_votes = result.active_votes;
+			  	let isFound = false;
+			  	for(let av of active_votes){
+			  		// 보팅이력이 있고, 보팅취소(weight!=0)가 아닌경우
+			  		if(av.voter==res.name && av.weight!=0){
+			  			isFound = true;
+			  			break;
+			  		}
+			  	}
 
-				  	// 보팅여부 검색
-				  	let active_votes = result.active_votes;
-				  	let isFound = false;
-				  	for(let av of active_votes){
-				  		if(av.voter==res.name){
-				  			isFound = true;
-				  			break;
-				  		}
-				  	}
-
-				  	// 보팅을 했음 
-				  	if(isFound){
-
-				  		let decripted = CryptoJS.AES.decrypt(result.body, author);
-				  		template = [];
-				  		template.push("<br>");
-				  		template.push("<span>결과 : </span><br><br>");
-				  		template.push( decripted.toString(CryptoJS.enc.Utf8) );
-
-				  		$("#divResult").html( template.join('') );
-				  	}else{
-				  		// 보팅을 하지않음
-				  		alert('당신은 보팅을 하지 않았습니다.');
-				  	}
-
-
-				  }else{
-				  	alert(err);
-				  }
-
-				});
+			  	// 보팅을 했음
+			  	template = [];
+			  	let prevLink = `https://steemit.com${result.url}`;
+			  	template.push("<br>");
+				template.push("<span>조회결과 : </span><br>");
+				template.push("<hr>");
+			  	if(isFound){
+			  		let dectext = result.body.split("<hr>");
+			  		if(!dectext && dectext.length!=3){
+			  			alert('오류가 발생 했습니다.(글 수정으로 추정)');
+			  			return;
+			  		}
+			  		let decripted = CryptoJS.AES.decrypt(dectext[1], author);
+			  		template.push( decripted.toString(CryptoJS.enc.Utf8) );
+			  		template.push("<hr>");
+			  	}else{
+			  		// 보팅을 하지않음
+			  		template.push('보팅 이후 다시 확인바랍니다.');
+			  		template.push("<hr>");
+			  	}
+			  	template.push(`원본 글 주소 : <a target='_blank' href='${prevLink}'>${prevLink}</a>`);
+			  	template.push("<hr>");
+			  	$("#divResult").html( template.join('') );
+			  }else{
+			  	alert(err);
+			  }
 
 			});
+
+			// 글쓰기 공간 삽입
+			// template = [];
+			// template.push(`<label for='txtTitle'>글 주소 : </label>`);
+			// template.push(`<input type='text' id='txtLink' class='title'></input><br/><br/>`);
+			// template.push(`<span>ex)<br>https://steemit.com/voteview/@wonsama/voteview-wonsama-1530261005453</span><br/><br/>`);
+			// template.push(`<div id="btnRead">조회</div>`);
+			// $("#divWrite").html(template.join(''));
+
+			// 조회 버튼 이벤트 등록
+			// $("#btnRead").click(evt=>{
+
+				// let myLink = getInfoFromLink( $("#txtLink").val() );
+				// if(!myLink.ok){
+				// 	alert('위 예시를 참조하여 올바른 주소를 입력바랍니다.');
+				// 	return;
+				// }
+
+				// $("#loaderBg").show();
+				// let author = myLink.data.author;
+				// let permlink = myLink.data.permlink;
+				// steem.api.getContent(author, permlink, function(err, result) {
+				  
+				// 	$("#loaderBg").hide();
+				//   if(!err){
+
+				//   	console.log(result)
+
+				//   	// 보팅여부 검색
+				//   	let active_votes = result.active_votes;
+				//   	let isFound = false;
+				//   	for(let av of active_votes){
+				//   		if(av.voter==res.name){
+				//   			isFound = true;
+				//   			break;
+				//   		}
+				//   	}
+
+				//   	// 보팅을 했음 
+				//   	if(isFound){
+
+				//   		let decripted = CryptoJS.AES.decrypt(result.body, author);
+				//   		template = [];
+				//   		template.push("<br>");
+				//   		template.push("<span>결과 : </span><br><br>");
+				//   		template.push( decripted.toString(CryptoJS.enc.Utf8) );
+
+				//   		$("#divResult").html( template.join('') );
+				//   	}else{
+				//   		// 보팅을 하지않음
+				//   		alert('당신은 보팅을 하지 않았습니다.');
+				//   	}
+
+
+				//   }else{
+				//   	alert(err);
+				//   }
+
+				// });
+
+			// });
 
 	  }else{
 

@@ -118,33 +118,59 @@ function drawLogout() {
 			// 글쓰기 버튼 이벤트 등록
 			$("#btnWrite").click(evt=>{
 				let myString = $("#txtDesc").val();
-	    	let myPassword = res.name;
-	    	let encrypted = CryptoJS.AES.encrypt(myString, myPassword);
+		    	let myPassword = res.name;
+		    	let encrypted = CryptoJS.AES.encrypt(myString, myPassword);
 
-	    	console.log( $("#txtTitle").val() );
-	    	console.log( encrypted.toString() );
+		    	
+		    	let parentAuthor = '';
+		    	let parentPermlink = 'voteview';	// category 일반적으로 tag의 첫번째 것을 추출하여 넣어줌
+		    	let author = res.name;
+		    	let permlink = `voteview-${res.name}-${new Date().getTime()}`
+		    	let title = $("#txtTitle").val();
+		    	let jsonMetadata = JSON.stringify({
+						"tags": ['voteview'], /* 일단 기본적으로 태그는 1개만 사용하도록, 사용자 입력 받지 않게 처리 */
+						"app":"voteview/0.1", /* 추후 app 버전에 따라 파싱등을 분기 처리할 필요도 있을까나 ?*/
+						"format":"markdown"
+		    	});
+		    	
+		    	template = [];
+		    	let goRead = `https://wonsama.github.com/vread/?author=${author}&permlink=${permlink}`;
+		    	let goWrite = `https://wonsama.github.com/vwrite/`;
+		    	template.push(`# 보팅을 하면 글이 보입니다.\n`);
+		    	template.push(`<hr>`);
+		    	template.push( encrypted.toString() );
+		    	template.push(`<hr>\n\n`);
+		    	template.push(`# 위 글은 암호화 되었습니다.\n`);
+		    	template.push(`* 보팅을 하신 이후 [글보러 가기](${goRead})\n`);
+		    	template.push(`* 암호화 된 글을 쓰고 싶으시면 [글쓰러 가기](${goWrite})\n\n`);
+		    	template.push(`> [참조] 스팀잇에서는 보팅해도 안보입니다. [글보러 가기](${goRead}) 를 눌러주세요\n`);
+		    	template.push(`> created by @wonsama`);
+		    	
+		    	let body = template.join('');
 
-	    	$("#loaderBg").show();
-	    	let parentAuthor = '';
-	    	let parentPermlink = 'voteview';	// category 일반적으로 tag의 첫번째 것을 추출하여 넣어줌
-	    	let author = res.name;
-	    	let permlink = `voteview-${res.name}-${new Date().getTime()}`
-	    	let title = $("#txtTitle").val();
-	    	let body = encrypted.toString();
-	    	let jsonMetadata = JSON.stringify({
-					tags: ['voteview']
-	    	});
-	    	api.comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function (err, res) {
-				  $("#loaderBg").hide();
+		    	// 제목, 내용 미기입 유효성 검증
+		    	if($.trim(title)==''){
+		    		alert('제목을 입력 바랍니다.');
+		    		return;
+		    	}
+		    	if($.trim(myString)==''){
+		    		alert('내용을 입력 바랍니다');
+		    		return;
+		    	}
+		    	
 
-				  if(!err){
-				  	let link = `https://steemit.com/${parentPermlink}/@${author}/${permlink}`;
-				  	$("#divWrite").append(`<div><a href='${link}'>${link}</a> 에서 결과를 보실 수 있습니다.</div>`);
-				  }else{
-				  	alert(err);
-				  }
+		    	$("#loaderBg").show();
+		    	api.comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function (err, res) {
+					  $("#loaderBg").hide();
+
+					  if(!err){
+					  	let link = `https://steemit.com/${parentPermlink}/@${author}/${permlink}`;
+					  	$("#divWrite").append(`<div><a href='${link}'>${link}</a> 에서 결과를 보실 수 있습니다.</div>`);
+					  }else{
+					  	alert(err);
+					  }
+					});
 				});
-			});
 
 	  }else{
 
