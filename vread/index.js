@@ -131,10 +131,14 @@ function drawLogout() {
 			  	let active_votes = result.active_votes;
 			  	let isFound = false;
 			  	for(let av of active_votes){
-			  		// 보팅이력이 있고, 보팅취소(weight!=0)가 아닌경우
-			  		if(av.voter==res.name && av.weight!=0){
-			  			isFound = true;
-			  			break;
+			  		// 보팅이력이 있고, 보팅취소(percent!=0)가 아닌경우
+			  		
+			  		if(av.voter==res.name){
+			  			console.log(av);
+			  			if(av.percent!=0){
+				  			isFound = true;
+				  			break;	
+			  			}
 			  		}
 			  	}
 
