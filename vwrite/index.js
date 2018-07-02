@@ -104,7 +104,7 @@ function drawLogoutArea(res){
 function writeComment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata){
 
 	let myString = $("#txtDesc").val();
-	
+
 	// 제목, 내용 미기입 유효성 검증
 	if($.trim(title)==''){
 		alert('제목을 입력 바랍니다.');
@@ -121,10 +121,9 @@ function writeComment(parentAuthor, parentPermlink, author, permlink, title, bod
 	  $("#lock").hide();
 
 	  if(!err){
-
 	  	// 결과 수신 후 링크 정보를 화면에 추가한다
 	  	let link = `https://steemit.com/${parentPermlink}/@${author}/${permlink}`;
-	  	$("#divWrite").append(`<div><a href='${link}'>${link}</a> 에서 결과를 보실 수 있습니다.</div>`);
+	  	$("#divWrite").append(`<div><a href='${link}'>[ 작성된 글 보기 ]</a> 을(를) 눌러 결과를 확인하세요.</div>`);
 	  }else{
 	  	alert(err);
 	  }
