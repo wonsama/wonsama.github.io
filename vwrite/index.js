@@ -14,7 +14,7 @@ const access_token = localStorage.getItem('access_token');
 */
 const api = sc2.Initialize({
   app: 'wonsama.quiz',
-  callbackURL: URL_JW,
+  callbackURL: URL_GITHUB,
   accessToken: access_token,
   scope: ['comment']
 });
