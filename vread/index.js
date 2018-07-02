@@ -16,7 +16,7 @@ const api = sc2.Initialize({
     app: 'wonsama.quiz',
     callbackURL: URL_GITHUB,
     accessToken: access_token,
-    scope: ['comment', 'vote']
+    scope: ['comment']
 });
 
 /*
