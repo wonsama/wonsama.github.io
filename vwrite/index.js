@@ -204,7 +204,8 @@ function drawWriteArea(res){
   	template.push(`# 위 글은 암호화 되었습니다.\n`);
   	template.push(`* 보팅을 하신 이후 [글보러 가기](${goRead})\n`);
   	template.push(`* 암호화 된 글을 쓰고 싶으시면 [글쓰러 가기](${goWrite})\n\n`);
-  	template.push(`> [참조] 스팀잇에서는 보팅해도 안보입니다. [글보러 가기](${goRead}) 를 눌러주세요\n`);
+  	template.push(`> [참조] 스팀잇에서는 보팅해도 안보입니다. [글보러 가기](${goRead}) 를 누르세요\n`);
+  	template.push(`> [voteview 메뉴얼 바로가기](https://steemit.com/kr/@wonsama/voteview-nono)`);
   	template.push(`> created by @wonsama`);
   	
   	let body = template.join('');
