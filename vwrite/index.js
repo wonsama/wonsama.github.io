@@ -59,10 +59,154 @@ function drawLogin(){
 	// 로그인 이벤트 등록
 	$("#btnLogin").click(evt=>{
 
-		$("#loaderBg").show();
+		$("#lock").show();
 
 		// 로그인을 수행한다
 		location.href = api.getLoginURL();
+	});
+}
+
+/*
+* 로그아웃 영역 그리기 및 이벤트 등록
+*/
+function drawLogoutArea(res){
+	let template = [];
+	let logo = `<img width=30 height=30 src='https://steemitimages.com/u/${res.name}/avatar' />`;
+
+	// 로그아웃 버튼 삽입
+	template.push(` <div id='btnLogin'>${logo} ${res.name} 로그아웃 </div>`);
+	$("#divLoginInfo").html( template.join('') );
+
+	// 로그아웃 이벤트 등록
+	$("#btnLogin").click(evt=>{
+
+		$("#lock").show();
+		// 로그아웃 수행
+		api.revokeToken(function (err, res) {
+
+			$("#lock").hide();
+
+			if(!err){
+				localStorage.removeItem('access_token');
+				// 이후 화면 갱신
+				localStorage.removeItem('access_token');
+				location.href = '/vwrite';
+			}else{
+				alert(err);
+			}
+		});
+	});	
+}
+
+/*
+* 유효성 검증 및 글쓰기
+*/
+function writeComment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata){
+	// 제목, 내용 미기입 유효성 검증
+	if($.trim(title)==''){
+		alert('제목을 입력 바랍니다.');
+		return;
+	}
+	if($.trim(myString)==''){
+		alert('내용을 입력 바랍니다');
+		return;
+	}
+
+	// 글쓰기
+	$("#lock").show();
+	api.comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function (err, res) {
+	  $("#lock").hide();
+
+	  if(!err){
+
+	  	// 결과 수신 후 링크 정보를 화면에 추가한다
+	  	let link = `https://steemit.com/${parentPermlink}/@${author}/${permlink}`;
+	  	$("#divWrite").append(`<div><a href='${link}'>${link}</a> 에서 결과를 보실 수 있습니다.</div>`);
+	  }else{
+	  	alert(err);
+	  }
+	});
+}
+
+/*
+* 글쓰기 영역 그리기 및 이벤트 등록
+*/
+function drawWriteArea(res){
+	let template = [];
+
+	// 제목
+	template.push(`<div class="input-group mb-3">`);
+	template.push(`	<div class="input-group-prepend">`);
+	template.push(`		<span class="input-group-text" id="basic-addon1">제목</span>`);
+	template.push(`	</div>`);
+	template.push(`	<input type="text" id='txtTitle' class="form-control" placeholder="제목을 입력 바랍니다." aria-label="Title" aria-describedby="basic-addon1">`);
+	template.push(`</div>`);
+
+	// 내용
+	template.push(`<div class="input-group">`);
+	template.push(`	<div class="input-group-prepend">`);
+	template.push(`		<span class="input-group-text">내용</span>`);
+	template.push(`	</div>`);
+	template.push(`	<textarea rows="10" id='txtDesc'class="form-control" aria-label="Description"></textarea>`);
+	template.push(`</div>`);
+
+	// 버튼
+	template.push(`<br>`);
+	template.push(`<div class='text-right'><button id='btnWrite' type="button" class="btn btn-secondary">글쓰기</button></div>`);
+	template.push(`<br>`);
+	
+	// 미리보기 
+	template.push(`<span class="badge badge-pill badge-primary"> 미리보기 </span>`);
+	template.push(`<div id="divPreview" class='preview'></div>`); // markdown 미리보기 영역 
+	$("#divWrite").html(template.join(''));
+
+	$("#divPreview").css('border', '1px solid black');
+	$("#divPreview").css('width', '100%');
+	$("#divPreview").css('padding', '10px');
+	$("#divPreview").css('word-wrap', 'break-word');
+
+	// 마크다운 미리보기 이벤트 등록
+	let converter = new showdown.Converter();
+	$("#txtDesc").keyup(evt=>{
+		let preview  = converter.makeHtml( $("#txtDesc").val() );
+		$("#divPreview").html(preview);
+		$("img").css('max-width','100%');
+	});
+
+	// 글쓰기 버튼 이벤트 등록
+	$("#btnWrite").click(evt=>{
+		let myString = $("#txtDesc").val();
+  	let myPassword = res.name;
+  	let encrypted = CryptoJS.AES.encrypt(myString, myPassword);
+  	
+  	let parentAuthor = '';
+  	let parentPermlink = 'voteview';	// category 일반적으로 tag의 첫번째 것을 추출하여 넣어줌
+  	let author = res.name;
+  	let permlink = `voteview-${res.name}-${new Date().getTime()}`
+  	let title = $("#txtTitle").val();
+  	let jsonMetadata = JSON.stringify({
+			"tags": ['voteview'], /* 일단 기본적으로 태그는 1개만 사용하도록, 사용자 입력 받지 않게 처리 */
+			"app":"voteview/0.1", /* 추후 app 버전에 따라 파싱등을 분기 처리할 필요도 있을까나 ?*/
+			"format":"markdown"
+  	});
+  	
+  	template = [];
+  	let goRead = `https://wonsama.github.com/vread/?author=${author}&permlink=${permlink}`;
+  	let goWrite = `https://wonsama.github.com/vwrite/`;
+  	template.push(`# 보팅을 하면 글이 보입니다.\n`);
+  	template.push(`<hr>`);
+  	template.push( encrypted.toString() );
+  	template.push(`<hr>\n\n`);
+  	template.push(`# 위 글은 암호화 되었습니다.\n`);
+  	template.push(`* 보팅을 하신 이후 [글보러 가기](${goRead})\n`);
+  	template.push(`* 암호화 된 글을 쓰고 싶으시면 [글쓰러 가기](${goWrite})\n\n`);
+  	template.push(`> [참조] 스팀잇에서는 보팅해도 안보입니다. [글보러 가기](${goRead}) 를 눌러주세요\n`);
+  	template.push(`> created by @wonsama`);
+  	
+  	let body = template.join('');
+
+  	// 유효성 검증 및 글쓰기
+ 		writeComment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata); 	
 	});
 }
 
@@ -71,106 +215,18 @@ function drawLogin(){
 */
 function drawLogout() {
 
-	let template = [];
-
 	// 로그인 정보 가져오기
-	$("#loaderBg").show();
+	$("#lock").show();
 	api.me(function (err, res) {
 
-		$("#loaderBg").hide();
+		$("#lock").hide();
 	  if(!err){
 
-	  	let logo = `<img width=30 height=30 src='https://steemitimages.com/u/${res.name}/avatar' />`;
+	  	// 로그아웃 영역 그리기 및 이벤트 등록
+			drawLogoutArea(res);
 
-			// 로그아웃 버튼 삽입
-			template.push(` <div id='btnLogin'>${logo} ${res.name} 로그아웃 </div>`);
-			$("#divLoginInfo").html( template.join('') );
-
-			// 로그아웃 이벤트 등록
-			$("#btnLogin").click(evt=>{
-
-				$("#loaderBg").show();
-				// 로그아웃 수행
-				api.revokeToken(function (err, res) {
-
-					$("#loaderBg").hide();
-
-					if(!err){
-						localStorage.removeItem('access_token');
-						// 이후 화면 갱신
-						localStorage.removeItem('access_token');
-						location.href = '/vwrite';
-					}else{
-						alert(err);
-					}
-				});
-			});
-
-			// 글쓰기 공간 삽입
-			template = [];
-			template.push(`<label for='txtTitle'>제목 : </label>`);
-			template.push(`<input type='text' id='txtTitle' class='title'></input><br/><br/>`);
-			template.push(`<label for='txtDesc'>내용 : </label><br/>`);
-			template.push(`<textarea rows="10" cols="50" id="txtDesc" class='desc'></textarea><br/><br/>`);
-			template.push(`<div id="btnWrite">글쓰기</div>`);
-			$("#divWrite").html(template.join(''));
-
-			// 글쓰기 버튼 이벤트 등록
-			$("#btnWrite").click(evt=>{
-				let myString = $("#txtDesc").val();
-		    	let myPassword = res.name;
-		    	let encrypted = CryptoJS.AES.encrypt(myString, myPassword);
-
-		    	
-		    	let parentAuthor = '';
-		    	let parentPermlink = 'voteview';	// category 일반적으로 tag의 첫번째 것을 추출하여 넣어줌
-		    	let author = res.name;
-		    	let permlink = `voteview-${res.name}-${new Date().getTime()}`
-		    	let title = $("#txtTitle").val();
-		    	let jsonMetadata = JSON.stringify({
-						"tags": ['voteview'], /* 일단 기본적으로 태그는 1개만 사용하도록, 사용자 입력 받지 않게 처리 */
-						"app":"voteview/0.1", /* 추후 app 버전에 따라 파싱등을 분기 처리할 필요도 있을까나 ?*/
-						"format":"markdown"
-		    	});
-		    	
-		    	template = [];
-		    	let goRead = `https://wonsama.github.com/vread/?author=${author}&permlink=${permlink}`;
-		    	let goWrite = `https://wonsama.github.com/vwrite/`;
-		    	template.push(`# 보팅을 하면 글이 보입니다.\n`);
-		    	template.push(`<hr>`);
-		    	template.push( encrypted.toString() );
-		    	template.push(`<hr>\n\n`);
-		    	template.push(`# 위 글은 암호화 되었습니다.\n`);
-		    	template.push(`* 보팅을 하신 이후 [글보러 가기](${goRead})\n`);
-		    	template.push(`* 암호화 된 글을 쓰고 싶으시면 [글쓰러 가기](${goWrite})\n\n`);
-		    	template.push(`> [참조] 스팀잇에서는 보팅해도 안보입니다. [글보러 가기](${goRead}) 를 눌러주세요\n`);
-		    	template.push(`> created by @wonsama`);
-		    	
-		    	let body = template.join('');
-
-		    	// 제목, 내용 미기입 유효성 검증
-		    	if($.trim(title)==''){
-		    		alert('제목을 입력 바랍니다.');
-		    		return;
-		    	}
-		    	if($.trim(myString)==''){
-		    		alert('내용을 입력 바랍니다');
-		    		return;
-		    	}
-		    	
-
-		    	$("#loaderBg").show();
-		    	api.comment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function (err, res) {
-					  $("#loaderBg").hide();
-
-					  if(!err){
-					  	let link = `https://steemit.com/${parentPermlink}/@${author}/${permlink}`;
-					  	$("#divWrite").append(`<div><a href='${link}'>${link}</a> 에서 결과를 보실 수 있습니다.</div>`);
-					  }else{
-					  	alert(err);
-					  }
-					});
-				});
+			// 글쓰기 영역 그리기 및 이벤트 등록
+			drawWriteArea(res);
 
 	  }else{
 
@@ -181,6 +237,8 @@ function drawLogout() {
 }
 
 function initScreen() {
+
+	$("#lock").hide();
 
 	// 주소정보를 파싱한 이후 화면을 다시 리다이렉트 처리
 	checkParams();
