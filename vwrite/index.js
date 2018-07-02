@@ -14,7 +14,7 @@ const access_token = localStorage.getItem('access_token');
 */
 const api = sc2.Initialize({
   app: 'wonsama.quiz',
-  callbackURL: URL_GITHUB,
+  callbackURL: URL_JW,
   accessToken: access_token,
   scope: ['comment', 'vote']
 });
@@ -54,6 +54,8 @@ function drawLogin(){
 
 	// 로그인 버튼 삽입
 	template.push(`<div id='btnLogin'>로그인</div>`);
+	template.push(`<br>`);
+	template.push(`<span class="d-block p-2 bg-warning text-dark text-center">로그인을 해야 서비스를 이용할 수 있습니다</span>`);
 	$("#divLoginInfo").html( template.join('') );
 
 	// 로그인 이벤트 등록
