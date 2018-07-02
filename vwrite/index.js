@@ -141,26 +141,36 @@ function drawWriteArea(res){
 	// 제목
 	template.push(`<div class="input-group mb-3">`);
 	template.push(`	<div class="input-group-prepend">`);
-	template.push(`		<span class="input-group-text" id="basic-addon1">제목</span>`);
+	template.push(`		<span class="input-group-text" id="basic-addon1"  style='width:60px;'>제 목</span>`);
 	template.push(`	</div>`);
 	template.push(`	<input type="text" id='txtTitle' class="form-control" placeholder="제목을 입력 바랍니다." aria-label="Title" aria-describedby="basic-addon1">`);
 	template.push(`</div>`);
 
+	// 머리말
+	template.push(`<div class="input-group">`);
+	template.push(`	<div class="input-group-prepend">`);
+	template.push(`		<span class="input-group-text" style='width:60px;'>머리말</span>`);
+	template.push(`	</div>`);
+	template.push(`	<textarea rows="3" id='txtHead'class="form-control" aria-label="Description"></textarea>`);
+	template.push(`</div>`);
+	template.push(`<br>`);
+
 	// 내용
 	template.push(`<div class="input-group">`);
 	template.push(`	<div class="input-group-prepend">`);
-	template.push(`		<span class="input-group-text">내용</span>`);
+	template.push(`		<span class="input-group-text" style='width:60px;'>내 용</span>`);
 	template.push(`	</div>`);
 	template.push(`	<textarea rows="10" id='txtDesc'class="form-control" aria-label="Description"></textarea>`);
 	template.push(`</div>`);
 
 	// 버튼
 	template.push(`<br>`);
+	template.push(`<p class="font-italic text-muted">※ (제목, 내용) 필수 입력 항목 입니다.</p>`);
 	template.push(`<div class='text-right'><button id='btnWrite' type="button" class="btn btn-secondary">글쓰기</button></div>`);
 	template.push(`<br>`);
 	
 	// 미리보기 
-	template.push(`<span class="badge badge-pill badge-primary"> 미리보기 </span>`);
+	template.push(`<span class="badge badge-pill badge-primary"> 미리보기 : 머릿말 + 내용 </span>`);
 	template.push(`<div id="divPreview" class='preview'></div>`); // markdown 미리보기 영역 
 	$("#divWrite").html(template.join(''));
 
@@ -171,8 +181,8 @@ function drawWriteArea(res){
 
 	// 마크다운 미리보기 이벤트 등록
 	let converter = new showdown.Converter();
-	$("#txtDesc").keyup(evt=>{
-		let preview  = converter.makeHtml( $("#txtDesc").val() );
+	$("#txtHead,#txtDesc").keyup(evt=>{
+		let preview  = converter.makeHtml( $("#txtHead").val() +"<hr>"+ $("#txtDesc").val() );
 		$("#divPreview").html(preview);
 		$("img").css('max-width','100%');
 	});
@@ -197,6 +207,7 @@ function drawWriteArea(res){
   	template = [];
   	let goRead = `https://wonsama.github.com/vread/?author=${author}&permlink=${permlink}`;
   	let goWrite = `https://wonsama.github.com/vwrite/`;
+  	template.push($("#txtHead").val()+"\n");
   	template.push(`# 보팅을 하면 글이 보입니다.\n`);
   	template.push(`<hr>`);
   	template.push( encrypted.toString() );
