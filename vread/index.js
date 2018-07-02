@@ -145,7 +145,7 @@ function drawLogout() {
                         // 보팅이력이 있고, 보팅취소(percent!=0)가 아닌경우
 
                         if (av.voter == res.name) {
-                            console.log(av);
+                            // console.log(av);
                             if (av.percent != 0) {
                                 isFound = true;
                                 break;
@@ -157,12 +157,14 @@ function drawLogout() {
                     template = [];
                     let prevLink = `https://steemit.com${result.url}`;
 
+                    // console.log(result);
+
                     // 제목
 										template.push(`<div class="input-group mb-3">`);
 										template.push(`	<div class="input-group-prepend">`);
 										template.push(`		<span class="input-group-text" id="basic-addon1">제목</span>`);
 										template.push(`	</div>`);
-										template.push(`	<input type="text" id='txtTitle' class="form-control" aria-label="Title" aria-describedby="basic-addon1" value=${result.title}''>`);
+										template.push(`	<input type="text" id='txtTitle' class="form-control" aria-label="Title" aria-describedby="basic-addon1" value='${result.title}'>`);
 										template.push(`</div>`);
 
                     if (isFound) {
@@ -189,7 +191,12 @@ function drawLogout() {
 												template.push(`</div>`);
                     }
                     template.push(`<br>`);
-										template.push(`<div class='text-right'><a href='${prevLink}' target='_blank' class="btn btn-secondary">원본 글 보기</button></div>`);
+                    template.push(`<div class='text-right'>`);
+                    let writeUrl = 'https://wonsama.github.io/vwrite/';
+					template.push(`<a href='${writeUrl}' target='_blank' class="btn btn-primary">암호 글 쓰기</a>`);
+                    template.push(`&nbsp;&nbsp;`);
+                    template.push(`<a href='${prevLink}' target='_blank' class="btn btn-secondary">원본 글 보기</a>`);
+                    template.push(`</div>`);
                     template.push("<hr>");
                     $("#divResult").html(template.join(''));
                 } else {
