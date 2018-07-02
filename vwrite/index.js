@@ -102,6 +102,9 @@ function drawLogoutArea(res){
 * 유효성 검증 및 글쓰기
 */
 function writeComment(parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata){
+
+	let myString = $("#txtDesc").val();
+	
 	// 제목, 내용 미기입 유효성 검증
 	if($.trim(title)==''){
 		alert('제목을 입력 바랍니다.');
