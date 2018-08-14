@@ -5,7 +5,7 @@ body {
   flex-direction: column;
   background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/138980/184983947.jpg);
   overflow: hidden;
-  margin: 0;
+  margin: 50px;
 }
 
 .control {
@@ -75,7 +75,8 @@ body {
     left: 10.28em;
     text-align: center;
     font-family: "Times New Roman", Times, serif;
-    font-weight: 700;
+    font-weight: 100;
+    /*font-size: 0.98em;*/
 }
 
 .redbg {

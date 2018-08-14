@@ -1,85 +1,71 @@
 var rotationsTime = 8;
 var wheelSpinTime = 6;
 var ballSpinTime = 5;
-var numorder = [
-  0,
-  32,
-  15,
-  19,
-  4,
-  21,
-  2,
-  25,
-  17,
-  34,
-  6,
-  27,
-  13,
-  36,
-  11,
-  30,
-  8,
-  23,
-  10,
-  5,
-  24,
-  16,
-  33,
-  1,
-  20,
-  14,
-  31,
-  9,
-  22,
-  18,
-  29,
-  7,
-  28,
-  12,
-  35,
-  3,
-  26
-];
-var numred = [
-  32,
-  19,
-  21,
-  25,
-  34,
-  27,
-  36,
-  30,
-  23,
-  5,
-  16,
-  1,
-  14,
-  9,
-  18,
-  7,
-  12,
-  3
-];
-var numblack = [
-  15,
-  4,
-  2,
-  17,
-  6,
-  13,
-  11,
-  8,
-  10,
-  24,
-  33,
-  20,
-  31,
-  22,
-  29,
-  28,
-  35,
-  26
-];
+
+let winningNum;
+let mixNum = (max, start=1)=>{
+  let nums = [];
+
+  // init
+  for(let i=start;i<=max;i++){
+    nums.push(i); 
+  }
+
+  // shuffle
+  for(let i=0;i<nums.length;i++){
+    let num = nums.shift();
+    let rnd = Math.floor(Math.random()*nums.length) + 1;
+    nums.splice(rnd,0,num);
+  }
+
+  return nums;
+}
+
+function finishSpin(winningNum){
+  $("#result").html(`축하드립니다, ${winningNum} 번이 당첨되었습니다.`);
+}
+
+let numOddEven = (nums, isOdd=true)=>{
+  let out = [];
+  for(let i=1;i<nums.length;i++){
+    if(i%2==(isOdd?1:0)){
+      out.push(nums[i]);
+    }
+  }
+  return out;
+}
+
+let getUrlValues = (url, isLast=false) => {
+
+  let q = url.split('?');
+  if(isLast){
+    let p = q[0];
+    let s = p.split('/');
+    s = s.filter(x=>x!='');
+    return s[s.length-1].replace(/\%/gi,'');
+  }
+
+  if(!q || q.length!=2){
+    console.error('not support');
+    return null;
+  }
+
+  let kvs = q[1].split('&');
+  let out = {};
+  for(let kv of kvs){
+    let p = kv.split('=');
+    out[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
+  }
+  return out;
+}
+
+// console.log('location.href', location.href)
+const DEFAULT_MAX = 36;
+let param = getUrlValues(location.href);
+let numorder = mixNum(param==null?DEFAULT_MAX:param.num);
+numorder.splice(0,0,0);
+let numred = numOddEven(numorder,true);
+let numblack = numOddEven(numorder,false);
 var numgreen = [0];
 var numbg = $(".pieContainer");
 var ballbg = $(".ball");
@@ -106,7 +92,7 @@ function createWheel() {
     newNumber = document.createElement("div");
     $(newNumber).addClass("num");
 
-    newNumber.innerHTML = numorder[i];
+    newNumber.innerHTML = numorder[i].toString().split('').join('<br>');
     $(newSlice).attr("id", "rSlice" + i);
     $(newSlice).css(
       "transform",
@@ -133,10 +119,13 @@ function createWheel() {
 
 btnSpin.click(function() {
   if ($("input").val() == "") {
-    var rndNum = Math.floor(Math.random() * 34 + 0);
+    var rndNum = Math.floor(Math.random() * numorder.length + 0);
   } else {
     var rndNum = $("input").val();
   }
+
+  $("#btnSpin").hide();
+  $("#result").html(`잠시만 기다려주세요, 추첨 중 입니다.`);
 
   winningNum = rndNum;
   spinTo(winningNum);
@@ -200,7 +189,7 @@ function ballrotateTo(deg) {
     duration: temptime, // [optional, default: 0, in ms] how long you want it to last in milliseconds
     timingFunction: "ease-in-out", // [optional, default: ease] specifies the speed curve of the animation
     complete: function() {
-      finishSpin();
+      finishSpin(winningNum);
     } //[optional]  Function fired after the animation is complete. If repeat is infinite, the function will be fired every time the animation is restarted.
   });
 }
