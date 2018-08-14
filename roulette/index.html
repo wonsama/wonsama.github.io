@@ -1,59 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>jQuery Roulette</title>
-  
-  
-  
-      <link rel="stylesheet" href="css/style.css">
-
-  
+    <meta charset="UTF-8">
+    <title>jQuery Roulette</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-  <div class="spinner">
-
-  <div class="ball"><span></span></div>
-  <div class="platebg"></div>
-  <div class="platetop"></div>
-  <div id="toppart" class="topnodebox">
-    <div class="silvernode"></div>
-    <div class="topnode silverbg"></div>
-    <span class="top silverbg"></span>
-    <span class="right silverbg"></span>
-    <span class="down silverbg"></span>
-    <span class="left silverbg"></span>
-  </div>
-  <div id="rcircle" class="pieContainer">
-    <div class="pieBackground"></div>
-  </div>
-</div>
-
-<div class="control">
-  <!-- <span class="message">
+    <div class="spinner">
+        <div class="ball"><span></span></div>
+        <div class="platebg"></div>
+        <div class="platetop"></div>
+        <div id="toppart" class="topnodebox">
+            <div class="silvernode"></div>
+            <div class="topnode silverbg"></div>
+            <span class="top silverbg"></span>
+            <span class="right silverbg"></span>
+            <span class="down silverbg"></span>
+            <span class="left silverbg"></span>
+        </div>
+        <div id="rcircle" class="pieContainer">
+            <div class="pieBackground"></div>
+        </div>
+    </div>
+    <div class="control">
+        <!-- <span class="message">
   Number Stop: <input id="numwin" type="text" value="24"> Leave blank for random<br><br>
   </span> -->
-  <input id="numwin" type="hidden" value="">
-  <span id="result">돌리기 버튼을 눌러 룰렛을 돌려주세요</span><br/>
-  <div>
-    <div id="btnSpin" class="button">돌리기</div>
-    <!-- <div id="btnb" class="button">Bigger</div>
+        <input id="numwin" type="hidden" value="">
+        <span id="result">돌리기 버튼을 눌러 룰렛을 돌려주세요</span>
+        <br/>
+        <div>
+            <div id="btnSpin" class="button">돌리기</div>
+            <!-- <div id="btnb" class="button">Bigger</div>
     <div id="btns" class="button">Smaller</div> -->
-  </div>
-</div>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/138980/jquery.keyframes.min.js'></script>
-
-  
-
-    <script  src="js/index.js"></script>
-
-
-
-
+        </div>
+    </div>
+    <div class="center-div">
+        
+                <div class='center-inner' id='resultBig'></div>
+        
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/138980/jquery.keyframes.min.js'></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>

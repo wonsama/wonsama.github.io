@@ -1,3 +1,33 @@
+.center-div
+{
+  position: absolute;
+  margin: auto;
+  top: -200px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  /*background-color: #ccc;*/
+  border-radius: 3px;
+  z-index: 1000;
+
+  display: table;
+  overflow: hidden;
+}
+
+.center-inner
+{
+    /*color: white;*/
+    color: yellow;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: black;
+    font-size: 120pt;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
 body {
   display: flex;
   justify-content: center;

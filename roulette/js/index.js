@@ -21,8 +21,24 @@ let mixNum = (max, start=1)=>{
   return nums;
 }
 
+
+
 function finishSpin(winningNum){
   $("#result").html(`축하드립니다, ${winningNum} 번이 당첨되었습니다.`);
+  $("#resultBig").html(`당첨 ${winningNum} 번`);
+
+  let idx = 0;
+  setInterval(()=>{
+    idx++;
+    idx = idx%2;
+    if(idx==0){
+      $("#resultBig").css('color', 'red');  
+    }else{
+      $("#resultBig").css('color', 'yellow');
+    }
+    
+  }, 100);
+
 }
 
 let numOddEven = (nums, isOdd=true)=>{
@@ -64,6 +80,7 @@ const DEFAULT_MAX = 36;
 let param = getUrlValues(location.href);
 let numorder = mixNum(param==null?DEFAULT_MAX:param.num);
 numorder.splice(0,0,0);
+// numorder.push(0);
 let numred = numOddEven(numorder,true);
 let numblack = numOddEven(numorder,false);
 var numgreen = [0];
@@ -99,16 +116,17 @@ function createWheel() {
       "rotate(" + numberLoc[numorder[i]][0] + "deg)"
     );
 
-    $(newHold).css("transform", "rotate(9.73deg)");
-    $(newHold).css("-webkit-transform", "rotate(9.73deg)");
+    $(newHold).css("transform", `rotate(${(340/(numorder.length+1)).toFixed(2)}deg)`);
+    $(newHold).css("-webkit-transform", `rotate(${(340/(numorder.length+1)).toFixed(2)}deg)`);
 
-    if ($.inArray(numorder[i], numgreen) > -1) {
-      $(newHold).addClass("greenbg");
-    } else if ($.inArray(numorder[i], numred) > -1) {
+    
+    if ($.inArray(numorder[i], numred) > -1) {
       $(newHold).addClass("redbg");
     } else if ($.inArray(numorder[i], numblack) > -1) {
       $(newHold).addClass("greybg");
-    }
+    }else if ($.inArray(numorder[i], numgreen) > -1) {
+      $(newHold).addClass("greenbg");
+    } 
 
     $(newNumber).appendTo(newSlice);
     $(newHold).appendTo(newSlice);
