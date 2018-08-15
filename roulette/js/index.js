@@ -22,10 +22,11 @@ let mixNum = (max, start=1)=>{
 }
 
 
-
+$("#res").hide();
 function finishSpin(winningNum){
   $("#result").html(`축하드립니다, ${winningNum} 번이 당첨되었습니다.`);
   $("#resultBig").html(`당첨 ${winningNum} 번`);
+  $("#res").show();
 
   let idx = 0;
   setInterval(()=>{
