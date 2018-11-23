@@ -210,6 +210,9 @@ function drawLogout() {
             localStorage.removeItem('access_token');
             localStorage.removeItem('author');
             localStorage.removeItem('permlink');
+
+            // 로그아웃 된 상태
+            drawLogin();
         }
     });
 }
