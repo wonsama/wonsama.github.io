@@ -206,9 +206,10 @@ function drawLogout() {
             });
 
         } else {
-
-            // 로그인 실패 시 처리
-            alert(err);
+            // 재 로그인 하도록 유도함 / 기존 값 정보는 제거
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('author');
+            localStorage.removeItem('permlink');
         }
     });
 }
