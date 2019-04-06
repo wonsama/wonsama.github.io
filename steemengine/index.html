@@ -1,0 +1,92 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo" id="app_holer_title">토큰 홀더 목록</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="./index.html?symbol=JJM">JJM</a></li>
+          <li><a href="./index.html?symbol=YES">YES</a></li>
+          <li><a href="./index.html?symbol=ENG">ENG</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <ul class="collection" id="app_list" />
+
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+      <script type="text/javascript" src="js/common.js"></script>
+      <script type="text/javascript">
+
+        let my_symbol;
+        /*
+        * 진입점
+        * @param cb 성공 시 콜백 
+        */
+        async function init(cb){
+
+            // URL 파라미터에서 symbol 정보를 가져온다 없음 JJM 이 기본값 
+            var url = new URL(location.href);
+            var symbol = url.searchParams.get("symbol");
+            symbol = symbol?symbol:url.searchParams.get("SYMBOL");
+            symbol = symbol?symbol:'JJM';
+            my_symbol = symbol;
+
+            $("#app_holer_title").text(`${symbol} 토큰 홀더 목록`);
+            M.AutoInit();
+
+            // 토큰 홀더 목록 정보를 가져온다 
+            token_holders(symbol)
+            .then(cb)
+            .catch(e=>alert(e.toString()));
+        }
+        init((res)=>{
+            $("#app_list").empty();
+            let temp = [];
+            let output = res.result;
+            output.sort((a,b)=>parseFloat(b.balance)-parseFloat(a.balance));
+
+            let idx = 1;
+            for(let r of output){
+                let balance = parseInt(r.balance);
+                if(balance>0){
+                  temp.push(`<li class="collection-item avatar">`);
+                  temp.push(`<img src="https://steemitimages.com/u/${r.account}/avatar" alt="" class="circle">`);
+                  temp.push(`<span class="title">${r.account}</span>`);
+                  temp.push(`<p>${add_comma(balance)}<br>`);
+                  if(idx==1){
+                    temp.push(`<span class="new badge red" data-badge-caption="st">${idx}</span>`);  
+                  }else if(idx==2){
+                    temp.push(`<span class="new badge red" data-badge-caption="nd">${idx}</span>`);  
+                  }else if(idx==3){
+                    temp.push(`<span class="new badge red" data-badge-caption="rd">${idx}</span>`);  
+                  }else{
+                    temp.push(`<span class="new badge blue" data-badge-caption="th">${idx}</span>`);  
+                  }
+                  temp.push(`</li>`);
+
+                  idx++;
+                }
+            }
+            $("#app_list").html(temp.join(''));
+            $("#app_holer_title").text(`${my_symbol} 토큰 홀더 (${idx-1}) 목록`);
+            M.AutoInit();
+        });
+      </script>
+    </body>
+  </html>
