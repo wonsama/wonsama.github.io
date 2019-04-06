@@ -68,4 +68,16 @@ let token_holders = async function (symbol, limit = 1000, offset = 0, indexes = 
 /// 
 
 let add_comma = (number) =>new Intl.NumberFormat('ko-KR', { maximumSignificantDigits: 3 }).format(number);
+let view_in_steemit = (account) => {
 
+    M.Toast.dismissAll();
+    
+    let toastHTML = `<span>move to<br>@${account}'s blog ?</span><button class="btn-flat toast-action app_move_steemit" account='${account}'>move steemit</button>`;
+    M.toast({html: toastHTML});
+
+    $(".app_move_steemit").click(function(){
+        let account = $(this).attr('account');
+        console.log('account', account)
+        window.open(`https://steemit.com/@${account}`,'_blank');
+    });
+}
