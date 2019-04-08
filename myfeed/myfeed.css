@@ -1,0 +1,20 @@
+body{
+	padding: 20px 0px 20px 0px;
+}
+
+.col-sm-6{
+	padding: 10px;
+}
+
+div.disp{
+	/* 스크롤 버튼을 활성화 시키고 싶은 경우 아래 주석 해제*/
+	/*height: 400px;*/
+	/*overflow: scroll;*/
+}
+
+img.logo{
+	max-width:100%;
+	max-height:100%;
+	height: auto;
+	width:auto;
+}

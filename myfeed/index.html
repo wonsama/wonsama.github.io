@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="나만의 feed를 만들어보자 !" />
+    <meta property="og:title" content="MyFeed" />
+<meta property="og:description" 
+  content="나만의 feed를 만들어보자 !" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://wonsama.github.io/myfeed/" />
+<meta property="og:image" content="https://wonsama.github.io/myfeed/myfeed.jpg" />
+    
+    <link rel="icon" type="image/x-icon" href="https://steemit.com/favicon.ico?v=2" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./myfeed.css" />
+    <title data-reactid="36">Steemit</title>
+</head>
+</head>
+
+<body>
+    <div class="container">
+        <!--상단 NAV 영역-->
+        <div class="input-group mb-3">
+            <div style="text-align: middle;">
+                <img src='https://wonsama.github.io/myfeed/myfeed.jpg' height="50">
+                <span class="font-weight-bold">내가 원하는 계정의 최신글을 보자 !</span>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <!-- <span class="input-group-text">아이디</span> -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:80px" id='groupsNow'></button>
+                        <div class="dropdown-menu" aria-labelledby="groupsNow" id="groups">
+                            <!-- <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a> -->
+                        </div>
+                    </div>
+                </div>
+                <textarea rows='2' class="form-control" aria-label="With textarea" id="search_ids"></textarea>
+            </div>
+        </div>
+        <!-- 조회한 아이디 정보 -->
+        <div class="text-center text-danger" id='dispAct'>
+        </div>
+        <!-- 주의사항 -->
+        <!-- <div class="text-center text-secondary">
+          ( 최근 1,000 블럭 사이에 글을 작성 이력이 있어야 됨 )
+        </div> -->
+        <!-- 조회 버튼 -->
+        <div class="row" style="padding: 0; margin: 0;">
+            <div class="col col-2" style="padding: 0; margin: 0;">
+                <button type="button" class="btn btn-outline-danger btn-sm" id="btnDel">삭제</button>
+            </div>
+            <div class="col col-2" style="padding: 0; margin: 0;">
+                <button type="button" class="btn btn-outline-warning btn-sm" id="btnMod">변경</button>
+            </div>
+            <div class="col col-2" style="padding: 0; margin: 0;">
+                <button type="button" class="btn btn-outline-dark btn-sm" id="btnAdd">추가</button>
+            </div>
+            <div class="col col-6" style="padding: 0; margin: 0;">
+                <button type="button" class="btn btn-outline-success btn-sm btn-block" id="btnSearch">조회하기</button>
+            </div>
+        </div>
+        <br>
+        <!-- 이미지 보이기, 가리기 -->
+        <div class="text-center">
+            <span>CREATED BY <a href='https://steemit.com/@wonsama' target="_blank">@wonsama / ver 1.1</a></span>
+            <br>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-primary active btn-img" id='img_show'>
+                    <input type="radio" name="imgOption" id="option2" autocomplete="off" value='show' checked="checked"> SHOW IMAGE
+                </label>
+                <label class="btn btn-secondary btn-img" id='img_hide'>
+                    <input type="radio" name="imgOption" id="option3" autocomplete="off" value='hide'> HIDE IMAGE
+                </label>
+            </div>
+        </div>
+        <br>
+        <div class="row disp" id='div_disp'>
+            <!-- 조회 버튼 -->
+        </div>
+        <br>
+
+        <!-- 그룹 -->
+        <div class="modal fade" id="modalGroup" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">New message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="modalGroupName" class="col-form-label" id='modalGroupNameLb'>그룹명: (4자이하 추천)</label>
+                                <input type="text" class="form-control" id="modalGroupName">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id='modalOk'>저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 
+        스크립팅 
+            jquery
+            popper.js
+            bootstrap
+        순서대로 배치 바랍니다.
+    -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script src="./myfeed.js"></script>
+</body>
+
+</html>
