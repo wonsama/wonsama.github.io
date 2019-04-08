@@ -1,0 +1,14 @@
+{
+  "main.css": "/wallet/static/css/main.d7cb3bbc.chunk.css",
+  "main.js": "/wallet/static/js/main.75e390d8.chunk.js",
+  "main.js.map": "/wallet/static/js/main.75e390d8.chunk.js.map",
+  "runtime~main.js": "/wallet/static/js/runtime~main.ee2bcf40.js",
+  "runtime~main.js.map": "/wallet/static/js/runtime~main.ee2bcf40.js.map",
+  "static/js/2.6efc73d3.chunk.js": "/wallet/static/js/2.6efc73d3.chunk.js",
+  "static/js/2.6efc73d3.chunk.js.map": "/wallet/static/js/2.6efc73d3.chunk.js.map",
+  "index.html": "/wallet/index.html",
+  "precache-manifest.3205f1a92e5a8b9259a6f2b8fc32b10b.js": "/wallet/precache-manifest.3205f1a92e5a8b9259a6f2b8fc32b10b.js",
+  "service-worker.js": "/wallet/service-worker.js",
+  "static/css/main.d7cb3bbc.chunk.css.map": "/wallet/static/css/main.d7cb3bbc.chunk.css.map",
+  "static/media/logo.svg": "/wallet/static/media/logo.5d5d9eef.svg"
+}
