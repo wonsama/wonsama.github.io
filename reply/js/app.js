@@ -19,6 +19,9 @@ https://steem-engine.rocks/
 M.AutoInit();
 
 const get_image = (r) =>{
+
+    // steemitimages.com
+
     let img = '';
     const img_none = 'http://www.trifit-za.sk/image/none.jpg';
     try{
@@ -28,11 +31,9 @@ const get_image = (r) =>{
         if(t3){
             img = t3;
         }else{
-            let _img = get_image_url(r.body);
-            img = _img&&_img.length>0?_img[0]:'';
+            img = get_image_url(r.body);
         }
-
-    }catch(e){}
+    }catch(e){console.log(r.title, img, e)}
 
     return img;
 }

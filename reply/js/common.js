@@ -74,9 +74,27 @@ const get_time = (created) =>{
     return `${yy}-${mm}-${dd} ${HH}:${MM}:${ss}`;
 }
 
-const get_image_url = (body) =>{
+const get_image_url = (body, defaults='http://www.trifit-za.sk/image/none.jpg') =>{
     // 한글은 지원하지 않음에 유의 w+ 로 되어 있기 때문
-    return body.match(new RegExp(`((?:http|https)?:\/\/.*\.(?:png|jpg|jpeg))`, 'g'));   // image url extract
+    let x = body.match(new RegExp(`((?:http|https)?:\/\/.*)`, 'g'));
+    if(x==null){
+        return defaults;
+    }else{
+        x = x.map(p=>p.split("\)")[0]);
+    }
+    
+    let y = body.match(new RegExp(`((?:http|https)?:\/\/.*\.(?:png|jpg|jpeg|JPG|PNG|JPEG))`, 'g'));
+
+    // https://s3.ap-northeast-2.amazonaws.com/dclick/image/styner/1557242028448
+
+    if(x!=''&& (x[0].indexOf('steemitimages.com')>=0 || x[0].indexOf('.amazonaws.com')>=0) ){
+        return x[0];
+    }else{
+        if(y==null){
+            return defaults;
+        }
+        return y[0];
+    }
 }
 
 const get_url_info = (url)=>{
