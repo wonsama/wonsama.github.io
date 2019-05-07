@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="simple reply with beni." />
+    <meta property="og:title" content="Beni Reply" />
+    <meta property="og:description" content="simple reply with beni." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wonsama.github.io/myfeed/reply" />
+    <meta property="og:image" content="./beni.jpeg" />
+    <link rel="icon" type="image/x-icon" href="https://steemit.com/favicon.ico?v=2" />
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <title>Beni Reply</title>
+    <style type="text/css" media="screen">
+    .main-loader {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: 10000;
+    }
+
+    /*img:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    height: 80px;
+    width: 120px;
+    background-image: url('http://www.trifit-za.sk/image/none.jpg');
+}*/
+
+    /*body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }*/
+
+    span.time {
+        font-size: 5px;
+        color: silver;
+    }
+
+    span.author {
+        font-size: 5px;
+        color: #df2ca7
+    }
+
+    img {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+
+    }
+
+    .ellipsis1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ellipsis2 {
+        display: -webkit-box;
+        white-space: normal;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .ellipsis3 {
+        display: -webkit-box;
+        white-space: normal;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- #1. 고정 상단 메뉴 -->
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo" id="app_holer_title">BENI REPLY</a>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#test1">댓글</a></li>
+                <li class="tab col s3"><a href="#test2">최신글</a></li>
+                <li class="tab col s3"><a href="#test3">설정</a></li>
+            </ul>
+        </div>
+        <!-- 탭 1 :  댓글 쓰기 -->
+        <div id="test1" class="col s12">
+            <form class="col s12">
+                <div class="row">
+                    <a class="subheader">글 주소</a>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">reply</i>
+                        <input id="inp_url" type="text" class="validate">
+                        <label for="inp_url">URL (조회 글 주소)</label>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons" id="search_on">filter_drama</i><span id='search_title'>내용 없음</span></div>
+                            <div class="collapsible-body"><blockquote id="search_body" class='flow-text'></blockquote></div>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="row" id="disp_content"></div>
+                <div class="row">
+                    <div class="col s5 offset-s7" id="btn_content">
+                        <a class="waves-effect waves-light btn-small red accent-1">
+                            <i class="material-icons left">search</i>본문조회
+                        </a>
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="@wonsama, test-1" id="disp_permlink" type="text" class="validate">
+                        <label for="disp_permlink">Author, Permlink</label>
+                    </div>
+                </div>
+                -->
+                <div class="row">
+                    <a class="subheader">댓글 쓰기</a>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="disp_reply" class="materialize-textarea"></textarea>
+                        <label for="disp_reply">댓글 내용</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col s7" id="view_steemit">
+                        <a id="btn_save" class="waves-effect waves-light btn-small red accent-1">
+                            <i class="material-icons left">remove_red_eye</i>스팀잇에서 보기
+                        </a>
+                    </div> -->
+                    <div class="col s5 offset-s7" id="write_reply">
+                        <a class="waves-effect waves-light btn-small red accent-1">
+                            <i class="material-icons left">mode_edit</i>댓글쓰기
+                        </a>
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="@wonsama, test-1" id="disp_permlink" type="text" class="validate">
+                        <label for="disp_permlink">Author, Permlink</label>
+                    </div>
+                </div>
+            -->
+            </form>
+        </div>
+        <!-- 탭 2 :  글 목록 -->
+        <div id="test2" class="col s12">
+            <form class="col s12" id="disp_list">
+                <div class="row">
+                    <a class="subheader">글 목록</a>
+                </div>
+            </form>
+        </div>
+        <!-- 탭 3 :  설정 -->
+        <div id="test3" class="col s12">
+            <form class="col s12">
+                <div class="row">
+                    <a class="subheader">계정정보</a>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">face</i>
+                        <input id="inp_author" type="text" class="validate" value=" ">
+                        <label for="inp_author">계정명 (글쓴이)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">vpn_key</i>
+                        <input id="inp_posting" type="password" class="validate" value=" ">
+                        <label for="inp_posting">포스팅키 (글쓴이)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">wc</i>
+                        <input id="inp_beni" type="text" class="validate" value=" ">
+                        <label for="inp_beni">베니계정 (보상받을 계정 90%, 개발자 10%)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <a class="subheader">기타</a>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">assignment</i>
+                        <input id="inp_tag" type="text" class="validate" value=" "><!-- value ' ' 이런 식으로 해야 placeholder 가 위로가서 보여진다-->
+                        <label for="inp_tag">태그명 (최신글 조회용 태그)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 offset-s4" id="btn_reset">
+                        <a class="waves-effect waves-light btn-small red accent-1">
+                            <i class="material-icons left">close</i>리셋
+                        </a>
+                    </div>
+                    <div class="col s4 " id="btn_save">
+                        <a class="waves-effect waves-light btn-small red accent-1">
+                            <i class="material-icons left">backup</i>저장
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="https://ak8.picdn.net/shutterstock/videos/19625368/thumb/4.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="https://steemitimages.com/u/wonsama/avatar"></a>
+                <a href="#name"><span class="black-text name">wonsama</span></a>
+                <a href="#email"><span class="black-text email">https://steemit.com/@wonsama</span></a>
+            </div>
+        </li>
+        <li><a href="#!" id="btn_go_home">GO HOME PAGE</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">BENI REPLY VER 1.0</a></li>
+    </ul>
+    <!-- <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
+    <!-- #1. 글 주소 입력 -->
+    <!-- <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">assignment</i>
+                    <input id="inp_content" type="text" class="validate">
+                    <label for="inp_content">글 주소(스팀잇 기준)</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 scale-transition scale-out" id="div_search_prog">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+                <div class="col s4 offset-s8 scale-transition" id="div_search_btn">
+                    <a id="btn_search" class="waves-effect waves-light btn-small">
+                        <i class="material-icons right">search</i>조회
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div> -->
+    <!-- #1. 댓글 입력란 -->
+    <div class="row hide" id="area_reply">
+        <form class="col s12">
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">comment</i>
+                            <textarea id="cont_reply" class="materialize-textarea"></textarea>
+                            <label for="cont_reply">댓글 쓰기</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col s12 hide" id="div_reply_prog">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+                <div class="col s4 offset-s8" id="div_reply_btn">
+                    <a id="btn_search" class="waves-effect waves-light btn-small">
+                        <i class="material-icons right">mode_edit</i>댓글
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 글 정보 조회 -->
+    <div class="row hide" id="area_cont">
+        <div class="col s12 m3">
+            <h5 class="header truncate" id="cont_title">Horizontal Card</h5>
+            <div class="card vertical">
+                <div class="card-image">
+                    <img id="cont_img" src="https://lorempixel.com/100/190/nature/6">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <p id="cont_body"></p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" id="btn_steemit">steemit.com 에서 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4 id='modal_title'>Modal Header</h4>
+            <hr />
+            <p id='modal_message'>A bunch of text</p>
+        </div>
+        <div class="modal-footer" id='modal_buttons'>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+    <!-- LOADER -->
+    <div class="main-loader hide" id="loading">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <footer class="page-footer">
+        <!-- <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+        <div class="footer-copyright">
+            <div class="container">
+                © 2019 Copyright wonsama
+                <a class="grey-text text-lighten-4 right" href="#!" id="btn_about">About Me</a>
+            </div>
+        </div>
+    </footer>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>
