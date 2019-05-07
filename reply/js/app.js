@@ -53,12 +53,17 @@ const show_default_setting = () =>{
 
 const reload_new_feed = () =>{
     const tag = localStorage.getItem('tag');
+    
+    $("#loading").removeClass('hide');    
+
     // 탭 2 에 : 태그 기준 최신글 정보를 넣어준다
     steemit_discussions_by_created(tag)
     .then(res=>{
 
         const img_none = 'http://www.trifit-za.sk/image/none.jpg';
-
+        const header = `<div class="row"><a class="subheader">글 목록</a></div>`;
+        
+        let templates = [];
         for(let r of res.result){
 
             let img = get_image(r)
@@ -67,8 +72,11 @@ const reload_new_feed = () =>{
             let time = `<span class='time'>${get_time(r.created)}</span>`;
             let author = `<span class='author'>@${r.author}</span>`;
             let template = `<div class="row tags" url="https://steemit.com${r.url}" >${temp_img}<p class='ellipsis1'>${r.title}</p>${time} ${author}</div>`;
-            $("#disp_list").append(template);
+            templates.push(template);
         }
+        $("#disp_list").empty().append(header).append(templates);
+
+        $("#loading").addClass('hide');
 
         // 탭 2의 컨텐츠 클릭 이벤트 등록처리 
         $(".tags").click(function(e){
@@ -80,6 +88,9 @@ const reload_new_feed = () =>{
             // 조회 
             $("#inp_url").val(url);
             $("#inp_url").focus();
+            setTimeout(function(){
+                $("#inp_url").blur();
+            },2000);
             $("#btn_content").trigger("click");
         }); 
     })
@@ -412,7 +423,30 @@ $("#write_reply").click(()=>{
 
             show_modal('확인', `댓글이 작성되었습니다.`);
         });
-        
-        
     }
 });
+
+$(".tab").click(function(e){
+    let idx = $(this).attr('idx');
+    if(idx==1){
+        $("#fab").removeClass('hide');
+    }else{
+        $("#fab").addClass('hide');
+    }
+});
+
+$("#fab_menu").click(e=>{
+    // var instance = M.FloatingActionButton.getInstance($("#fab"));
+    // if(instance.isOpen){
+    //     instance.close();
+    // }else{
+    //     instance.open();
+    // }
+    reload_new_feed();
+});
+
+// $("#fab_reload").click(e=>{
+//     reload_new_feed();
+//     var instance = M.FloatingActionButton.getInstance($("#fab"));
+//     instance.close();
+// });

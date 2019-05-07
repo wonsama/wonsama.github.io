@@ -102,9 +102,9 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs">
-                <li class="tab col s3"><a class="active" href="#test1">댓글</a></li>
-                <li class="tab col s3"><a href="#test2">최신글</a></li>
-                <li class="tab col s3"><a href="#test3">설정</a></li>
+                <li class="tab col s3" idx='0'><a class="active" href="#test1">댓글</a></li>
+                <li class="tab col s3" idx='1'><a href="#test2">최신글</a></li>
+                <li class="tab col s3" idx='2'><a href="#test3">설정</a></li>
             </ul>
         </div>
         <!-- 탭 1 :  댓글 쓰기 -->
@@ -350,6 +350,14 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="fixed-action-btn hide" id="fab">
+        <a class="btn-floating btn-large red" id="fab_menu">
+            <i class="large material-icons">replay</i>
+        </a>
+        <!-- <ul>
+            <li><a class="btn-floating red" id="fab_reload"><i class="material-icons">replay</i></a></li>
+        </ul> -->
     </div>
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <footer class="page-footer">
