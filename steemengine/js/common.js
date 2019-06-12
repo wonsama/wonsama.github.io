@@ -58,8 +58,12 @@ let find = async function (contract, table, query, limit = 1000, offset = 0, ind
     return send_rpc('find', params, URL_STEEM_ENGINE_RPC + CONTRACTAPI );
 }
 
-let token_holders = async function (symbol, limit = 1000, offset = 0, indexes = []){
+let tokens_balances = async function (symbol, limit = 1000, offset = 0, indexes = []){
 	return find('tokens', 'balances', {'symbol':symbol}, limit, offset, indexes );
+}
+
+let tokens_tokens = function (symbol, limit = 1000, offset = 0, indexes = []){
+    return findOne('tokens', 'tokens', {'symbol':symbol});
 }
 
 ////////////////////////////////////////
