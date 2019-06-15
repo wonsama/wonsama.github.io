@@ -1,19 +1,83 @@
+let dataset;    // 수신한 데이터 정보 
+let my_symbol;  // 선택한 심볼
+let excepts;
 
-let instances;
+const _get_nbsp = (count) => {
+    const NBSP = '&nbsp;';
+    let buffer = [];
+    for(let i=0;i<count;i++){
+        buffer.push(NBSP);
+    }
+    return buffer.join('');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // let elems = document.querySelectorAll('.fixed-action-btn');
-    // let options = {
-    //     direction : "top",
-    //     hoverEnabled : false,
-    //     toolbarEnabled : false
-    // };
-    // instances = M.FloatingActionButton.init(elems, options);
-    // $('.sidenav').sidenav();
+    
+    $(".data-find").click(function(){
+        let no = $(this).data("no");
+        
+        // 한글이라 사이즈를 좀 수동으로 맞춰야 됨
+        if(no==1){
+            let html = '<i class="material-icons">account_balance_wallet</i>'+_get_nbsp(4)+'잔고</a>';
+            $("#search_text").html(_get_nbsp(20)+html+_get_nbsp(20));
+        }else if(no==2){
+            let html = '<i class="material-icons">lock</i>'+_get_nbsp(4)+'스테이킹</a>';
+            $("#search_text").html(_get_nbsp(18)+html+_get_nbsp(18));
+        }else if(no==3){
+            let html = '<i class="material-icons">landscape</i>'+_get_nbsp(4)+'잔고+스테이킹</a>';
+            $("#search_text").html(_get_nbsp(13)+html+_get_nbsp(13));
+        }
+
+        // 선택 값 설정 
+        $("#search_text").data("no", no);
+
+        // 화면 갱신 
+        refresh_screen(no);
+    });
 
     $("input[name=sort_icon]").change(function(){
         refresh_screen();
     });
 
+    // 버튼 - 제외계정 추가 
+    $("#user_remove").click(function(){
+        // 입력창에 존재하는 계정 정보를 확인한다 
+        let user_excepts = $("#user_excepts").val();
+        user_excepts = user_excepts.replace(/[\s\@]/gi,'');
+
+        // 입력값 없음 - 초기화 된 경우
+        if(user_excepts==""){
+            alert("초기화 되었습니다.");
+            set_excepts("");
+
+            // 화면 갱신
+            let no = $("#search_text").data("no");
+            refresh_screen(no);
+            return;
+        }
+
+        // 입력값 존재 - 존재하는 계정 정보만 확인 후 예외 계정에 추가한다 
+        let finds = user_excepts.split(',');
+        if(finds.length>0){
+            get_accounts(finds).then(res=>{
+                let users = [];
+                let _r = res.result;
+                for(let r of _r){
+                    users.push(r.name);
+                }
+                set_excepts(users.join(' , '));
+                if(users.length>0){
+                    alert(`${my_symbol} 토큰의 예외 계정 정보(${users.length} 건)가 저장되었습니다.`);
+                }
+
+                // 화면 갱신
+                let no = $("#search_text").data("no");
+                refresh_screen(no);
+            });
+        }
+    });
+
+    // 버튼 - 토큰 추기 
     $("#token_add").click(function(){
         let symbol = $("#token_item").val().replace(/\s/gi, '');
         symbol=symbol.toUpperCase();
@@ -39,6 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 tokens_tokens(symbol)
                 .then(item=>{
                     let r = item.result;
+                    if(r==null){
+                        alert(`존재하지 않는 토큰 입니다.`);
+                        return;
+                    }
                     let issuer = r.issuer;  // 발행자
                     let symbol = r.symbol;  // 심볼
                     let name = r.name;      // 토큰명
@@ -71,25 +139,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // 값 설정 
         dataset = res.result;
 
+        // 제외계정 목록정보 값 설정
+        get_execpts();
+
         // 화면 갱신 
-        refresh_screen();
+        refresh_screen(1);
     });
 
     // 토큰 정보
     // localStorage.setItem('tokens', 'red');
     // let tokens = localStorage.getItem('tokens');
 });
-// $("#app_floating").click(function(){
-//     let item = instances[0];
-//     if(item.isOpen){
-//         item.close();
-//     }else{
-//         item.open();
-//     }
-// });
 
-let dataset;
-let my_symbol;
+function set_excepts(excepts_info){
+
+    // 값을 설정한다 
+    localStorage.setItem(`${my_symbol}-excepts`, excepts_info);
+
+    // 값을 다시 불러들인다
+    get_execpts();
+}
+
+function get_execpts(){
+    // 제외계정 목록정보 값 설정
+    let _excepts = localStorage.getItem(`${my_symbol}-excepts`);
+    excepts = !_excepts||_excepts==null||_excepts==''?'':_excepts;
+    $("#user_excepts").val(_excepts);
+}
+
+
 
 /*
  * 진입점
@@ -205,9 +283,7 @@ async function redraw_tokens(){
         }
         if(confirm(`${symbol} 을 삭제하시겠습니까 ?`)){
             
-            console.log(_tokens.length)
             let _filtered = _tokens.filter(x=>x.symbol!=symbol);
-            console.log(symbol, _filtered.length)
             localStorage.setItem('tokens',JSON.stringify(_filtered));
             alert("삭제되었습니다.");
 
@@ -217,35 +293,84 @@ async function redraw_tokens(){
     });
 }
 
-function refresh_screen(){
+function refresh_screen(type=1/* 1: 잔고, 2 : 스테이킹, 3 : 잔고 + 스테이킹 */){
 
-    let checked = $('input[name=sort_icon]').is(':checked');
-    $("body").data("type", checked?"stake":"balance");
+    // 제외 계정 표시 제한 ( 표시할 데이터만 필터링 하여 보여준다 )
+    _dataset = dataset.filter(x=>!excepts.includes(x.account));
 
-    let type = $("body").data("type");  // balance or stake
+    // 일괄 적으로 값 설정
+    _dataset.map(x=>{
+        if(!x.stake){
+            x.stake = "0";
+        }
+        if(!x.delegatedStake){
+            x.delegatedStake = "0";
+        }
+        if(!x.pendingUnstake){
+            x.pendingUnstake = "0";
+        }
+        if(!x.receivedStake){
+            x.receivedStake = "0";
+        }
+    });
 
     // 정렬
-    dataset.sort((a, b) => parseFloat(b[type]) - parseFloat(a[type]));
-
+    if(type==1){
+        // 1: 잔고
+        _dataset.sort((a, b) => parseFloat(b.balance) - parseFloat(a.balance));
+    }else if(type==2){
+        // 2: 스테이킹
+        _dataset.sort((a, b) => parseFloat(b.stake) - parseFloat(a.stake));
+    }else if(type==3){
+        // 3: 잔고 + 스테이킹
+        _dataset.sort((a, b) => parseFloat(b.balance) - parseFloat(a.balance) + parseFloat(b.stake) - parseFloat(a.stake) );
+    }
 
     $("#app_list").empty();
     let temp = [];
     let idx = 1;
-    for (let r of dataset) {
-        let balance = parseFloat(r[type]);
+
+    let sum = 0;
+    // 합계 계산
+    for (let r of _dataset) {
+        let balance;
+        if(type==1){
+            balance = parseFloat(r.balance);
+        }else if(type==2){
+            balance = parseFloat(r.stake);
+        }else if(type==3){
+            balance = parseFloat(r.balance)+parseFloat(r.stake);
+        }
+        if(balance>0){
+            sum = parseFloat(sum) + parseFloat(balance);
+        }
+    }
+
+    // 화면 표시
+    for (let r of _dataset) {
+
+        let balance;
+        if(type==1){
+            balance = parseFloat(r.balance);
+        }else if(type==2){
+            balance = parseFloat(r.stake);
+        }else if(type==3){
+            balance = parseFloat(r.balance)+parseFloat(r.stake);
+        }
+
         if (balance > 0) {
             temp.push(`<li class="collection-item avatar app_toast_move" account='${r.account}'>`);
             temp.push(`<img src="https://steemitimages.com/u/${r.account}/avatar" alt="" class="circle">`);
             temp.push(`<span class="title">${r.account}</span>`);
-            temp.push(`<p>${add_comma(balance)}<br>`);
+            temp.push(`<p>${add_comma(balance)} (${(parseFloat(balance/sum)*100).toFixed(2)} %)<br>`);
             if (idx == 1) {
-                temp.push(`<span class="new badge red" data-badge-caption="st">${idx}</span>`);
+                temp.push(`<span class="new badge amber accent-4  white-text text-accent-4" data-badge-caption="st">${idx}</span>`);
             } else if (idx == 2) {
-                temp.push(`<span class="new badge red" data-badge-caption="nd">${idx}</span>`);
+                temp.push(`<span class="new badge grey lighten-1 white-text text-darken-2" data-badge-caption="nd">${idx}</span>`);
             } else if (idx == 3) {
-                temp.push(`<span class="new badge red" data-badge-caption="rd">${idx}</span>`);
+                temp.push(`<span class="new badge brown lighten-1 white-text text-darken-2" data-badge-caption="rd">${idx}</span>`);
             } else {
-                temp.push(`<span class="new badge blue" data-badge-caption="th">${idx}</span>`);
+                temp.push(`<span class="new badge teal lighten-5 black-text text-darken-2" data-badge-caption="th">${idx}</span>`);
             }
             temp.push(`</li>`);
 
@@ -253,7 +378,13 @@ function refresh_screen(){
         }
     }
 
-    $("#app_holer_title").text(`${my_symbol}(${idx-1})`);
+    let SUFFIX = {
+        1 : "B",
+        2 : "S",
+        3 : "BS"
+    };
+
+    $("#app_holer_title").text(`${my_symbol}(${idx-1}) : ${SUFFIX[type]}`);
     $("#app_list").html(temp.join(''));
     $(".app_toast_move").click(function() {
         let account = $(this).attr('account');

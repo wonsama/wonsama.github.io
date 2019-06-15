@@ -14,7 +14,7 @@
 <body data-type="stake">
     <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper light-blue darken-4">
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <a href="#!" class="brand-logo" id="app_holer_title">Loading ...</a>
             </div>
@@ -37,7 +37,7 @@
 
         <!-- 토큰 정렬방식변경 -->
         <li><a href="#!"><i class="material-icons">sort</i>정렬 방식</a></li>
-        <li><a href="#!">
+        <!-- <li><a href="#!">
             <div class="switch">
                 <label>
                     Balance
@@ -46,24 +46,53 @@
                     Stake
                 </label>
             </div>
-        </a></li>
-
-        <!-- 토큰 목록 보여주기 -->
+        </a></li> -->
         <li>
-            <div class="divider"></div>
+            <div class="row">
+              <div class="col s12 offset-s0">
+                  <!-- Dropdown Trigger -->
+                  <a class='dropdown-trigger btn blue darken-1' href='#' data-target='dropdown1' id="search_text" data-no='1'><i class="material-icons">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;account_balance_wallet</i>잔고&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+                  <!-- Dropdown Structure -->
+                  <ul id='dropdown1' class='dropdown-content'>
+                    <li><a href="#!" class='data-find' data-no='1'><i class="material-icons">account_balance_wallet</i>잔고</a></li>
+                    <li><a href="#!" class='data-find' data-no='2'><i class="material-icons">lock</i>스테이킹</a></li>
+                    <li><a href="#!" class='data-find' data-no='3'><i class="material-icons">landscape</i>잔고+스테이킹</a></li>
+                    <!-- <li class="divider" tabindex="-1"></li> -->
+                  </ul>
+              </div>
+            </div>
         </li>
+        <!-- <li><a href="#!">
+            <div class="switch">
+                <label>
+                    Balance
+                    <input type="checkbox" name="sort_icon">
+                    <span class="lever"></span>
+                    Stake
+                </label>
+            </div>
+        </a></li> -->
+
         <!-- <li>
-            <a class="subheader"><i class="material-icons">account_balance_wallet</i>Tokens</a>
+                <p>
+                  <label>
+                    <input name="group1" type="radio" checked />
+                    <span>Red</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input name="group1" type="radio" />
+                    <span>Yellow</span>
+                  </label>
+                </p>
         </li>
-        <li>
-             <div class="row">
-              <div class="col s8 m2">
-              <a class="waves-effect waves-light btn-small">Button</a>
-            </div>
-              <div class="col s4">DELETE</div>
-            </div>
+ -->
+        <!-- 토큰 목록 보여주기 -->
+        <!-- <li>
+            <div class="divider"></div>
         </li> -->
-
         <ul class="wonsama" id="token_list">
             <li class="collection-item avatar">
                 <img src="https://steemitimages.com/u/wonsama/avatar" alt="" class="circle">
@@ -78,6 +107,7 @@
         <li>
             <div class="divider"></div>
         </li>
+        <li><a href="#!"><i class="material-icons">attach_money</i>토큰 추가</a></li>
         <li>
             <div class="row">
                 <div class="col s12">
@@ -89,6 +119,21 @@
                 </div>
             </div>
         </li>
+
+        <!-- 표시 제외 정보 추가 -->
+        <li><a href="#!"><i class="material-icons">check_circle</i>제외 계정 설정</a></li>
+        <li>
+            <div class="row">
+                <div class="col s12">
+                    <div class="input-field inline">
+                        <input id="user_excepts" type="text" class="validate valid ">
+                        <label for="user_excepts"></label>
+                        <a class="waves-effect waves-light btn blue-grey lighten-1" id="user_remove"><i class="material-icons left">close</i>표시 제외계정 설정(컴마구분)</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+
         <!-- 만든이 보여주기 -->
         <li>
             <div class="divider"></div>
@@ -97,7 +142,6 @@
         <!-- 토큰 기본정보 -->
         <li>
             <div class="user-view">
-                <!-- <a href="#user"><img src="https://steemitimages.com/u/wonsama/avatar" class="circle"></a> -->
                 <a href="#team"><span class="pink-text team">WHAN DEV TEAM</span> from wonsama</a>
                 <a href="https://steemit.com/@whan.dev"><span class="black-text email">@whan.dev</span></a>
             </div>
@@ -105,17 +149,19 @@
     </ul>
 
     
-    <!--floating button area -->
-    <!-- <div class="fixed-action-btn" id="app_floating">
+    <!-- FAB AREA -->
+    <!--
+    <div class="fixed-action-btn" id="app_floating">
         <a class="btn-floating btn-large black">
             <i class="large material-icons">link</i>
         </a>
         <ul>
-            <li><a class="btn-floating black" href="./index.html?symbol=JJM">JJM</a></li>
-            <li><a class="btn-floating black" href="./index.html?symbol=SSC">SSC</a></li>
-            <li><a class="btn-floating black" href="./index.html?symbol=YBT">YBT</a></li>
+            <li><a class="btn-floating black" href="#!">ALL</a></li>
+            <li><a class="btn-floating black" href="#!">BAL</a></li>
+            <li><a class="btn-floating black" href="#!">STK</a></li>
         </ul>
-    </div> -->
+    </div>
+    -->
 
     <ul class="collection" id="app_list" />
     

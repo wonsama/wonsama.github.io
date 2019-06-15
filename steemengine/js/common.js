@@ -1,19 +1,14 @@
+const URL_STEEM             = 'https://api.steemit.com';
 const URL_STEEM_ENGINE 		= 'https://api.steem-engine.com/';
 const URL_STEEM_ENGINE_RPC 	= 'https://api.steem-engine.com/rpc/';
 const BLOCKCHAIN_API 	= 'blockchain';
 const CONTRACTAPI 		= 'contracts';
 
-let rpc20 = (method, params, id)=>{
-	let json = {};
-	json.jsonrpc = '2.0';
-	json.method = method;
-	if(params){
-		json.params = params;	
-	}
-	json.id = id;
 
-	return json;
-}
+////////////////////////////////////////
+/// 
+/// POST 
+/// 
 
 let postData = (url = ``, data = {}) => {
   // Default options are marked with *
@@ -33,9 +28,31 @@ let postData = (url = ``, data = {}) => {
     .then(response => response.json()); // parses JSON response into native Javascript objects 
 }
 
+////////////////////////////////////////
+/// 
+/// RPC20
+/// 
+
+let rpc20 = (method, params, id)=>{
+	let json = {};
+	json.jsonrpc = '2.0';
+	json.method = method;
+	if(params){
+		json.params = params;	
+	}
+	json.id = id;
+
+	return json;
+}
+
 let send_rpc = async function (method, params, url, id=1){
 	return postData(url, rpc20(method,params,id));
 }
+
+////////////////////////////////////////
+/// 
+/// STEEM-ENGINE
+/// 
 
 let findOne = async function (contract, table, query){
     let params ={
@@ -64,6 +81,22 @@ let tokens_balances = async function (symbol, limit = 1000, offset = 0, indexes 
 
 let tokens_tokens = function (symbol, limit = 1000, offset = 0, indexes = []){
     return findOne('tokens', 'tokens', {'symbol':symbol});
+}
+
+////////////////////////////////////////
+/// 
+/// STEEM-RPC20
+/// 
+
+let get_accounts = async function (accounts){
+
+    if(!accounts){
+        return Promise.reject('accounts is empty');
+    }else if(!Array.isArray(accounts)){
+        accounts = [accounts];
+    }
+    
+    return send_rpc('condenser_api.get_accounts', [accounts], URL_STEEM );
 }
 
 ////////////////////////////////////////
