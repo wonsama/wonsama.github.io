@@ -103,8 +103,17 @@ let get_accounts = async function (accounts){
 /// 
 /// UTL
 /// 
+/// 
+/// 
 
-let add_comma = (number) =>new Intl.NumberFormat('ko-KR', { maximumSignificantDigits: 3 }).format(number);
+
+function numbeComma(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// let add_comma = (number) =>new Intl.NumberFormat('ko-KR', { maximumSignificantDigits: 3 }).format(number);
+
+let add_comma = (number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 let view_in_steemit = (account) => {
 
     M.Toast.dismissAll();
