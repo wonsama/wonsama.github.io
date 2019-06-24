@@ -367,7 +367,7 @@ stake: "1.00000"
 symbol: "SCTM"
 
 */
-    console.log(_dataset)
+    // console.log(_dataset)
     
 
     // 화면 표시
@@ -411,7 +411,7 @@ symbol: "SCTM"
             temp.push(`<p>${add_comma(balance)} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
             // temp.push(`<p>${balance} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
 
-            console.log(type, r.account, balance, r.balance, r.stake, r.delegationsIn, r.delegationsOut);
+            // console.log(type, r.account, balance, r.balance, r.stake, r.delegationsIn, r.delegationsOut);
 
             if (idx == 1) {
                 temp.push(`<span class="new badge amber accent-4  white-text text-accent-4" data-badge-caption="st">${idx}</span>`);
