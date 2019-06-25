@@ -111,9 +111,15 @@ function numbeComma(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// let add_comma = (number) =>new Intl.NumberFormat('ko-KR', { maximumSignificantDigits: 3 }).format(number);
-
-let add_comma = (number) => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+let add_comma = (number) => {
+    let _num = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let nums = _num.split('.');
+    if(nums.length==2){
+        nums[1]=nums[1].replace(/\,/gi, '');    // 소숫점 아래로 , 찍히는거 제거
+        return nums.join('.');
+    }
+    return nums;
+}
 let view_in_steemit = (account) => {
 
     M.Toast.dismissAll();

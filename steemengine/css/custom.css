@@ -8,6 +8,20 @@ main {
 	flex: 1 0 auto;
 }
 
+nav .sama-logo {
+  position: absolute;
+  color: #fff;
+  display: inline-block;
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+nav .sama-logo.center {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
 .item-move{
   cursor: pointer;
 }

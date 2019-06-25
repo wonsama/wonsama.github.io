@@ -297,12 +297,14 @@ function refresh_screen(type=1/* 1: 잔고, 2 : 스테이킹, 3 : 잔고 + 스�
 
     // 제외 계정 표시 제한 ( 표시할 데이터만 필터링 하여 보여준다 )
     _dataset = dataset.filter(x=>!excepts.includes(x.account));
+    console.log('excepts', excepts)
+    console.log('_dataset', _dataset)
 
     // @들어간 계정 제외 ( @sctm.winners 같은거 )
-    _dataset = dataset.filter(x=>x.account.indexOf('@')!=0);
+    _dataset = _dataset.filter(x=>x.account.indexOf('@')!=0);
 
     // 일괄 적으로 값 설정
-    _dataset.map(x=>{
+    _dataset = _dataset.map(x=>{
         if(!x.balance){
             x.balance = "0";
         }
@@ -318,7 +320,12 @@ function refresh_screen(type=1/* 1: 잔고, 2 : 스테이킹, 3 : 잔고 + 스�
         if(!x.delegationsOut){
             x.delegationsOut = "0";
         }
+        if(!x.pendingUnstake){
+            x.pendingUnstake = "0";
+        }
+        return x;
     });
+    
 
     // 정렬
     if(type==1){
@@ -351,24 +358,6 @@ function refresh_screen(type=1/* 1: 잔고, 2 : 스테이킹, 3 : 잔고 + 스�
             sum = parseFloat(sum) + parseFloat(balance);
         }
     }
-
-/*
-
-$loki: 54329
-account: "happyberrysboy"
-balance: "450.00000"
-delegatedStake: "0"
-delegationsIn: "0"
-delegationsOut: "0"
-pendingUndelegations: "0"
-pendingUnstake: "0"
-receivedStake: "0"
-stake: "1.00000"
-symbol: "SCTM"
-
-*/
-    // console.log(_dataset)
-    
 
     // 화면 표시
     for (let r of _dataset) {
@@ -408,13 +397,8 @@ symbol: "SCTM"
             temp.push(`<li class="collection-item avatar app_toast_move" account='${r.account}'>`);
             temp.push(`<img src="https://steemitimages.com/u/${r.account}/avatar" alt="" class="circle">`);
             temp.push(`<span class="title">${r.account}</span>`);
-            temp.push(`<p>${add_comma(balance)} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
-            // temp.push(`<p>${balance} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
-
-            // console.log(type, r.account, balance, r.balance, r.stake, r.delegationsIn, r.delegationsOut);
-
             if (idx == 1) {
-                temp.push(`<span class="new badge amber accent-4  white-text text-accent-4" data-badge-caption="st">${idx}</span>`);
+                temp.push(`<span  class="new badge amber accent-4  white-text text-accent-4" data-badge-caption="st">${idx}</span>`);
             } else if (idx == 2) {
                 temp.push(`<span class="new badge grey lighten-1 white-text text-darken-2" data-badge-caption="nd">${idx}</span>`);
             } else if (idx == 3) {
@@ -422,6 +406,11 @@ symbol: "SCTM"
             } else {
                 temp.push(`<span class="new badge teal lighten-5 black-text text-darken-2" data-badge-caption="th">${idx}</span>`);
             }
+            temp.push(`<p>${add_comma(balance)} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
+            // temp.push(`<p>${balance} (${(parseFloat(balance/sum)*100).toFixed(2)} %) ${gap_show}<br>`);
+            // console.log(type, r.account, balance, r.balance, r.stake, r.delegationsIn, r.delegationsOut);
+
+            
             temp.push(`</li>`);
 
             idx++;
@@ -429,12 +418,12 @@ symbol: "SCTM"
     }
 
     let SUFFIX = {
-        1 : "B",
-        2 : "S",
-        3 : "BS"
+        1 : "BAL",
+        2 : "STK",
+        3 : "BAL+STK"
     };
 
-    $("#app_holer_title").text(`${my_symbol}(${idx-1}) : ${SUFFIX[type]}`);
+    $("#app_holer_title").text(`${my_symbol}(${idx-1}):${SUFFIX[type]}`);
     $("#app_list").html(temp.join(''));
     $(".app_toast_move").click(function() {
         let account = $(this).attr('account');
