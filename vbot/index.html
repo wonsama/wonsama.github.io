@@ -1,0 +1,133 @@
+<!--
+    [사용 방법]
+
+
+    [주의사항] 
+
+        개인(로컬) 이외 웹 배포(상업/비상업 포함)사용할 경우 원 저작자의 허가를 받아야 됩니다.
+
+    [제작자 정보]
+        
+        CREATED : 2019.06.27 
+        CREATED BY WONSAMA 
+
+
+    https://materializecss.com/select.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 구글 폰트(머트리얼 아이콘) 로딩 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- CSS 로딩  -->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/custom.css" media="screen,projection" />
+</head>
+
+<body>
+    <!-- class : container 넣으면 여백이 많이 차이남 -->
+    <div class="scontainer">
+        <!-- 네비게이션 바 삽입 영역 -->
+        <nav class='blue-grey darken-4'>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo right amber-text text-accent-3" id="logo">STEEM VOTING CENTER</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down space_t_20">
+                    <li><span lass='amber-text text-accent-3'>상세설정</span></li>
+                    <li><a href="#!" class='amber-text text-accent-3'>제외계정</a></li>
+                    <li><a href="#!" class='amber-text text-accent-3'>N/A</a></li>
+                    <li><a href="#!" class='amber-text text-accent-3'>N/A</a></li>
+                    <li><a href="#!" class='amber-text text-accent-3'>N/A</a></li>
+                    <li><a href="#!" class='amber-text text-accent-3'>N/A</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- 페이지 영역  -->
+        <div class="row">
+            <div class="col s3">
+                <!-- 1. 좌측 영역  -->
+                <!-- 1.1 토큰 선택 콤보 -->
+                <h5 class="tooltipped" data-position="bottom" data-tooltip="토큰 정보를 변경하시면, 해당 토큰의 홀더 정보 및 최신 글 보팅 정보를 확인 하실 수 있습니다.">토큰 정보</h5>
+                <div class="input-field col blue-grey-text text-darken-3">
+                    <select class="icons" id="sel_token" class="blue-grey-text text-darken-3">
+                        <option value="" disabled selected>없음</option>
+                    </select>
+                </div>
+                <!-- 1.2 토큰 상세정보 -->
+            </div>
+            <div class="col s9">
+                <!-- 2. 우측(메인) 영역 -->
+                <!-- 2-1 정렬방식  -->
+                <div class="row valign-wrapper">
+                    <div class="col">
+                        <h5 class="tooltipped" data-position="bottom" data-tooltip="정렬 방식을 변경하시면, 변경된 기준으로 내역을 조회 하실 수 있습니다.(스테이킹 조회 시 임대내역이 포함 됩니다.)">정렬방식</h5>
+                    </div>
+                    <div class="col">
+                        <label>
+                            <input class="with-gap" name="grp_order" type="radio" value="B" checked />
+                            <span>잔고</span>
+                        </label>
+                        <label>
+                            <input class="with-gap" name="grp_order" type="radio" value="S" />
+                            <span>스테이킹</span>
+                        </label>
+                        <label>
+                            <input class="with-gap" name="grp_order" type="radio" value="BS" />
+                            <span>잔고 + 스테이킹</span>
+                        </label>
+                    </div>
+                </div>
+                <!-- 2-2 조회 결과 -->
+                <div class="over_scroll">
+                    <table>
+                    <colgroup>
+                        <col width="40">
+                        <col width="200">
+                        <col width="200">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <th><label>
+                                    <input type="checkbox" id="chk_header" /><!-- checked="checked" -->
+                                    <span>계정명</span>
+                                </label></th>
+                            <th>잔고</th><!-- 누르면 잔고 / 스테이킹 / 정보가 swaping , 스테이킹은 임대 포함으로 계산-->
+                            <th>최신 글</th>
+                            <th>최근 보팅</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tokens_body">
+                        <tr>
+                            <td colspan="5" class="center-align">데이터를 조회 바랍니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <!-- 2-3 5시방향 작업자 정보 출력 -->
+                <div class="fixed-action-btn direction-top active" style="bottom: 45px; right: 24px;">
+                    <a id="menu" class="btn btn-floating btn-large blue-grey darken-4">
+                        <i class="material-icons">priority_high</i>
+                    </a>
+                </div>
+                <div class="tap-target-wrapper" style="right: -348px; bottom: -327px; position: fixed;">
+                    <div class="tap-target blue-grey darken-4" data-target="menu">
+                        <div class="tap-target-content amber-text text-accent-3" style="width: 456px; height: 400px; top: 0px; right: 0px; bottom: 0px; left: 0px; padding: 56px; vertical-align: bottom;">
+                            <h5>About</h5>
+                            <p class="amber-text text-accent-3">created by <a href="https://steemit.com/@wonsama">@wonsama</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 자바스크립트 로딩 -->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>

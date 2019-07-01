@@ -1,0 +1,74 @@
+<script type="text/javascript">
+    
+
+    function Upload(callback) {
+        let fileUpload = document.getElementById("__upload_csv_file");
+
+        // 초기 1회 생성 후 숨겨 놓은다. (body 아래로 붙여 넣음)
+        if(fileUpload==null){
+            let newElem = document.createElement('input'); 
+            newElem.setAttribute("type", "file"); 
+            newElem.setAttribute("id", "__upload_csv_file"); 
+            newElem.setAttribute("accept", ".csv");
+            newElem.setAttribute("style", "display:none;"); 
+            document.body.appendChild(newElem);
+
+            fileUpload = document.getElementById("__upload_csv_file");
+            fileUpload.addEventListener('change', function(e){
+                if(!e.target || e.target.files.length==0){  //파일 미 선택
+                    return;
+                }
+                if(e.target.files[0].type!='text/csv'){
+                    alert('csv 파일만 업로드 할 수 있습니다.');
+                    return;
+                }
+                // 첨부된 파일 읽기 
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let _rows = e.target.result.split("\n");
+                    let tables = [];
+                    for(let r of _rows){
+                        let rows = [];
+                        for(let c of r.split(',')){
+                            rows.push(c);
+                        }
+                        tables.push(rows);
+                    }
+                    callback(tables);
+                }
+                reader.readAsText(fileUpload.files[0]);
+            });
+        }
+        
+        // 업로드 된 파일 확장자 확인 (csv or txt)
+        fileUpload.click();
+    }
+
+    function callback(tables){
+        console.log(tables)
+    }
+</script>
+<body>
+<input type="button" id="upload" value="Upload" onclick="Upload(callback)" />
+</body>
+
+<!--
+
+// 테이블 그려주기
+// var table = document.createElement("table");
+// var rows = e.target.result.split("\n");
+// for (var i = 0; i < rows.length; i++) {
+//     var cells = rows[i].split(",");
+//     if (cells.length > 1) {
+//         var row = table.insertRow(-1);
+//         for (var j = 0; j < cells.length; j++) {
+//             var cell = row.insertCell(-1);
+//             cell.innerHTML = cells[j];
+//         }
+//     }
+// }
+// var dvCSV = document.getElementById("dvCSV");
+// dvCSV.innerHTML = "";
+// dvCSV.appendChild(table);
+// 테이블 그려주기 종료
+-->

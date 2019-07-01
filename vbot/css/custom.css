@@ -1,0 +1,29 @@
+/*
+  CONTAINER
+*/
+.scontainer {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+}
+
+img {
+  border-radius: 50%;
+}
+
+/*
+  SPACE
+*/
+.space_t_20{
+  margin-left: 20px;
+}
+
+
+div.over_scroll {
+  overflow: auto;
+  height: 500px;
+}
+
+body{
+	overflow : hidden;	
+}
