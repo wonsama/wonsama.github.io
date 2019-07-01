@@ -121,8 +121,11 @@ nav .sama-logo.center {
 }
 
 img.ad{
-  min-width: 100%;
-  min-height: 100% -calc(30px);
+  /*min-width: 100%;
+  min-height: 100% -calc(30px);*/
+
+  min-height: 100%;
+  width: auto;
   
   display: block;
   margin-left: auto;
