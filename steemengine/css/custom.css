@@ -122,7 +122,7 @@ nav .sama-logo.center {
 
 img.ad{
   min-width: 100%;
-  height: auto;
+  min-height: 100%;
   
   border: 2px solid #ddd;
   border-radius: 10px;
