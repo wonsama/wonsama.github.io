@@ -182,6 +182,10 @@ async function init(cb) {
     symbol = symbol ? symbol : 'WHAN';
     my_symbol = symbol;
 
+    let len = $("img.ad").length;
+    let rnd = parseInt(Math.random()*len);
+
+    $(`img.ad:nth-child(${rnd+1})`).show();
     $("#app_holer_title").text(`Loading ...`);
     M.AutoInit();
 
@@ -297,8 +301,8 @@ function refresh_screen(type=1/* 1: 잔고, 2 : 스테이킹, 3 : 잔고 + 스�
 
     // 제외 계정 표시 제한 ( 표시할 데이터만 필터링 하여 보여준다 )
     _dataset = dataset.filter(x=>!excepts.includes(x.account));
-    console.log('excepts', excepts)
-    console.log('_dataset', _dataset)
+    // console.log('excepts', excepts)
+    // console.log('_dataset', _dataset)
 
     // @들어간 계정 제외 ( @sctm.winners 같은거 )
     _dataset = _dataset.filter(x=>x.account.indexOf('@')!=0);
