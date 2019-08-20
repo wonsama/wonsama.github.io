@@ -23,8 +23,11 @@ const _set_ad = () => {
     let len = $("img.ad").length;
     let rnd = parseInt(Math.random()*len);
 
-    $(`img.ad:nth-child(${rnd+1})`).show();
-    $("#app_holer_title").text(`Loading ...`);
+    console.log(len, rnd);
+
+
+    $($(`img.ad`)[rnd]).css('display', 'block');
+    $("#app_holer_title").text(`로딩중 ...`);
 }
 
 /// [price] 기준으로 대상 토큰의 자리수를 반환한다 
@@ -66,11 +69,33 @@ const _get_token_tradings = (account) =>{
         });
 }
 
+/// 재 조회한다
+const search = () =>{
+    let account = $("#inp_account").val().replace('@','').trim();
+    if(account==''){
+        alert('계정명을 입력 바랍니다.');
+        $("#inp_account").focus();
+    }else{
+        location.href = `./trade.html?account=${account}`;
+    }
+}
+
 // ________________________________________________________________________________
 // DOM LOADING COMPLETE
 // ________________________________________________________________________________
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    // 이벤트 등록
+    $("#inp_account").on('keypress',function(evt){
+        if(evt.keyCode==13){
+            search();
+        }
+    });
+    $("#cont_my").on('click',function(evt){
+        let url = `https://www.steemzzang.com`+$(this).data('url');
+        location.href=url;
+    });
 
     // 파라미터 정보를 가져온다
     let {account} = _get_params();
@@ -80,17 +105,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 머트리얼 초기화
     M.AutoInit();
+    $("#list").empty();
 
+
+    // 최신 글 정보 보기
+    get_discussions_by_author_before_date('wonsama')
+        .then(res=>{
+            let rnd = parseInt(Math.random()*3);
+            $("#cont_my").data('url', res[rnd].url);
+            $("#cont_my").text(`${res[rnd].title}`)
+            
+            $("#cont_loading").hide();
+            $("#cont_my").show();
+        });
+
+    // 유효성 검증
+    if(!account){
+        $("#app_holer_title").text(`계정명을 입력바랍니다`);
+        
+        // 광고는 기본 3초간 보여준다
+        setTimeout(()=>{
+            $(".ad").hide();
+            $("#list").append("<tr><td colspan=5 class='center'>No Data</td></tr>");
+            $("#app_list").show();
+        }, 100);
+        return;
+    }else{
+        $("#inp_account").val(account);
+    }
+
+    
+
+
+    // 조회 시작 
     _get_token_tradings(account)
         .then(res=>{
 
             $(".ad").hide();
             $("#app_list").show();
 
-            $("#app_holer_title").text(`${account}의 토큰 거래정보`);
-            $("#list").empty();
+            $("#app_holer_title").text(`${account} 의 거래정보`);
+            
             if(res.length==0){
-                $("#list").append("<tr><td colspan=5 class='center'>No Data</td></tr>");    
+                $("#list").append("<tr><td colspan=3 class='center'>No Data</td></tr>");
             }else{
                 let html = [];
                 for(let r of res){
@@ -101,9 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     html.push(`<td>${r.regtime.split(' ')[0]}<br/>${r.regtime.split(' ')[1]}</td>`);
                     html.push(`<td>(${r.flag})<br/>${r.symbol}</td>`);
-                    html.push(`<td>${r.price}</td>`);
-                    html.push(`<td>${r.quantity}</td>`);
-                    html.push(`<td>${r.sum}</td>`);
+                    html.push(`<td>${r.price} x ${r.quantity}<br/>= ${r.sum}</td>`);
                     html.push(`</tr>`);
                 }
                 $("#list").append(html.join(''));

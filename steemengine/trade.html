@@ -17,7 +17,7 @@
         <nav>
             <div class="nav-wrapper light-blue darken-4">
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <a href="#!" class="sama-logo center" id="app_holer_title">로딩중 ...</a>
+                <a href="#!" class="sama-logo center" id="app_holer_title"></a>
             </div>
         </nav>
     </div>
@@ -41,6 +41,22 @@
             <div class="divider"></div>
         </li>
 
+        <li>
+            HISTORY
+            <div class="row">
+                <div class="col s4">
+                    2019.08.20
+                </div>
+                <div class="col s8">
+                    최초 작성
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="divider"></div>
+        </li>
+
         <!-- 만든이 -->
         <li>
             <div class="user-view">
@@ -54,29 +70,42 @@
         화면 결과 보여주기
     -->
     <ul id="app_list" style='display: none;'>
+
+        <div class="row pink-text text-darken-1">
+            <div class="col s12">
+                계정명 :
+                <div class="input-field inline">
+                    <input id="inp_account" type="text" class="validate pink-text text-darken-1" placeholder="wonsama">
+                    <label for="inp_account"></label>
+                    
+                </div>
+                <button class="btn waves-effect waves-light pink darken-1" type="submit" name="action" onclick='search();'>조회
+                    <i class="material-icons left">send</i>
+                </button>
+            </div>
+
+            <div class="col s11 center">
+                <div class="progress purple lighten-1" id="cont_loading">
+                    <div class="indeterminate purple lighten-5"></div>
+                </div>
+                <div class="blue-text text-darken-4" id="cont_my" style='display: none'>
+            </div>
+            
+
+            
+
+            </div>
+        </div>
         <table>
-        <thead>
-          <tr>
-              <th>시간</th>
-              <th>심볼</th>
-              <th>단가</th>
-              <th>수량</th>
-              <th>총금액</th>
-          </tr>
-        </thead>
-        <tbody id="list">
-        <!--
-            buy ::: pink-text text-accent-3
-            sell ::: blue-text text-accent-4
-        -->
-          <tr data-symbol='Eclair'  class='pink-text text-accent-3'>
-            <td >2019.08.16<br/>00:19:39</td>
-            <td >(sell)<br/>Eclair</td>
-            <td >3.007</td>
-            <td >400</td>
-            <td >1202.8</td>
-          </tr>
-        </tbody>
+            <thead>
+              <tr>
+                  <th>시간</th>
+                  <th>심볼</th>
+                  <th>금액</th>
+              </tr>
+            </thead>
+            <tbody id="list">
+            </tbody>
       </table>
             
     </ul>
@@ -84,11 +113,14 @@
     <!--
         광고 영역 
     -->
+    <img src="./images/ad_def.jpg" alt="광고주를 찾습니다." class='ad' />
+    <!--
     <img src="./images/ad01.jpg" alt="강남베드로병원" class='ad' />
     <img src="./images/ad02.jpg" alt="강남베드로병원" class='ad' />
     <img src="./images/ad03.jpg" alt="강남베드로병원" class='ad' />
     <img src="./images/ad04.jpg" alt="강남베드로병원" class='ad' />
     <img src="./images/ad05.jpg" alt="강남베드로병원" class='ad' />
+    -->
     <!--
     <span class='ad'>sponsored by @glory7</span>
     -->

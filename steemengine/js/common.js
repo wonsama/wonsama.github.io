@@ -99,6 +99,31 @@ let get_accounts = async function (accounts){
     return send_rpc('condenser_api.get_accounts', [accounts], URL_STEEM );
 }
 
+/*
+* 대상 계정의 date 이전일 기준 최신글 정보를 N개(기본 10개) 추출 
+* date sample : 2019-06-23T04:19:57 
+*/
+const get_discussions_by_author_before_date = (author, date, limit=10, permlink="") =>{
+    const params = [
+        author,
+        permlink,
+        date,
+        limit
+    ];
+
+    return send_rpc('condenser_api.get_discussions_by_author_before_date', params, URL_STEEM )
+    .then(res=>{
+        // 날짜 기준으로 필터링 : date 기준으로 필터링이 되지 않음 -_-;
+        res = res.result.filter(x=>{
+            return new Date(`${x.created}.000Z`).getTime() > new Date(`${date}.000Z`).getTime();
+        });
+
+        // 날짜 역순으로 정렬
+        res.sort((a,b)=>new Date(`${b.created}.000Z`).getTime() - new Date(`${a.created}.000Z`).getTime());
+        return Promise.resolve(res);
+    });
+}
+
 ////////////////////////////////////////
 /// 
 /// UTL
