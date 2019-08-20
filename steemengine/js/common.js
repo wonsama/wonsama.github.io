@@ -107,7 +107,79 @@ let get_accounts = async function (accounts){
 /// 
 
 
-function numbeComma(number) {
+/// 입력 날짜[date]를 포맷[format]에 맞게 변형한다
+function dateformat(date, format='yyyy.mm.dd HH:MM:ss'){
+    // yyyy.mm.dd HH:MM:ss
+    const yyyy = date.getFullYear();
+    const yy = yyyy.toString().substr(2);
+    const mm = date.getMonth() + 1;
+    const dd = date.getDate();
+
+    const HH = date.getHours(); // 0 ~ 24
+    const MM = date.getMinutes();
+    const ss = date.getSeconds();
+
+    const APM = HH>12?'PM':'AM';
+    const HH12 = HH>12?HH-12:HH;
+
+    let fmt = [
+        // {key : 'yyyy', value:yyyy},
+        // {key : 'yy', value:yy},
+        {key : 'mm', value:padnum(mm)},
+        {key : 'dd', value:padnum(dd)},
+        // {key : 'HH', value:HH},
+        {key : 'MM', value:padnum(MM)},
+        {key : 'ss', value:padnum(ss)},
+        {key : 'APM', value:APM},
+    ];
+
+    // 연도
+    if(format.indexOf('yyyy')>=0){
+        format = format.replace('yyyy', padnum(yyyy,4));
+    }else if(format.indexOf('yy')>=0){
+        format = format.replace('yy', padnum(yy));
+    }
+
+    // 시간 
+    if(format.indexOf('HH12')>=0){
+        format = format.replace('HH12', padnum(HH12));
+    }else if(format.indexOf('HH')>=0){
+        format = format.replace('HH', padnum(HH));
+    }
+
+    // 나머지 
+    for(let f of fmt){
+        format = format.replace(f.key, f.value);
+    }
+
+    return format;
+}
+
+/// 숫자를 패딩처리 해준다
+const padnum = (num, len=2)=>{
+    if(num.toString().length<len){
+        let gap = num.toString().length<len;
+        let buf = [];
+        for(let i=0;i<gap;i++){
+            buf.push('0');
+        }
+        buf.push(num.toString());
+        return buf.join('');
+    }
+    return num;
+}
+
+// 부동소숫점 오류를 방지하기 위해 decimal 커팅처리
+// 숫자 - 문자 - 숫자 화
+const parse_float = (number,decimal=3) =>{
+    // 입력값이 숫자 또는 숫자 형태의 문자열 이어야 됨.
+    if(isNaN(number)){
+        throw new Error(`${number} is not number.`);
+    }
+    return parseFloat( parseFloat(number).toFixed(decimal) );
+}
+
+function numberComma(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -137,5 +209,21 @@ let view_in_steemit = (account) => {
         let account = $(this).attr('account');
         console.log('account', account)
         window.open(`https://steemit.com/@${account}`,'_blank');
+    });
+}
+
+let view_in_steemengine = (symbol) => {
+
+    symbol = symbol.toUpperCase();
+
+    M.Toast.dismissAll();
+    
+    let toastHTML = `<span>move to<br>S/E ${symbol} ?</span><button class="btn-flat toast-action app_move_se" symbol='${symbol}'>move S/E</button>`;
+    M.toast({html: toastHTML});
+
+    $(".app_move_se").click(function(){
+        let symbol = $(this).attr('symbol');
+        console.log('symbol', symbol)
+        window.open(`https://steem-engine.com/?p=market&t=${symbol}`,'_blank');
     });
 }

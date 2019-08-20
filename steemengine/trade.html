@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/custom.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper light-blue darken-4">
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <a href="#!" class="sama-logo center" id="app_holer_title">로딩중 ...</a>
+            </div>
+        </nav>
+    </div>
+
+    <ul id="slide-out" class="sidenav wonsama">
+
+        <!-- 토큰 기본정보 -->
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="https://steemitimages.com/2048x512/https://steemitimages.com/DQma72UAbKx5VXDX9PqpCJDC9AsHTg7Rx1RpFe8qfZM1Tti/background.jpg">
+                </div>
+                <a href="#user"><img src="https://steemitimages.com/u/wonsama/avatar" class="circle" id="tk_icon" ></a>
+                <a href="#name"><span class="black-text name" id="tk_name">STEEM-ENGINE TRADES</span></a>
+                <a href="#email"><span class="black-text email" id="tk_symbol">lastupdate 2019.08.20</span></a>
+            </div>
+        </li>
+
+        <!-- 구분선  -->
+        <li>
+            <div class="divider"></div>
+        </li>
+
+        <!-- 만든이 -->
+        <li>
+            <div class="user-view">
+                <a href="#team"><span class="pink-text team">WHAN DEV TEAM</span> from wonsama</a>
+                <a href="https://steemit.com/@wonsama"><span class="black-text email">@wonsama</span></a>
+            </div>
+        </li>
+    </ul>
+
+    <!--
+        화면 결과 보여주기
+    -->
+    <ul id="app_list" style='display: none;'>
+        <table>
+        <thead>
+          <tr>
+              <th>시간</th>
+              <th>심볼</th>
+              <th>단가</th>
+              <th>수량</th>
+              <th>총금액</th>
+          </tr>
+        </thead>
+        <tbody id="list">
+        <!--
+            buy ::: pink-text text-accent-3
+            sell ::: blue-text text-accent-4
+        -->
+          <tr data-symbol='Eclair'  class='pink-text text-accent-3'>
+            <td >2019.08.16<br/>00:19:39</td>
+            <td >(sell)<br/>Eclair</td>
+            <td >3.007</td>
+            <td >400</td>
+            <td >1202.8</td>
+          </tr>
+        </tbody>
+      </table>
+            
+    </ul>
+
+    <!--
+        광고 영역 
+    -->
+    <img src="./images/ad01.jpg" alt="강남베드로병원" class='ad' />
+    <img src="./images/ad02.jpg" alt="강남베드로병원" class='ad' />
+    <img src="./images/ad03.jpg" alt="강남베드로병원" class='ad' />
+    <img src="./images/ad04.jpg" alt="강남베드로병원" class='ad' />
+    <img src="./images/ad05.jpg" alt="강남베드로병원" class='ad' />
+    <!--
+    <span class='ad'>sponsored by @glory7</span>
+    -->
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/trade.js"></script>
+</body>
+
+</html>

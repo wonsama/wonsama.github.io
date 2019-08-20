@@ -139,8 +139,20 @@ img.ad{
   display: none;
 }
 span.ad{
- display: block;
+  display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center; 
 }
+
+h3.title{
+  float: left;
+}
+/*
+td.blue{
+  color: blue;
+}
+
+td.red{
+  color: red;
+}*/
