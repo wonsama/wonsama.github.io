@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+  <style>
+    .toolbar{
+      /*background-color:#85c1e9*/
+    }
+    .icon-info{
+      color:rgb(48,171,239);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    $(function(){
+      
+    });
+
+    var moveMall = function(){
+      window.open("https://bcmmall.com/", "_blank");
+    }
+
+    var moveSteemEngine = function(){
+      window.open("https://next.steem-engine.com/exchange/BCM", "_blank");
+    }
+
+    var showTemplateDialog = function() {
+      var dialog = document.getElementById('my-dialog');
+
+      if (dialog) {
+        dialog.show();
+      } else {
+        ons.createElement('dialog.html', { append: true })
+          .then(function(dialog) {
+            dialog.show();
+          });
+      }
+    };
+
+    var hideDialog = function(id) {
+      document
+        .getElementById(id)
+        .hide();
+    };
+  </script>
+
+<ons-page>
+  
+
+  
+    <ons-tabbar swipeable position="bottom">
+      <ons-tab page="tabAirdrop.html" label="AIRDROP" icon="fa-plane-arrival" >
+      </ons-tab>
+      <ons-tab page="tabAbout.html" label="About" icon="fa-info" active>
+      </ons-tab>
+    </ons-tabbar>
+  
+</ons-page>
+
+<template id="tabAirdrop.html">
+  <ons-page id="tabAirdrop">
+
+    <!-- TOOLBAR -->
+  <ons-toolbar position="top">
+    <div class="center">BCM DAILY AIRDROP</div>
+  </ons-toolbar>
+  
+
+    <!-- LIST -->
+    <ons-list>
+      <ons-list-header id="list_header">
+        <span id='list_header_text'>데이터를 로딩 중에 있습니다...</span>
+        <ons-icon icon="fa-info-circle" class='icon-info'  onclick="showTemplateDialog()"></ons-icon>
+      </ons-list-header>
+      <!--
+      <ons-list-item expandable>
+        <div class="left">
+          <img class="list-item__thumbnail" src="https://steemitimages.com/u/navyactifit/avatar">
+        </div>
+        <div class="center">
+          <span class="list-item__title">@navyactifit</span><span class="list-item__subtitle">25.8231 BCM</span>
+        </div>
+        <div class="expandable-content">
+          <ons-list modifier="inset">
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-arrows-alt-h" style='color:red'></ons-icon></div>
+              <div class="right">Delegation SP : 157090</div>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-bitcoin" style='color:green'></ons-icon></div>
+              <div class="right">Stake BCM : 0</div>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-bitcoin" style='color:silver'></ons-icon></div>
+              <div class="right">Balance BCM : 0</div>
+            </ons-list-item>
+          </ons-list>
+        </div>
+      </ons-list-item>
+      <ons-list-item expandable>
+        <div class="left">
+          <img class="list-item__thumbnail" src="https://steemitimages.com/u/wonsama/avatar">
+        </div>
+        <div class="center">
+          <span class="list-item__title">@navyactifit</span><span class="list-item__subtitle">25.8231 BCM</span>
+        </div>
+        <div class="expandable-content">
+          <ons-list modifier="inset">
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-arrows-alt-h" style='color:red'></ons-icon></div>
+              <div class="right">Delegation SP : 157090</div>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-bitcoin" style='color:green'></ons-icon></div>
+              <div class="right">Stake BCM : 0</div>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+              <div class="left"><ons-icon icon="fa-bitcoin" style='color:silver'></ons-icon></div>
+              <div class="right">Balance BCM : 0</div>
+            </ons-list-item>
+          </ons-list>
+        </div>
+      </ons-list-item>
+    -->
+    </ons-list>
+  </ons-page>
+</template>
+
+<template id="tabAbout.html">
+  <ons-page id="tabAbout">
+
+    <!-- TOOLBAR -->
+  <ons-toolbar position="top">
+    <div class="center">About</div>
+  </ons-toolbar>
+
+    <ons-card>
+      <div class="title">
+        Airdrop ruleset
+      </div>
+      <div class="content">
+        연이율 18% 기준으로 일일(365) 배당량을 할당<br/>( (임대 SP / 3 + 스테이킹 BCM) * 0.18 ) / 365<br/><br/>
+        <ons-button modifier="large" onclick="moveMall()">
+          <ons-icon icon="fa-city"></ons-icon>
+          BCM 몰 둘러보기
+        </ons-button>
+        <br/><br/>
+        <ons-button modifier="large" onclick="moveSteemEngine()">
+          <ons-icon icon="fa-city"></ons-icon>
+          스팀엔진 : BCM 토큰 거래
+        </ons-button>
+      </div>
+    </ons-card>
+
+    <ons-card>
+      <div class="title">
+        History
+      </div>
+      <div class="content">
+        <ons-list>
+          <ons-list-header>created by @wonsama</ons-list-header>
+          <ons-list-item>20.02.04 - 최초 작성</ons-list-item>
+        </ons-list>
+      </div>
+    </ons-card>
+    
+  </ons-page>
+</template>
+
+
+<template id="dialog.html">
+  <ons-dialog id="my-dialog">
+    <div style="text-align: center; padding: 10px;">
+      <p>
+        BCM TOKEN Airdrop Ruleset<br/><br/>
+        ((deleSP/3+stakeBCM)*0.18)/365
+      </p>
+
+      <p>
+        <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+      </p>
+    </div>
+  </ons-dialog>
+</template>
+
+<script src="https://cdn.jsdelivr.net/npm/steem/dist/steem.min.js"></script>
+<script>
+  const get_all_account_history = async (account, cmd='', limit=10000, read_once=false) =>{
+
+    let results = [];
+    let start_at = -1;
+
+    while(true){
+      let result = await steem.api.getAccountHistoryAsync(account, start_at, limit);
+      let _start = result[0][0];
+      let _end = result[result.length-1][0];
+      console.log(`get_all_account_history : loading remains (${_start}), loaded from : ${_end}`);
+
+      if(cmd!=''){
+        let filtered = result.filter(([idx,trx])=>{
+          let [_cmd, _op] = trx.op;
+          // 임대받은 정보만 추출 
+          return _cmd==cmd;
+        });
+        results = results.concat(filtered);
+      }else{
+        results = results.concat(result); 
+      }
+      let idx = result[0][0];
+      if(idx<10){
+        break;
+      }
+      start_at = result[0][0] - 1;
+      if(start_at<limit){
+        limit = start_at;
+      }
+
+      // 무조건 1번만 읽어들이기 : 테스트용
+      if(read_once){
+        break;  
+      }
+      
+    }
+
+    // 최신이 뒤로 가도록 설정, 추후 덮어 쓰기를 위함
+    results.sort((a,b)=>{
+      return a[0] - b[0];
+    })
+
+    return results;
+  }
+  const get_all_deligations = async (account, token='', cmd='delegate_vesting_shares', limit=10000) => {
+
+    console.log(`get_all_deligations : start`);
+
+    // 전역 설정 정보 확보 
+    console.log(`getDynamicGlobalPropertiesAsync : start`);
+    let dgp = await steem.api.getDynamicGlobalPropertiesAsync();  // total_vesting_shares
+    console.log(`getDynamicGlobalPropertiesAsync : end`);
+
+    let total_vesting_shares = dgp.total_vesting_shares.split(' ')[0];  // VESTS
+    let total_vesting_fund_steem = dgp.total_vesting_fund_steem.split(' ')[0];  // STEEM
+    
+    // 계정 이력 전체 정보를 조회한다
+    console.log(`get_all_account_history : start`);
+    let res = await get_all_account_history(account, cmd, limit);
+    console.log(`get_all_account_history : end`);
+    
+    res = res.filter(([idx,trx])=>{
+      let [cmd, op] = trx.op;
+      // 임대받은 정보만 추출 
+      return cmd=='delegate_vesting_shares' && op.delegatee==account;
+    })
+
+    // 임대 받은 정보
+    let delegator_obj = {};
+    for(let [idx,trx] of res){
+      let [cmd, op] = trx.op;
+      let timestamp = Date.parse(`${trx.timestamp}Z`);
+      // let timestamp_kr = dateformat(new Date(timestamp), 'yyyy-mm-dd HH:MM:ss');
+      let timestamp_kr = time('yyyy-mm-dd HH:MM:ss', timestamp);
+
+      // 임대 받은 정보를 최신 시간 정보 기준으로 덮어 쓴다. 0 VESTS 이면 임대를 회수 했다는 뜻
+      delegator_obj[op.delegator] = {
+        account:op.delegator,
+        vesting_shares:op.vesting_shares,
+        trx_id:trx.trx_id,
+        timestamp,
+        timestamp_kr,
+      };
+    }
+
+    // 토큰 정보를 추가한다
+    if(token!=''){
+      console.log(`token_holders_all : start`);
+      let holders = await token_holders_all(token.toUpperCase());
+      console.log(`token_holders_all : end`);
+      for(let c of holders){
+        delegator_obj[c.account] = delegator_obj[c.account] || {};
+        delegator_obj[c.account] = {...delegator_obj[c.account], account:c.account, balance:c.balance, stake:c.stake}
+      }
+    }
+
+    // console.log('delegator_obj', delegator_obj)
+
+    // 스파 정보를 추가한다
+    let output = [];
+    for(let [k,v] of Object.entries(delegator_obj)){
+      let vs = v.vesting_shares?v.vesting_shares.split(' ')[0]:0;
+
+      let sp = steem.formatter.vestToSteem(vs, total_vesting_shares, total_vesting_fund_steem);
+      let stake = parseFloat(v.stake||0);
+      let daily = sp+stake>0?(((sp/3) + stake)*0.18) / 365:0;
+      daily = parseFloat(daily.toFixed(4));
+
+      output.push({
+        account:v.account,
+        vesting_shares:v.vesting_shares||'',
+        trx_id:v.trx_id||'',
+        timestamp:v.timestamp||'',
+        timestamp_kr:v.timestamp_kr||'',
+        sp,
+        balance:v.balance||0,
+        stake,
+        daily,
+      });
+    }
+
+    // 최근 정보가 맨 위로 나오도록 함
+    output.sort((a,b)=>b.daily-a.daily);
+
+    console.log(`get_all_deligations : end`);
+    return output;
+  }
+  const token_holders_all = async (symbol, limit=1000) =>{
+
+    let offset = 0;
+    let retry = 1;
+    let results = [];
+    const MAX_RETRY = 1000;
+
+    while(true){
+      let res = await _token_holders(symbol, limit, offset); // 추후 네트워크 오류등에 대한 처리는 필요할 듯
+      results = results.concat(res.result);  // 결과를 추가한다
+      offset+=limit;
+
+      // fetch 인 경우 result 값을 보도록 처리
+
+      console.log(`token_holders_all : try ${retry}, offset ${offset}, res.result.len : ${res.result.length}`)
+
+      // 작업 종료
+      if(res.result.length<limit){
+        break;
+      }
+
+      // MAX 수치 이상 RETRY 는 금지
+      retry++;
+      if(retry>MAX_RETRY){
+        console.log(`token_holders_all overflow max retry : [${MAX_RETRY}]`);
+        break;
+      }
+    }
+
+    return results;
+  }
+  const _token_holders = function (symbol, limit = 1000, offset = 0, indexes = []){
+    return _find('tokens', 'balances', {symbol}, limit, offset, indexes );
+  }
+  const _find = function (contract, table, query, limit = 1000, offset = 0, indexes = []){
+    let params ={
+        contract,
+        table,
+        query,
+        limit,
+        offset,
+        indexes
+    }
+    const STEEM_ENGINE_RPC_API_URL = 'https://api.steem-engine.com/rpc';
+    const CONTRACTAPI = 'contracts';
+    return send_rpc('find', params, `${STEEM_ENGINE_RPC_API_URL}/${CONTRACTAPI}` );
+  }
+  let postData = (url = ``, data = {}) => {
+    // Default options are marked with *
+      return fetch(url, {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, cors, *same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+              "Content-Type": "application/json",
+              // "Content-Type": "application/x-www-form-urlencoded",
+          },
+          // redirect: "follow", // manual, *follow, error
+          referrer: "no-referrer", // no-referrer, *client
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+      })
+      .then(response => response.json()); // parses JSON response into native Javascript objects 
+  }
+  let rpc20 = (method, params, id)=>{
+    let json = {};
+    json.jsonrpc = '2.0';
+    json.method = method;
+    if(params){
+      json.params = params; 
+    }
+    json.id = id;
+
+    return json;
+  }
+  let send_rpc = (method, params, url, id=1) => {
+    return postData(url, rpc20(method,params,id));
+  }
+
+  const time = (format='yyyy-mm-dd HH:MM:ss', date=new Date()) => {
+    // 날짜 형태로 변형
+    date = _to_date(date);
+
+    const yyyy = date.getFullYear().toString();
+    const yy = yyyy.substr(2);
+    const mm = pad_zero(date.getMonth() +1);
+    const dd = pad_zero(date.getDate());
+
+    const HH = date.getHours();
+    const MM = pad_zero(date.getMinutes());
+    const ss = pad_zero(date.getSeconds());
+    const mi = pad_zero(date.getMilliseconds(),3);
+    const fmt = {yyyy,yy,mm,dd,HH:pad_zero(HH), hh:pad_zero(HH>12?HH-12:HH), MM, ss, mi};
+
+    for(let [k,v] of Object.entries(fmt) ){
+      format = format.replace(k,v);
+    }
+
+    return format;
+  }
+  const _to_date = (source) =>{
+    // date type
+    if(source && typeof source.getMilliseconds == 'function'){
+      return source;
+    }
+
+    // milliseconds
+    const _MILI_0 = 946684800000;
+    if(!isNaN(source) && source>_MILI_0 ){
+      let d = new Date();
+      d.setTime(source);
+      return d;
+    }
+
+    // yyyymmdd, yymmdd, 2020-01-15T07:22:36 (19) => 2020-01-15T07:22:36.000Z
+    if(isNaN(Number(source))){
+      if(source.toString().length==8){
+        source = apply_numformat(source, '####-##-##');
+      }else if(source.toString().length==6){
+        // 20을 붙여준다
+        source = apply_numformat(source, `${_DEFAULT_PREFIX_YEAR}##-##-##`);
+      }else if(source.toString().length==19){
+        source = `${source}.000Z`;
+      }
+    }
+
+    // parse date
+    let parsed = Date.parse(source);
+    if(!isNaN(parsed)){
+      let d = new Date();
+      d.setTime(parsed);
+      return d;
+    }
+
+    // assert_error(`input [${source}] is not parsable date value.`);
+    // return source;
+  }
+  const pad_zero = (source, len=2) => source.toString().padStart(len, '0');
+  const is_not_number = (source) => isNaN(parseFloat(source));
+  const apply_numformat = (source, fmt='####-##-##') =>{
+    if(is_not_number(source)){
+      // assert_error(`input [${source}] allow only only number type string.`);
+    }
+
+    let _source = source.toString().split('');
+    let _fmt = fmt.split('');
+    let idx = 0;
+    let output = [];
+
+    for(let f of _fmt){
+      if(f=='#'){
+        output.push( _source[idx] );
+        idx++;
+      }else{
+        output.push(f);
+      }
+    }
+
+    return output.join('');
+  }
+
+  const get_ons_list_item = (item) =>{
+
+    /*
+      account: "navyactifit"
+      vesting_shares: "308445584.161811 VESTS"
+      trx_id: "9b4aa21e9fac9a7faeb5f37d0c46bb65150de24a"
+      timestamp: 1579830954000
+      timestamp_kr: "2020-01-24 10:55:54"
+      sp: 157112.7293728893
+      balance: "0.7247"
+      stake: 0
+      daily: 25.8268
+    */
+
+    let temp = [];
+
+    temp.push(`<ons-list-item expandable>`);
+    temp.push(`<div class="left">`);
+    temp.push(`<img class="list-item__thumbnail" src="https://steemitimages.com/u/${item.account}/avatar">`);
+    temp.push(`</div>`);
+    temp.push(`<div class="center">`);
+    temp.push(`<span class="list-item__title">@${item.account}</span><span class="list-item__subtitle">${item.daily} BCM</span>`);
+    temp.push(`</div>`);
+    temp.push(`<div class="expandable-content">`);
+    temp.push(`<ons-list modifier="inset">`);
+    temp.push(`<ons-list-item modifier="longdivider">`);
+    temp.push(`<div class="left"><ons-icon icon="fa-arrows-alt-h" style='color:red'></ons-icon></div>`);
+    temp.push(`<div class="right">Delegation SP : ${parseFloat(item.sp).toFixed(4)}</div>`);
+    temp.push(`</ons-list-item>`);
+    temp.push(`<ons-list-item modifier="longdivider">`);
+    temp.push(`<div class="left"><ons-icon icon="fa-bitcoin" style='color:green'></ons-icon></div>`);
+    temp.push(`<div class="right">Stake BCM : ${parseFloat(item.stake).toFixed(4)}</div>`);
+    temp.push(`</ons-list-item>`);
+    temp.push(`<ons-list-item modifier="longdivider">`);
+    temp.push(`<div class="left"><ons-icon icon="fa-bitcoin" style='color:silver'></ons-icon></div>`);
+    temp.push(`<div class="right">Balance BCM : ${parseFloat(item.balance).toFixed(4)}</div>`);
+    temp.push(`</ons-list-item>`);
+    temp.push(`</ons-list>`);
+    temp.push(`</div>`);
+    temp.push(`</ons-list-item>`);
+
+    return temp.join('');
+  }
+
+  get_all_deligations('bcm', 'BCM')
+    .then(res=>{
+      console.log(res);
+      let template = [];
+      for(let r of res){
+        template.push(get_ons_list_item(r));
+      }
+      $("#list_header").append(template.join(''));
+      $("#list_header_text").text('클릭하면 상세정보를 볼 수 있습니다');
+      document.querySelector('ons-tabbar').setActiveTab(0);
+    })
+</script>
+</body>
+</html>
