@@ -4,6 +4,7 @@ const URL_STEEM_ENGINE_RPC 	= 'https://api.steem-engine.com/rpc/';
 const BLOCKCHAIN_API 	      = 'blockchain';
 const CONTRACTAPI 		      = 'contracts';
 const MAX_RETRY             = 10;
+const MIN_STAKE_VALUE       = 10;
 
 
 ////////////////////////////////////////
@@ -209,13 +210,20 @@ const get_all_deligations = async (account, token='', cmd='delegate_vesting_shar
 
   // 토큰 정보를 추가한다
   let tholders = [];
+  let total_stake_bcm = 0;
   if(token!=''){
     console.log(`token_holders_all : start`);
     let holders = await token_holders_all(token.toUpperCase());
+    total_stake_bcm = holders.reduce((acc,curr)=>{
+      return acc + parseFloat(curr.stake);
+    }, 0);
+    total_stake_bcm = parseFloat(total_stake_bcm.toFixed(4));
     console.log(`token_holders_all : end`);
+
     for(let c of holders){
+      var vp = parseFloat((Math.min( ( (c.stake * 100 ) / total_stake_bcm ) * 9 , 100)).toFixed(2));
       delegator_obj[c.account] = delegator_obj[c.account] || {};
-      delegator_obj[c.account] = {...delegator_obj[c.account], account:c.account, balance:c.balance, stake:c.stake}
+      delegator_obj[c.account] = {...delegator_obj[c.account], account:c.account, balance:c.balance, stake:c.stake, vp}
     }
     tholders = holders.map(x=>x.account);
   }
@@ -240,13 +248,17 @@ const get_all_deligations = async (account, token='', cmd='delegate_vesting_shar
       balance:v.balance||0,
       stake,
       daily,
+      vp:v.vp||0,
     });
   }
 
   // 최근 정보가 맨 위로 나오도록 함
   output.sort((a,b)=>b.daily-a.daily);
   console.log(`get_all_deligations : end`);
-
+  
+  // 예상 보팅 파워 정보
+  let exp = output.filter(x=>x.vp>1);
+  exp.sort((a,b)=>b.vp-a.vp);
 
   // 보팅 이력정보 추가
   let votes = received.map(x=>x);  // map 을 통해 복사 처리, 이후 앞쪽 N개를 잘라줌
@@ -255,20 +267,23 @@ const get_all_deligations = async (account, token='', cmd='delegate_vesting_shar
   votes = votes.filter(([idx,trx])=>tholders.includes(trx.op[1].author));
   votes = votes.splice(0,100);  // spice 는 return & remain 값이 다름에 유의
 
-  votes = votes.map(([idx,trx])=>{
+  votes = votes.map(([rdx,trx], idx)=>{
     return {
       is_holder:tholders.includes(trx.op[1].author),
       author:trx.op[1].author,
       permlink:trx.op[1].permlink,
       weight:trx.op[1].weight,
       trx_id:trx.trx_id,
-      timestamp_kr:time('yyyy-mm-dd HH:MM:ss', `${trx.timestamp}Z`)
+      timestamp_kr:time('yyyy-mm-dd HH:MM:ss', `${trx.timestamp}Z`),
+      rnk : `${idx+1}/${votes.length}`
     };
   });
 
   return {
     deligations:output,
-    votes:votes
+    total_stake_bcm,
+    exp,
+    votes,
   };
 }
 

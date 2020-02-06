@@ -33,13 +33,19 @@ function movePost(){
   let author = $("#toast_button").data("author");
   let permlink = $("#toast_button").data("permlink");
 
-  window.open(`https://steemit.com/@${author}/${permlink}`, "_blank");
+  if(!permlink){
+    window.open(`https://steemit.com/@${author}`, "_blank");  
+  }else{
+    window.open(`https://steemit.com/@${author}/${permlink}`, "_blank");
+  }
 }
 
-var currId = 0;
 function showToast(author, permlink){
-
-  $("#toast_text").html(`move ${author}'s post ?`); //<br/>https://steemit.com/@${author}/${permlink}
+  if(!permlink){
+    $("#toast_text").html(`move ${author}'s blog ?`);
+  }else{
+    $("#toast_text").html(`move ${author}'s post ?`);
+  }
   $("#toast_button").data("author", author);
   $("#toast_button").data("permlink", permlink);
   document.querySelector('ons-toast').show();
@@ -55,12 +61,29 @@ const get_history_list = (item) =>{
   temp.push(`</div>`);
   temp.push(`<div class="center">`);
   temp.push(`<span class="list-item__title">@${item.author} (${parseFloat((item.weight/100).toFixed(2))}%)`);
-  if(item.is_holder){
-    temp.push(`&nbsp;<ons-icon icon="fa-star" class='icon-steemit'></ons-icon>`);
-  }
+  // if(item.is_holder){
+  //   temp.push(`&nbsp;<ons-icon icon="fa-star" class='icon-steemit'></ons-icon>`);
+  // }
   temp.push(`</span>`);
   temp.push(`<span class="list-item__subtitle">${item.permlink}</span>`);
   temp.push(`<span class="list-item__subtitle">${item.timestamp_kr}</span>`);
+  temp.push(`</div>`);
+  temp.push(`</ons-list-item>  `);
+
+  return temp.join('');
+}
+
+const get_percent_list = (item) =>{
+
+  let temp = [];
+
+  temp.push(`<ons-list-item onclick="showToast('${item.account}')">`);
+  temp.push(`<div class="left">`);
+  temp.push(`<img class="list-item__thumbnail" src="https://steemitimages.com/u/${item.account}/avatar">`);
+  temp.push(`</div>`);
+  temp.push(`<div class="center">`);
+  temp.push(`<span class="list-item__title">@${item.account} (${item.vp}%)</span>`);
+  temp.push(`<span class="list-item__subtitle">STAKES ${item.stake} BCM</span>`);
   temp.push(`</div>`);
   temp.push(`</ons-list-item>  `);
 
@@ -101,7 +124,7 @@ const get_airdrop_list = (item) =>{
 
 get_all_deligations('bcm', 'BCM')
   .then(res=>{
-    // console.log(res);
+    console.log(res);
     let template = [];
 
     // airdrop
@@ -111,13 +134,21 @@ get_all_deligations('bcm', 'BCM')
     $("#list_airdrop").append(template.join(''));
     $("#list_airdrop_text").text('클릭하면 상세정보를 볼 수 있습니다');
 
+    // percent
+    template = [];
+    for(let r of res.exp){
+      template.push(get_percent_list(r));
+    }
+    $("#list_percent").append(template.join(''));
+    $("#list_percent_text").text('보팅 시점의(과거) 정보와는 차이가 있을 수 있습니다.');
+
     // history
     template = [];
     for(let r of res.votes){
       template.push(get_history_list(r));
     }
     $("#list_history").append(template.join(''));
-    $("#list_history_text").text('최근 홀더기준 200개 보팅 이력 정보를 보여줍니다.');
+    $("#list_history_text").text('홀더기준 최근 100개의 보팅 이력 정보를 보여줍니다.');
 
     document.querySelector('ons-tabbar').setActiveTab(0);
   })

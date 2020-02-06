@@ -12,6 +12,9 @@
       .icon-info{
         color:rgb(48,171,239);
       }
+      .icon-warn{
+        color:red;
+      }
       .icon-steemit{
         color:rgb(8,205,157);
       }
@@ -31,6 +34,8 @@
         <!-- TABBAR -->
         <ons-tabbar position="bottom">
           <ons-tab page="tabAirdrop.html" label="AIRDROP" icon="fa-plane-arrival" >
+          </ons-tab>
+          <ons-tab page="tabPercent.html" label="PERCENT" icon="fa-percent">
           </ons-tab>
           <ons-tab page="tabHistory.html" label="HISTORY" icon="fa-history">
           </ons-tab>
@@ -53,14 +58,35 @@
         <!-- LIST -->
         <ons-list>
           <ons-list-header id="list_airdrop">
+            <ons-icon icon="fa-info-circle" class='icon-info'  onclick="/*showTemplateDialog()*/"></ons-icon>
             <span id='list_airdrop_text'>데이터를 로딩 중에 있습니다...</span>
-            <ons-icon icon="fa-info-circle" class='icon-info'  onclick="showTemplateDialog()"></ons-icon>
           </ons-list-header>     
         </ons-list>
 
       </ons-page>
     </template>
     <!-- ::::: tabAirdrop END ::::: -->
+
+    <!-- ::::: tabPercent START ::::: -->
+    <template id="tabPercent.html">
+      <ons-page id="tabPercent">
+      
+        <!-- TOOLBAR -->
+        <ons-toolbar position="top">
+          <div class="center">BCM VOTE PERCENT</div>
+        </ons-toolbar>
+        
+        <!-- LIST -->
+        <ons-list>
+          <ons-list-header id="list_percent">
+            <ons-icon icon="fa-exclamation-triangle" class='icon-warn'></ons-icon>
+            <span id='list_percent_text'>데이터를 로딩 중에 있습니다...</span>
+          </ons-list-header>     
+        </ons-list>
+
+      </ons-page>
+    </template>
+    <!-- ::::: tabPercent END ::::: -->
 
     <!-- ::::: tabHistory START ::::: -->
     <template id="tabHistory.html">
@@ -74,6 +100,7 @@
         <!-- LIST -->
         <ons-list>
           <ons-list-header id="list_history">
+            <ons-icon icon="fa-info-circle" class='icon-info'></ons-icon>
             <span id='list_history_text'>데이터를 로딩 중에 있습니다...</span>
           </ons-list-header>
           <!--
@@ -103,7 +130,7 @@
         <div class="center">About</div>
       </ons-toolbar>
 
-      <!-- RULESET -->
+        <!-- RULESET -->
         <ons-card>
           <div class="title">
             Airdrop ruleset
@@ -121,6 +148,16 @@
             </ons-button>
           </div>
         </ons-card>
+
+        <!-- VOTING -->
+        <ons-card>
+          <div class="title">
+            Voting ruleset
+          </div>
+          <div class="content">
+            (나의 스테이킹량*100 / 전체 스테이킹량) * 9
+          </div>
+        </ons-card>
         
         <!-- UPDATES -->
         <ons-card>
@@ -130,7 +167,8 @@
           <div class="content">
             <ons-list>
               <ons-list-header>created by @wonsama</ons-list-header>
-              <ons-list-item>20.02.06 - BCM 이력추가</ons-list-item>
+              <ons-list-item>20.02.07 - 퍼센트 추가</ons-list-item>
+              <ons-list-item>20.02.06 - 히스토리 추가</ons-list-item>
               <ons-list-item>20.02.04 - 최초 작성</ons-list-item>
             </ons-list>
           </div>
@@ -161,16 +199,14 @@
 
     <ons-toast id="toast" animation="ascend">
       <ons-row>
-        <ons-col width="180px">
+        <ons-col width="190px">
           <div id="toast_text"></div>
         </ons-col>
         <ons-col>
-          <ons-button class='right' onclick="movePost()" id="toast_button">MOVE</ons-button>
-          <ons-button class='right' onclick="toast.hide()" id="toast_button">CLOSE</ons-button>
+          <ons-button onclick="movePost();toast.hide();" id="toast_button">GO</ons-button>
+          <ons-button onclick="toast.hide()" id="toast_button">X</ons-button>
         </ons-col>
       </ons-row>
-      
-      
     </ons-toast>
 
     <script src="https://cdn.jsdelivr.net/npm/steem/dist/steem.min.js"></script>
