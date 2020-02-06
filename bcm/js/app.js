@@ -39,7 +39,7 @@ function movePost(){
 var currId = 0;
 function showToast(author, permlink){
 
-  $("#toast_text").html(`move ${author}'s post ?<br/>https://steemit.com/@${author}/${permlink}`);
+  $("#toast_text").html(`move ${author}'s post ?`); //<br/>https://steemit.com/@${author}/${permlink}
   $("#toast_button").data("author", author);
   $("#toast_button").data("permlink", permlink);
   document.querySelector('ons-toast').show();
