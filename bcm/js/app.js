@@ -122,33 +122,77 @@ const get_airdrop_list = (item) =>{
   return temp.join('');
 }
 
-get_all_deligations('bcm', 'BCM')
+const get_bcm_info = (item) =>{
+
+  let temp = [];
+
+  temp.push(`<ons-list-item>`);
+  temp.push(`<div class="left">`);
+  temp.push(`<ons-icon icon="fa-water" class='list-item__icon'></ons-icon>`);
+  temp.push(`</div>`);
+  temp.push(`<div class="center">`);
+  temp.push(`<span class="list-item__title">STEEM POWER</span>`);
+  temp.push(`<span class="list-item__subtitle">${add_comma(item.sp)} SP</span>`);
+  temp.push(`</div>`);
+  temp.push(`</ons-list-item>`);
+  temp.push(`<ons-list-item>`);
+  temp.push(`<div class="left">`);
+  temp.push(`<ons-icon icon="fa-battery-three-quarters" class='list-item__icon'></ons-icon>`);
+  temp.push(`</div>`);
+  temp.push(`<div class="center">`);
+  temp.push(`<span class="list-item__title">VOTING MANA</span>`);
+  temp.push(`<span class="list-item__subtitle">${item.vp} %</span>`);
+  temp.push(`</div>`);
+  temp.push(`</ons-list-item>`);
+  temp.push(`<ons-list-item>`);
+  temp.push(`<div class="left">`);
+  temp.push(`<ons-icon icon="fa-dollar-sign" class='list-item__icon'></ons-icon>`);
+  temp.push(`</div>`);
+  temp.push(`<div class="center">`);
+  temp.push(`<span class="list-item__title">AT: MANA ${item.vp} % WEIGHT 100 %</span>`);
+  temp.push(`<span class="list-item__subtitle">PRICE : ${item.exp_dollar} $</span>`);
+  temp.push(`<span class="list-item__subtitle">( STEEM PRICE SBD : ${item.steem_price_sbd} $ ) </span>`);
+  temp.push(`</div>`);
+  temp.push(`</ons-list-item>`);
+
+  return temp.join('');
+}
+
+get_vp_with_price('bcm')
   .then(res=>{
-    console.log(res);
-    let template = [];
-
-    // airdrop
-    for(let r of res.deligations){
-      template.push(get_airdrop_list(r));
-    }
-    $("#list_airdrop").append(template.join(''));
-    $("#list_airdrop_text").text('클릭하면 상세정보를 볼 수 있습니다');
-
-    // percent
-    template = [];
-    for(let r of res.exp){
-      template.push(get_percent_list(r));
-    }
-    $("#list_percent").append(template.join(''));
-    $("#list_percent_text").text('보팅 시점의(과거) 정보와는 차이가 있을 수 있습니다.');
-
-    // history
-    template = [];
-    for(let r of res.votes){
-      template.push(get_history_list(r));
-    }
-    $("#list_history").append(template.join(''));
-    $("#list_history_text").text('홀더기준 최근 100개의 보팅 이력 정보를 보여줍니다.');
-
-    document.querySelector('ons-tabbar').setActiveTab(0);
+    $("#bcm_info").empty();
+    $("#bcm_info").html(get_bcm_info(res));
   })
+
+if(true){
+  get_all_deligations('bcm', 'BCM')
+    .then(res=>{
+      console.log(res);
+      let template = [];
+
+      // airdrop
+      for(let r of res.deligations){
+        template.push(get_airdrop_list(r));
+      }
+      $("#list_airdrop_items").html(template.join(''));
+      $("#list_airdrop_text").text('클릭하면 상세정보를 볼 수 있습니다');
+
+      // percent
+      template = [];
+      for(let r of res.exp){
+        template.push(get_percent_list(r));
+      }
+      $("#list_percent_items").html(template.join(''));
+      $("#list_percent_text").text('보팅 시점의(과거) 정보와는 차이가 있을 수 있습니다.');
+
+      // history
+      template = [];
+      for(let r of res.votes){
+        template.push(get_history_list(r));
+      }
+      $("#list_history_items").html(template.join(''));
+      $("#list_history_text").text('홀더기준 최근 100개의 보팅 이력 정보를 보여줍니다.');
+
+      document.querySelector('ons-tabbar').setActiveTab(0);
+    })  
+}

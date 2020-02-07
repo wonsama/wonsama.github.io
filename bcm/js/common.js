@@ -5,14 +5,14 @@ const BLOCKCHAIN_API 	      = 'blockchain';
 const CONTRACTAPI 		      = 'contracts';
 const MAX_RETRY             = 10;
 const MIN_STAKE_VALUE       = 10;
-
+const URL_STEEM_ENGINE_SCOT = 'https://scot-api.steem-engine.com';
 
 ////////////////////////////////////////
 /// 
 /// POST 
 /// 
 
-let postData = (url = ``, data = {}) => {
+let send_data_post = (url = ``, data = {}, is_parse_json=true) => {
   // Default options are marked with *
     return fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -27,7 +27,25 @@ let postData = (url = ``, data = {}) => {
         referrer: "no-referrer", // no-referrer, *client
         body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
-    .then(response => response.json()); // parses JSON response into native Javascript objects 
+    .then(response => is_parse_json?response.json():response); // parses JSON response into native Javascript objects 
+}
+
+let send_data_get = (url = ``, is_parse_json=true) => {
+  // Default options are marked with *
+    return fetch(url, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        // headers: {
+            // "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        // },
+        // redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        // body: JSON.stringify(data), // body data type must match "Content-Type" header
+    })
+    .then(response => is_parse_json?response.json():response); // parses JSON response into native Javascript objects 
 }
 
 ////////////////////////////////////////
@@ -48,7 +66,126 @@ let rpc20 = (method, params, id)=>{
 }
 
 let send_rpc = async function (method, params, url, id=1){
-	return postData(url, rpc20(method,params,id));
+	return send_data_post(url, rpc20(method,params,id));
+}
+
+////////////////////////////////////////
+/// 
+/// SCOT
+///
+
+// 대상 토큰의 보팅 퍼센트를 반환한다 0~100 사이의 수
+const _get_scot_vp = (token) =>{
+  const __MILLISEC = 1000;
+  const __CHARGE_PER_SEC = 60 * 60 * 24 * 5;  // 432000, 1초당 충전되는 수치, *5는 하루 20% 1/5을 의미함
+
+  let vp = token.voting_power; // 10000 is max
+  let now = new Date().getTime();
+  let prev = new Date(token.last_vote_time+'Z').getTime();
+  let gap = parseFloat((now - prev) / 1000);
+  let calc = parseFloat(10000 * gap / __CHARGE_PER_SEC);
+
+  return parseFloat((Math.min(10000, vp+calc) / 100).toFixed(2));
+}
+
+const get_scot_vp = (author, token) => {
+  return get_scot_user(author).then(res=>_get_scot_vp(res[token.toUpperCase()]));
+}
+
+// 계정 토큰 잔고 정보를 보여준다 
+const get_scot_user = (author) => {
+  return send_data_get(`${URL_STEEM_ENGINE_SCOT}/@${author}?v=${new Date().getTime()}`)
+}
+
+////////////////////////////////////////////////////////////
+//
+// public function (공개 함수)
+//
+
+
+////////////////////////////////////////
+/// 
+/// STEEM
+/// 
+
+// 해당 계정의 보팅 파워를 계산해 준다
+const get_vp = (authors)=>{
+
+  const __MAX_VOTING_POWER = 10000;
+  const __CHARGE_PER_SEC = 60 * 60 * 24 * 5;  // 432000, 1초당 충전되는 수치, *5는 하루 20% 1/5을 의미함
+
+  const __parse = (r) => {
+
+    let account = r.name;
+    let last = r.voting_power; //최근 투표일 기준 보팅파워 , 10000 is max
+    let gap = (new Date().getTime() - new Date(r.last_vote_time + "Z").getTime())/1000; // 최종 보팅한 이후 흐른 시간, 초
+    let vp = Math.min(__MAX_VOTING_POWER, parseInt(last +  ( gap / __CHARGE_PER_SEC ) * __MAX_VOTING_POWER)); // 시간차를 적용한 현재 보팅파워 10000 is max
+
+    console.log(r)
+
+    return {
+      account, last, gap, vp, 
+      vesting_shares:parseFloat(r.vesting_shares.split(' ')[0]),  // 내꺼 
+      received_vesting_shares:parseFloat(r.received_vesting_shares.split(' ')[0]),  // 임대 받은거 
+      delegated_vesting_shares:parseFloat(r.delegated_vesting_shares.split(' ')[0]),  // 임대 해준거
+    };
+  }
+
+  if(authors && !Array.isArray(authors)){
+    authors = [authors];
+  }
+  const is_one = authors.length==1?true:false;
+
+  return send_rpc('condenser_api.get_accounts',[authors],URL_STEEM)
+    .then(res=>{
+      if(is_one){
+        return Promise.resolve(res.result.map(r=>__parse(r))[0]);
+      }else{
+        return Promise.resolve(res.result.map(r=>__parse(r)));  
+      }
+  });
+}
+
+const get_vp_with_price = (author) =>{
+  return Promise.all([
+    get_vp(author),
+    steem.api.getRewardFundAsync('post'),
+    steem.api.getCurrentMedianHistoryPriceAsync(),
+    steem.api.getDynamicGlobalPropertiesAsync(),
+  ]).then(res=>{
+    let _vp = res[0];  // vp.vp
+    let rf = res[1];  // rf.reward_balance, rf.recent_claims
+    let cmhp = res[2];
+    let dgp = res[3];
+
+    let reward_balance = parseFloat(rf.reward_balance.split(' ')[0]);
+    let recent_claims = parseInt(rf.recent_claims);
+    let base = parseFloat(cmhp.base.split(' ')[0]);   // SBD
+    let quote = parseFloat(cmhp.quote.split(' ')[0]); // STEEM
+    let total_vesting_fund_steem = parseFloat(dgp.total_vesting_fund_steem.split(' ')[0]);
+    let total_vesting_shares = parseFloat(dgp.total_vesting_shares.split(' ')[0]);
+
+    let m = total_vesting_fund_steem / total_vesting_shares;
+    let p = reward_balance / recent_claims;
+    let l = base / quote; // steem price
+    let e = parseInt(steem.formatter.vestToSteem(
+      _vp.vesting_shares+_vp.received_vesting_shares-_vp.delegated_vesting_shares, 
+      total_vesting_shares, total_vesting_fund_steem)); // steempower
+    let t = _vp.vp / 100; // votingpower
+    let a = 100; // voteweight
+    let n = e / m;
+    let r = parseInt(100 * t * (100 * a) / 1e4);
+    r = parseInt((r + 49) / 50);
+    let i = parseInt(n * r * 100);
+    let o = ((i + 2e12) * (i + 2e12) - 4e24) / (i + 8e12) * p * l;
+
+    return Promise.resolve({
+      sp:e,
+      vp:t,
+      steem_price_sbd:parseFloat(l.toFixed(2)),
+      exp_dollar:parseFloat(o.toFixed(4)),
+    });
+  })
 }
 
 ////////////////////////////////////////
@@ -56,7 +193,7 @@ let send_rpc = async function (method, params, url, id=1){
 /// STEEM-ENGINE
 /// 
 
-let findOne = async function (contract, table, query){
+let findOne = function (contract, table, query){
     let params ={
         contract,
         table,

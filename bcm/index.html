@@ -60,7 +60,10 @@
           <ons-list-header id="list_airdrop">
             <ons-icon icon="fa-info-circle" class='icon-info'  onclick="/*showTemplateDialog()*/"></ons-icon>
             <span id='list_airdrop_text'>데이터를 로딩 중에 있습니다...</span>
-          </ons-list-header>     
+          </ons-list-header>
+          <div id="list_airdrop_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
         </ons-list>
 
       </ons-page>
@@ -81,7 +84,10 @@
           <ons-list-header id="list_percent">
             <ons-icon icon="fa-exclamation-triangle" class='icon-warn'></ons-icon>
             <span id='list_percent_text'>데이터를 로딩 중에 있습니다...</span>
-          </ons-list-header>     
+          </ons-list-header>
+          <div id="list_percent_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
         </ons-list>
 
       </ons-page>
@@ -103,18 +109,9 @@
             <ons-icon icon="fa-info-circle" class='icon-info'></ons-icon>
             <span id='list_history_text'>데이터를 로딩 중에 있습니다...</span>
           </ons-list-header>
-          <!--
-          <ons-list-item>
-            <div class="left">
-              <img class="list-item__thumbnail" src="https://steemitimages.com/u/wonsama/avatar">
-            </div>
-            <div class="center">
-              <span class="list-item__title">@wonsama (0.05%)<ons-icon icon="fa-star" class='icon-steemit'></ons-icon></span>
-              <span class="list-item__subtitle">/asdsa-2e3123</span>
-              <span class="list-item__subtitle">2020.11.11</span>
-            </div>
-          </ons-list-item>
-          -->
+          <div id="list_history_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
         </ons-list>
 
       </ons-page>
@@ -129,6 +126,16 @@
       <ons-toolbar position="top">
         <div class="center">About</div>
       </ons-toolbar>
+
+        <!-- INFO -->
+        <ons-card>
+          <div class="title">
+            @bcm accounts info
+          </div>
+          <div class="content" id="bcm_info">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
+        </ons-card>
 
         <!-- RULESET -->
         <ons-card>
