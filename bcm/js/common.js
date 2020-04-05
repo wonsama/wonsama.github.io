@@ -5,6 +5,7 @@ const BLOCKCHAIN_API 	      = 'blockchain';
 const CONTRACTAPI 		      = 'contracts';
 const MAX_RETRY             = 10;
 const MIN_STAKE_VALUE       = 10;
+const FULL_VOTE_SIZE        = 10;
 const URL_STEEM_ENGINE_SCOT = 'https://scot-api.steem-engine.com';
 
 ////////////////////////////////////////
@@ -358,7 +359,7 @@ const get_all_deligations = async (account, token='', cmd='delegate_vesting_shar
     console.log(`token_holders_all : end`);
 
     for(let c of holders){
-      var vp = parseFloat((Math.min( ( (c.stake * 100 ) / total_stake_bcm ) * 9 , 100)).toFixed(2));
+      var vp = parseFloat((Math.min( ( (c.stake * 100 ) / total_stake_bcm ) * FULL_VOTE_SIZE , 100)).toFixed(2));
       delegator_obj[c.account] = delegator_obj[c.account] || {};
       delegator_obj[c.account] = {...delegator_obj[c.account], account:c.account, balance:c.balance, stake:c.stake, vp}
     }
