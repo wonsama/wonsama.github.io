@@ -103,10 +103,12 @@ const get_airdrop_list = (item) =>{
   temp.push(`</div>`);
   temp.push(`<div class="expandable-content">`);
   temp.push(`<ons-list modifier="inset">`);
-  temp.push(`<ons-list-item modifier="longdivider">`);
-  temp.push(`<div class="left"><ons-icon icon="fa-arrows-alt-h" style='color:red'></ons-icon></div>`);
-  temp.push(`<div class="right">Delegation SP : ${add_comma(parseFloat(parseFloat(item.sp).toFixed(0)))}</div>`);
-  temp.push(`</ons-list-item>`);
+
+  // temp.push(`<ons-list-item modifier="longdivider">`);
+  // temp.push(`<div class="left"><ons-icon icon="fa-arrows-alt-h" style='color:red'></ons-icon></div>`);
+  // temp.push(`<div class="right">Delegation SP : ${add_comma(parseFloat(parseFloat(item.sp).toFixed(0)))}</div>`);
+  // temp.push(`</ons-list-item>`);
+
   temp.push(`<ons-list-item modifier="longdivider">`);
   temp.push(`<div class="left"><ons-icon icon="fa-bitcoin" style='color:green'></ons-icon></div>`);
   temp.push(`<div class="right">Stake BCM : ${add_comma(parseFloat(parseFloat(item.stake).toFixed(0)))}</div>`);

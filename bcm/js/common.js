@@ -372,7 +372,8 @@ const get_all_deligations = async (account, token='', cmd='delegate_vesting_shar
 
     let sp = steem.formatter.vestToSteem(vs, total_vesting_shares, total_vesting_fund_steem);
     let stake = parseFloat(v.stake||0);
-    let daily = sp+stake>0?(((sp/3) + stake)*0.18) / 365:0;
+    // let daily = sp+stake>0?(((sp/3) + stake)*0.18) / 365:0;
+    let daily = sp+stake>0?((stake)*0.1) / 365:0;
     daily = parseFloat(daily.toFixed(4));
 
     output.push({
