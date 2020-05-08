@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+    <style>
+      .toolbar{
+        /*background-color:#85c1e9*/
+      }
+      .icon-info{
+        color:rgb(48,171,239);
+      }
+      .icon-warn{
+        color:red;
+      }
+      .icon-steemit{
+        color:rgb(8,205,157);
+      }
+      .btn-move{
+
+      }
+      .btn-close{
+        
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ::::: BASE START ::::: -->
+    <ons-page>  
+        
+        <!-- TABBAR -->
+        <ons-tabbar position="bottom">
+          <ons-tab page="tabAirdrop.html" label="AIRDROP" icon="fa-plane-arrival" >
+          </ons-tab>
+          <ons-tab page="tabPercent.html" label="PERCENT" icon="fa-percent">
+          </ons-tab>
+          <ons-tab page="tabHistory.html" label="HISTORY" icon="fa-history">
+          </ons-tab>
+          <ons-tab page="tabAbout.html" label="ABOUT" icon="fa-info" active>
+          </ons-tab>
+        </ons-tabbar>
+
+    </ons-page>
+    <!-- ::::: BASE END ::::: -->
+
+    <!-- ::::: tabAirdrop START ::::: -->
+    <template id="tabAirdrop.html">
+      <ons-page id="tabAirdrop">
+      
+        <!-- TOOLBAR -->
+        <ons-toolbar position="top">
+          <div class="center">DAILY LGT/STEEM DISTRIBUTION</div>
+        </ons-toolbar>
+        
+        <!-- LIST -->
+        <ons-list>
+          <ons-list-header id="list_airdrop">
+            <ons-icon icon="fa-info-circle" class='icon-info'  onclick="/*showTemplateDialog()*/"></ons-icon>
+            <span id='list_airdrop_text'>데이터를 로딩 중에 있습니다...</span>
+          </ons-list-header>
+          <div id="list_airdrop_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
+        </ons-list>
+
+      </ons-page>
+    </template>
+    <!-- ::::: tabAirdrop END ::::: -->
+
+    <!-- ::::: tabPercent START ::::: -->
+    <template id="tabPercent.html">
+      <ons-page id="tabPercent">
+      
+        <!-- TOOLBAR -->
+        <ons-toolbar position="top">
+          <div class="center">VOTE PERCENT</div>
+        </ons-toolbar>
+        
+        <!-- LIST -->
+        <ons-list>
+          <ons-list-header id="list_percent">
+            <ons-icon icon="fa-exclamation-triangle" class='icon-warn'></ons-icon>
+            <span id='list_percent_text'>데이터를 로딩 중에 있습니다...</span>
+          </ons-list-header>
+          <div id="list_percent_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
+        </ons-list>
+
+      </ons-page>
+    </template>
+    <!-- ::::: tabPercent END ::::: -->
+
+    <!-- ::::: tabHistory START ::::: -->
+    <template id="tabHistory.html">
+      <ons-page id="tabHistory">
+      
+        <!-- TOOLBAR -->
+        <ons-toolbar position="top">
+          <div class="center">LGT VOTE HISTORY</div>
+        </ons-toolbar>
+        
+        <!-- LIST -->
+        <ons-list>
+          <ons-list-header id="list_history">
+            <ons-icon icon="fa-info-circle" class='icon-info'></ons-icon>
+            <span id='list_history_text'>데이터를 로딩 중에 있습니다...</span>
+          </ons-list-header>
+          <div id="list_history_items">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
+        </ons-list>
+
+      </ons-page>
+    </template>
+    <!-- ::::: tabHistory END ::::: -->
+
+    <!-- ::::: tabAbout START ::::: -->
+    <template id="tabAbout.html">
+      <ons-page id="tabAbout">
+
+      <!-- TOOLBAR -->
+      <ons-toolbar position="top">
+        <div class="center">About</div>
+      </ons-toolbar>
+
+        <!-- INFO -->
+        <ons-card>
+          <div class="title">
+            @gotogether accounts info
+          </div>
+          <div class="content" id="lgt_info">
+            <ons-progress-bar indeterminate></ons-progress-bar>
+          </div>
+        </ons-card>
+
+        <!-- RULESET -->
+        <ons-card>
+          <div class="title">
+            Token Distribution
+          </div>
+          <div class="content">
+            @gotogether 계정 SP 임대 기준으로 연 18% 로 LGT 토큰을 매일 분배 (1만SP 임대시 일일 약 4.932 LGT 분배)<br/>( 임대SP * 0.18 ) / 365<br/><br/>
+          </div>
+        </ons-card>
+
+        <!-- RULESET -->
+        <ons-card>
+          <div class="title">
+            Steem Distribution
+          </div>
+          <div class="content">
+            (자신의 LGT 스테이킹량/ 총 LGT 스테이킹량) * (@gotogether 계정 전체스파량 / 10000)<br/>(예시 @gotogether 계정이 120만 스파인 경우 매일 120스팀을 LGT보유 지분 비율로 나눠 배당)<br>
+            <ons-button modifier="large" onclick="moveSteemEngine()">
+              <ons-icon icon="fa-city"></ons-icon>
+              스팀엔진 : LGT 토큰 거래
+            </ons-button>
+          </div>
+        </ons-card>
+
+        <!-- VOTING -->
+        <ons-card>
+          <div class="title">
+            Voting ruleset
+          </div>
+          <div class="content">
+            (자신의 LGT 스테이킹량/ 총 LGT 스테이킹량) * 10 (즉, 총 스테이킹량의 10%를 보유하면 매일 풀봇을 받을 수 있음)<br>(최대 1(100%)을 넘을 수 없음, *10 은 하루 풀봇 10회를 의미)<br/>
+            <ons-button modifier="large" onclick="moveSteemEngine()">
+              <ons-icon icon="fa-city"></ons-icon>
+              스팀엔진 : LGT 토큰 거래
+            </ons-button>
+          </div>
+        </ons-card>
+        
+        <!-- UPDATES -->
+        <ons-card>
+          <div class="title">
+            Updates
+          </div>
+          <div class="content">
+            <ons-list>
+              <ons-list-header>created by @wonsama</ons-list-header>
+              <ons-list-item>20.05.08 - 최초 작성</ons-list-item>
+            </ons-list>
+          </div>
+        </ons-card>
+
+      </ons-page>
+    </template>
+    <!-- ::::: tabAbout END ::::: -->
+
+    <!-- ::::: dialog START ::::: -->
+    <template id="dialog.html">
+
+      <!-- DIALOG -->
+      <ons-dialog id="my-dialog">
+        <div style="text-align: center; padding: 10px;">
+          <p>
+            LGT TOKEN Airdrop Ruleset<br/><br/>
+            (deleSP*0.18)/365
+          </p>
+          <!--
+              HISTORY DESC
+
+              2020.05.08 기존 BCM 꺼 복제해서 만듬
+          -->
+
+          <p>
+            <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+          </p>
+        </div>
+      </ons-dialog>
+    </template>
+    <!-- ::::: dialog END ::::: -->
+
+    <ons-toast id="toast" animation="ascend">
+      <ons-row>
+        <ons-col width="190px">
+          <div id="toast_text"></div>
+        </ons-col>
+        <ons-col>
+          <ons-button onclick="movePost();toast.hide();" id="toast_button">GO</ons-button>
+          <ons-button onclick="toast.hide()" id="toast_button">X</ons-button>
+        </ons-col>
+      </ons-row>
+    </ons-toast>
+
+    <script src="https://cdn.jsdelivr.net/npm/steem/dist/steem.min.js"></script>
+    <script src="./js/common.js?update=20200405_1"></script>
+    <script src="./js/app.js?update=20200405"></script>
+
+  
+  </body>
+</html>
