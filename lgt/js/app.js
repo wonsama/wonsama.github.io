@@ -91,6 +91,10 @@ const get_airdrop_list = (item) =>{
 
   let temp = [];
 
+  if(parseFloat(item.daily)==0 && parseFloat(item.daily_steem)==0){
+    return '';
+  }
+
   temp.push(`<ons-list-item expandable>`);
   temp.push(`<div class="left">`);
   temp.push(`<img class="list-item__thumbnail" src="https://steemitimages.com/u/${item.account}/avatar">`);
