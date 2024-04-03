@@ -1,0 +1,7 @@
+User-agent: Googlebot
+Disallow: /norobots/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://wonsama.github.io/sitemap.xml
