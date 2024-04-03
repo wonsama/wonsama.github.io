@@ -4,7 +4,7 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-# 정보
+# wonsama
 
 - MAIN
   - IT DEVELOPER - "금융/물류/제조"
