@@ -1,7 +1,7 @@
 ---
 title: trix 소개
 date: 2024-04-03 16:00:00 +0900
-categories: [dev, utils]
+categories: [apps, plugins]
 tags: [trix, introduction]
 ---
 

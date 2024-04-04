@@ -1,7 +1,7 @@
 ---
 title: github blog 작성 원칙
 date: 2024-04-03 13:00:00 +0900
-categories: [ruleset]
+categories: [settings]
 tags: [github, blog, principles]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: jekyll plugins
 date: 2024-04-03 18:10:00 +0900
-categories: [dev, utils]
+categories: [apps, plugins]
 tags: [jekyll, target]
 ---
 
