@@ -1,9 +1,10 @@
 ---
 title: 2024.04.08 경제 뉴스
 date: 2024-04-08 17:46:06 +0900
-categories: [auto, krnews]
-tags: [krnews, economy]
+categories: [krnews, economy]
+tags: [krnews, economy, auto]
 ---
+
 ## [가맹점 본사 마진 크게 뛰었다…치킨집 8.2%, 마진율 가장 높아](https://n.news.naver.com/mnews/article/025/0003352686)
 
 ![가맹점 본사 마진 크게 뛰었다…치킨집 8.2%, 마진율 가장 높아](https://mimgnews.pstatic.net/image/origin/025/2024/04/08/3352686.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
@@ -103,4 +104,3 @@ tags: [krnews, economy]
 
 ![경기신보, 신한銀과 손잡고 '소상공인 맞춤형컨설팅'](https://mimgnews.pstatic.net/image/origin/277/2024/04/08/5403082.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
 경기신용보증재단이 신한은행과 손잡고 도내 소상공인의 자생력을 강화하고 사업 성공을 지원하기 위한 맞춤형 컨설팅 지원에 나선다. 경기신보는 지난 5일 신한은행 본점에서 경기도 최초로 경기신보를 이용 중인 소상공인만 참
-

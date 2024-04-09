@@ -1,8 +1,8 @@
 ---
 title: 2024.04.05 경제 뉴스
 date: 2024-04-05 16:19:20 +0900
-categories: [auto, krnews]
-tags: [krnews, economy]
+categories: [krnews, economy]
+tags: [krnews, economy, auto]
 ---
 ## [기아, 올해 320만대 판매 목표…2030년까지 430만대 달성](https://n.news.naver.com/mnews/article/081/0003442365)
 
