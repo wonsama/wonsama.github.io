@@ -4,6 +4,7 @@ date: 2024-04-09 18:06:22 +0900
 categories: [krnews, society]
 tags: [krnews, society, auto]
 ---
+
 ## ["버려진 러닝머신에 돈다발이…" 4800만원 찾아준 주민](https://n.news.naver.com/mnews/article/003/0012482152)
 
 !["버려진 러닝머신에 돈다발이…" 4800만원 찾아준 주민](https://mimgnews.pstatic.net/image/origin/003/2024/04/09/12482152.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
@@ -93,4 +94,3 @@ tags: [krnews, society, auto]
 
 !["이틀간 사전투표 지원 남원시청 공무원 숨져… 과로사 추정"](https://mimgnews.pstatic.net/image/origin/003/2024/04/09/12481209.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
 제22대 총선 사전투표 업무를 보던 전북 남원시청의 한 공무원이 과도한 선거지원 업무에 시달린 끝에 과로로 숨졌다는 의혹이 제기됐다. 지난 7일 오전 남원시청에 근무하는 A(59·여)씨가 갑자기 쓰러져 정신을 잃었고
-
