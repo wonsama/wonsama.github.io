@@ -4,6 +4,7 @@ date: 2024-04-09 10:11:38 +0900
 categories: [krnews, economy]
 tags: [krnews, economy, auto]
 ---
+
 ## [SK 창업주 생가 개방...진주 이어 수원서 배우는 ‘K기업가 정신’](https://n.news.naver.com/mnews/article/023/0003827280)
 
 ![SK 창업주 생가 개방...진주 이어 수원서 배우는 ‘K기업가 정신’](https://mimgnews.pstatic.net/image/origin/023/2024/04/09/3827280.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
@@ -102,4 +103,3 @@ SK그룹이 최종건 창업회장과 최종현 선대회장이 태어나고 생
 
 !['금리인하·엔강세' 5천억 베팅...'역주행' 손실 눈덩이](https://mimgnews.pstatic.net/image/origin/215/2024/04/08/1156639.jpg?type=nf220_150){: width="100" height="150" .w-10 .left}
 올해 6월부터 미국이 금리인하에 나설 것이라는 예상이 지난주부터 흔들리기 시작하면서 여기에 베팅했던 개인투자자들이 당황하고 있습니다. 미국이 금리를 내리기 시작하면 상대적으로 엔화 가치가 올라가고 미국 장기채권 가격
-
